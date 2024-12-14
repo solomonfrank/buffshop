@@ -6,13 +6,14 @@ export const Hero = ({
 }: {
   openDrawerHandler: () => void;
 }) => {
+  const expiryTimestampHandler = () => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 86400 * 2);
+    return time;
+  };
   const { seconds, minutes, hours, days } = useTimer({
     autoStart: true,
-    expiryTimestamp: () => {
-      const time = new Date();
-      time.setSeconds(time.getSeconds() + 86400 * 2);
-      return time;
-    },
+    expiryTimestamp: expiryTimestampHandler(),
   });
 
   return (
