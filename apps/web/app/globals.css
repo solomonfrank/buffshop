@@ -1,6 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Remove auto fill background color on input element */
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition:
+    background-color 0s 600000s,
+    color 0s 600000s !important;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navigation-height: 6.4rem;
+  --bottom-navigation-height: 8.4rem;
+  --meeting-navigation-height: 8.4rem;
+
+  /* background */
+  --buff-bg-black: #171717;
+  --vms-bg: #ededed;
+  --vms-bg-subtle: #ededed;
+  --vms-bg-emphasis: #d9d9d9;
+
+  /*  Border */
+  --vms-border: #1d1d1f;
+  --vms-border-error: #ed1c24;
+  --vms-border-focus: #1d1d1f;
+  --vms-border-muted: #ededed;
+  --vms-border-brand: #ed1c24;
+
+  /* background  for component*/
+  --vms-bg-success: hsla(133, 34%, 24%, 1);
+  --vms-bg-error: hsla(3, 66%, 93%, 1);
+  --vms-bg-dark-error: hsla(2, 55%, 30%, 1);
+  --vms-bg-inverted: #1d1d1f;
+  --vm-bg-muted-light: #fff5f6;
+
+  /* text */
+  --buff-text: #ffbe0a;
+  --vms-text-success: hsla(133, 34%, 24%, 1);
+  --vms-text-error: #ed1c24;
+  --vms-brand-solid-text: #ed1c24;
+  --vms-text-muted: #9c9c9c;
+  --vms-bg-subtle: #9c9c9c;
+
+  /* Brand will be computed for the users theme at runtime. */
+  --vms-brand: #ffbe0a;
+  --vms-brand-light: #ed1c241a;
+  --vms-brand-text: #171717;
+  --vms-brand-muted: #fde8e9;
+  --vms-brand-muted-light: #fff5f6;
+  --vms-brand-accent: #fff;
+  --vms-brand-sidebar: #fff;
+  --vms-brand-subtle: #fde8e9;
+}
+
+html {
+  /* font-size: calc(100vw / 1530 * 10) !important; */
+  box-sizing: border-box;
+  font-size: 62.5% !important;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -14,11 +72,8 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
+  background-color: #171717;
+  color: #fff;
 }
 
 * {
@@ -32,19 +87,8 @@ a {
   text-decoration: none;
 }
 
-.imgDark {
-  display: none;
-}
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
-  }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
   }
 }

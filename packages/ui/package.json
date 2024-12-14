@@ -1,12 +1,11 @@
 {
-  "name": "@repo/ui",
+  "name": "@buff/ui",
   "version": "0.0.0",
-  "type": "module",
   "private": true,
-  "exports": {
-    "./button": "./src/button.tsx",
-    "./card": "./src/card.tsx",
-    "./code": "./src/code.tsx"
+  "main": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "export": {
+    ".": "./src/index.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -20,10 +19,20 @@
     "@types/node": "^20.11.24",
     "@types/react": "18.3.0",
     "@types/react-dom": "18.3.1",
-    "typescript": "5.5.4"
+    "typescript": "5.5.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.16"
   },
   "dependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "@radix-ui/react-checkbox": "^1.1.1",
+    "class-variance-authority": "^0.7.0",
+    "react-countdown": "^2.3.6",
+    "@buff/lib": "*",
+    "react-hook-form": "^7.53.0",
+    "react-hot-toast": "^2.4.1",
+    "react-select": "^5.8.1"
   }
 }
