@@ -90,7 +90,7 @@ export const Hero = ({
         </div>
       </div>
       <figure className="w-full h-full absolute top-0 left-0 -z-0">
-        <img src="/images/hero.png" className="w-full h-full object-cover" />
+        <img src="/images/hero.webp" className="w-full h-full object-cover" />
       </figure>
       Hero
     </div>
