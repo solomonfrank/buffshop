@@ -49,7 +49,7 @@ export const HomePage = () => {
     <div className="min-h-screen w-screen relative">
       <Hero openDrawerHandler={() => setOpenDrawer(true)} />
       <Faq />
-      <Footer />
+      <Footer openDrawerHandler={() => setOpenDrawer(true)} />
 
       {openDrawer && (
         <Drawer open={openDrawer} className="z-50" width={519}>

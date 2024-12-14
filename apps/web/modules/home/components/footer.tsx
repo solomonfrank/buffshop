@@ -1,8 +1,15 @@
-export const Footer = () => {
+export const Footer = ({
+  openDrawerHandler,
+}: {
+  openDrawerHandler: () => void;
+}) => {
   return (
     <div className="flex flex-col items-center gap-[12rem] mt-[7.8rem]">
       <div>
-        <button className="bg-[#FFBE0A] h-[5.2rem] w-[21.5rem] text-[#171717] gap-[5px] rounded-[8px] flex items-center justify-center font-medium text-[1.8rem] leading-[22.5px] ">
+        <button
+          onClick={openDrawerHandler}
+          className="bg-[#FFBE0A] h-[5.2rem] w-[21.5rem] text-[#171717] gap-[5px] rounded-[8px] flex items-center justify-center font-medium text-[1.8rem] leading-[22.5px] "
+        >
           <span>
             <svg
               width="20"

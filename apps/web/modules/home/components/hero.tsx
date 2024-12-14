@@ -1,10 +1,20 @@
 import { Logo } from "@components/logo";
+import { useTimer } from "react-timer-hook";
 
 export const Hero = ({
   openDrawerHandler,
 }: {
   openDrawerHandler: () => void;
 }) => {
+  const { seconds, minutes, hours, days } = useTimer({
+    autoStart: true,
+    expiryTimestamp: () => {
+      const time = new Date();
+      time.setSeconds(time.getSeconds() + 86400 * 2);
+      return time;
+    },
+  });
+
   return (
     <div className="relative h-[88.1rem]  w-full bg-no-repeat">
       <div className="w-full flex justify-center   ">
@@ -25,13 +35,13 @@ export const Hero = ({
           </h6>
         </div>
         <div className="z-50 flex gap-8 items-center mb-[5.2rem]">
-          <Digit label="Days" value={8} />
+          <Digit label="Days" value={days} />
           <span className="text-[#848484] text-[7.2rem]">:</span>
-          <Digit label="Hours" value={12} />
+          <Digit label="Hours" value={hours} />
           <span className="text-[#848484] text-[7.2rem]">:</span>
-          <Digit label="Minutes" value={44} />
+          <Digit label="Minutes" value={minutes} />
           <span className="text-[#848484] text-[7.2rem]">:</span>
-          <Digit label="Seconds" value={28} />
+          <Digit label="Seconds" value={seconds} />
         </div>
         <div className="z-50 flex flex-col items-center gap-[5.2rem]">
           <button
