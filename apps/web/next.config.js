@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   transpilePackages: ["@buff/ui"],
-  output: "standalone",
   async redirects() {
     return [
       {

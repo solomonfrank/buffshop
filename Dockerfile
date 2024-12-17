@@ -1,40 +1,34 @@
-# Use Node.js LTS
-FROM node:18-alpine AS builder
-
-# Install pnpm (or your package manager of choice)
+# Base stage for shared dependencies
+FROM node:18-alpine AS base
 RUN npm install -g pnpm
-
-# Set working directory
 WORKDIR /app
 
-# Copy package files
+# Development dependencies stage
+FROM base AS dependencies
 COPY package.json pnpm-lock.yaml ./
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/web/package.json ./apps/web/
-
-# Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
+# Build stage
+FROM dependencies AS builder
 COPY . .
-
-# Build applications
 RUN pnpm build
 
-# Production image
+# Production dependencies stage
+FROM base AS production-deps
+COPY --from=dependencies /app/package.json /app/pnpm-lock.yaml ./
+COPY --from=dependencies /app/packages/shared/package.json ./packages/shared/
+COPY --from=dependencies /app/apps/web/package.json ./apps/web/
+RUN pnpm install --prod --frozen-lockfile
+
+# Production stage
 FROM node:18-alpine AS runner
-
 WORKDIR /app
-
 ENV NODE_ENV=production
-
-# Copy built application
+COPY --from=production-deps /app/node_modules ./node_modules
 COPY --from=builder /app/apps/web/.next ./apps/web/.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-# Expose port
+COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
+COPY --from=builder /app/package.json ./
 EXPOSE 3000
-
-# Start command
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
