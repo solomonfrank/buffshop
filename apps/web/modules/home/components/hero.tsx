@@ -17,7 +17,7 @@ export const Hero = ({
   });
 
   return (
-    <div className="relative h-[88.1rem]  w-full bg-no-repeat">
+    <div className="relative  h-screen md:h-[88.1rem]  w-full bg-no-repeat">
       <div className="w-full flex justify-center   ">
         <div className=" bg-brand-black w-[66.8rem] mt-[7.8rem] h-[8.4rem] z-50 rounded-[4rem] flex justify-center items-center">
           <Logo />
@@ -25,23 +25,29 @@ export const Hero = ({
       </div>
       <div className="flex items-center justify-center flex-col  mt-[14.3rem]">
         <div className="text-center z-50 relative mb-[5.2rem]">
-          <h6 className="text-white  ">
-            <span className="text-[6rem] leading-[62.94px]">
+          <h6 className="text-white  text-center ">
+            <span className="text-[3.2rem]  md:text-[6rem]  lg:text-[6rem] leading-[62.94px]">
               Be the First to Transform{" "}
             </span>
             <br />
-            <span className="text-[6rem] text-default font-bold leading-[64.41px]">
+            <span className="text-[3.2rem] md:text-[6rem] lg:text-[6rem] text-default font-bold leading-[64.41px]">
               Gaming and Selling.
             </span>
           </h6>
         </div>
-        <div className="z-50 flex gap-8 items-center mb-[5.2rem]">
+        <div className="z-50 flex  gap-1 md:gap-8 items-center mb-[5.2rem]">
           <Digit label="Days" value={days} />
-          <span className="text-[#848484] text-[7.2rem]">:</span>
+          <span className="text-[#848484] text-[2.4rem] md:text-[7.2rem]">
+            :
+          </span>
           <Digit label="Hours" value={hours} />
-          <span className="text-[#848484] text-[7.2rem]">:</span>
+          <span className="text-[#848484] text-[2.4rem] md:text-[7.2rem]">
+            :
+          </span>
           <Digit label="Minutes" value={minutes} />
-          <span className="text-[#848484] text-[7.2rem]">:</span>
+          <span className="text-[#848484] text-[2.4rem]  md:text-[7.2rem]">
+            :
+          </span>
           <Digit label="Seconds" value={seconds} />
         </div>
         <div className="z-50 flex flex-col items-center gap-[5.2rem]">
@@ -103,7 +109,6 @@ export const Hero = ({
       <figure className="w-full h-full absolute top-0 left-0 -z-0">
         <img src="/images/hero.webp" className="w-full h-full object-cover" />
       </figure>
-      Hero
     </div>
   );
 };
@@ -118,7 +123,7 @@ export const Digit = ({ value, label }: { value: number; label?: string }) => {
           {label}
         </span>
       )}
-      <span className="text-[7.2rem] font-normal leading-[85.9px]">
+      <span className=" text-[4rem] md:text-[7.2rem] font-normal md:leading-[85.9px]">
         {leftDigit}
       </span>
     </div>
