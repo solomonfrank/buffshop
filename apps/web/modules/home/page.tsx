@@ -1,6 +1,7 @@
 "use client";
 
 import { CustomTabs, TabsNavigationItem } from "@buff/ui";
+import useMediaQuery from "@lib/hooks/useMediaQuery";
 import Drawer from "rc-drawer";
 import "rc-drawer/assets/index.css";
 import { ReactNode, useState } from "react";
@@ -21,6 +22,7 @@ export type TabsProps = {
 export const HomePage = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [openSuccessDrawer, setOpenSuccessDrawer] = useState(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const items: TabsNavigationItem = [
     {
@@ -52,8 +54,13 @@ export const HomePage = () => {
       <Footer openDrawerHandler={() => setOpenDrawer(true)} />
 
       {openDrawer && (
-        <Drawer open={openDrawer} className="z-50" width={519}>
-          <div className="bg-[#202020] h-full px-[3.9rem] py-[4.5rem] overflow-auto">
+        <Drawer
+          open={openDrawer}
+          // className="z-50"
+          width={isMobile ? "100%" : 519}
+          className="z-50 sm:w-full"
+        >
+          <div className="bg-[#202020] h-full px-[2rem] md:px-[3.9rem] py-[4.5rem] overflow-auto">
             {openSuccessDrawer ? (
               <div className="h-full relative">
                 <div>
