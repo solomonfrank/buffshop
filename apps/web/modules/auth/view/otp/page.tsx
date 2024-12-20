@@ -1,11 +1,7 @@
 "use client";
 
-import { ErrorMessageProps } from "_types";
-
 import { useRouter, useSearchParams } from "next/navigation";
 import { useId, useState } from "react";
-import { ServerResponse } from "~/auth/api/login";
-import { useOtp } from "~/auth/api/otp";
 import { OtpForm } from "./otp-form";
 
 type OptParams = {
@@ -24,33 +20,6 @@ const Otp = () => {
   const [otp, setOpt] = useState("");
   const uniqId = useId();
   const router = useRouter();
-
-  const onSuccess = (response: ServerResponse) => {
-    const exp = "";
-    document.cookie = `rememberMe=${rememberMe};path=/;max-age=${exp};SameSite=Lax;`;
-    document.cookie = `accessToken=${response.data.accessToken};path=/;max-age=${exp};SameSite=Lax;`;
-    document.cookie = `role=${response?.data?.role};path=/;max-age=${exp};SameSite=Lax;`;
-
-    router.replace(`/app/tenants`);
-  };
-
-  const handleError = (error: Error) => {
-    const obj = JSON.parse(error.message) as ErrorMessageProps;
-  };
-
-  const otpHandle = useOtp({
-    onSuccess,
-    onError: handleError,
-  });
-
-  const email = searchParams.get("uemail") as string;
-
-  const verifyOtpHandler = () => {
-    otpHandle.mutate({
-      otp,
-      email,
-    });
-  };
 
   return (
     <div className="flex w-[44rem] flex-col items-center justify-center">

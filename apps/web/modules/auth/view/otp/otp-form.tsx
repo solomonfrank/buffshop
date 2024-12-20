@@ -10,8 +10,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
-import { ServerResponse } from "~/auth/api/login";
 import { useOtp } from "~/auth/api/otp";
+import { ServerResponseType } from "~/auth/api/reset-password";
 
 export const loginScheme = z.object({
   otp: z.string().trim().min(1, { message: "OTP is required" }),
@@ -34,9 +34,7 @@ export const OtpForm = () => {
   const { register, handleSubmit, formState } = methods;
   const email = searchParams.get("uemail") as string;
 
-  const onSuccess = (response: ServerResponse) => {
-    console.log("ssss", response);
-
+  const onSuccess = (response: ServerResponseType) => {
     router.replace(`/dashboard`);
     // localStorage.setItem(
     //   "user",

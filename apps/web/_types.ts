@@ -7,8 +7,8 @@ export type SearchParams = {
 };
 
 export type PageProps = {
-  params: Params;
-  searchParams: SearchParams;
+  params: Promise<Params>;
+  searchParams: Promise<SearchParams>;
 };
 
 export type ErrorMessageProps = {

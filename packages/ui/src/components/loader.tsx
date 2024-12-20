@@ -28,7 +28,7 @@ export const Loader = ({
             router.push(redirectUrl);
           }
         }
-      }, 2000);
+      }, 5000);
     }
 
     () => {

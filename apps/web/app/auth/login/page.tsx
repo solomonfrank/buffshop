@@ -2,9 +2,10 @@ import { AuthLayout } from "@components/layouts/auth-layout";
 import { PageProps } from "_types";
 import { Login } from "~/auth/view/login/page";
 
-const LoginPage = ({ params }: PageProps) => {
+const LoginPage = async (props: PageProps) => {
+  const pageParam = await props.params;
   return (
-    <AuthLayout params={params}>
+    <AuthLayout params={pageParam}>
       <Login />
     </AuthLayout>
   );

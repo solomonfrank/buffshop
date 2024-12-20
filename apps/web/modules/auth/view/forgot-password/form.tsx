@@ -10,6 +10,7 @@ import { useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useForgotPassword } from "~/auth/api/forgot-password";
+import { ServerResponseType } from "~/auth/api/reset-password";
 
 export const loginScheme = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }),
@@ -31,7 +32,7 @@ export const ForgotPasswordForm = () => {
 
   const { register, handleSubmit, formState } = methods;
 
-  const onSuccess = (response: unknown) => {
+  const onSuccess = (response: ServerResponseType) => {
     // const token = response.data.token;
     // const userData = response.data.userData;
     // localStorage.setItem(
@@ -56,13 +57,8 @@ export const ForgotPasswordForm = () => {
     // }
   };
 
-  const onError = (error: unknown) => {
-    console.log("est=>", error);
-  };
-
   const login = useForgotPassword({
     onSuccess,
-    // onError,
   });
 
   const onSubmit = (data: FormValue) => {

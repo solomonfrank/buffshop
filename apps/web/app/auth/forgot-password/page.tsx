@@ -2,9 +2,10 @@ import { AuthLayout } from "@components/layouts/auth-layout";
 import { PageProps } from "_types";
 import ForgotPassword from "~/auth/view/forgot-password/page";
 
-const ForgotPasswordPage = ({ params }: PageProps) => {
+const ForgotPasswordPage = async (props: PageProps) => {
+  const pageParam = await props.params;
   return (
-    <AuthLayout imageSrc="/images/girl2.png" params={params}>
+    <AuthLayout imageSrc="/images/girl2.png" params={pageParam}>
       <ForgotPassword />
     </AuthLayout>
   );
