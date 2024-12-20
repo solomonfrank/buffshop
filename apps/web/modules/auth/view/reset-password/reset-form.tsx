@@ -68,7 +68,7 @@ export const ResetPasswordForm = () => {
     const payload = {
       password: data.password,
       confirm_password: data.confirmPassword,
-      email: "enweremrock@gmail.com",
+      email: searchParams?.get("email") as string,
       reset_code: code as string,
     };
 
