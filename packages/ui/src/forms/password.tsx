@@ -17,11 +17,11 @@ export const PasswordInputField = forwardRef<HTMLInputElement, Inputprops>(
         suffixIcon={
           visible ? (
             <button type="button" onClick={() => setVisible(false)}>
-              <Eye size={14} className="text-black" />
+              <Eye size={24} className="text-[#333333]" />
             </button>
           ) : (
             <button type="button" onClick={() => setVisible(true)}>
-              <EyeOff size={14} className="text-black" />
+              <EyeOff size={24} className="text-[#333333]" />
             </button>
           )
         }

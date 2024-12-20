@@ -1,5 +1,8 @@
+"use client";
+
 import { Button, CustomSelect, InputField, Label, showToast } from "@buff/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -33,9 +36,15 @@ export const Creator = ({
   userType: string;
   handleOpenSuccessDrawer: () => void;
 }) => {
+  const query = useSearchParams();
+
+  const referralCode = query.get("referralCode");
   const methods = useForm<CreatorInput>({
     resolver: zodResolver(CreatorInputSchema),
     mode: "onChange",
+    defaultValues: {
+      referral: referralCode || "",
+    },
   });
 
   const onSuccess = (response: ServerResponse) => {
@@ -106,7 +115,7 @@ export const Creator = ({
                       placeholder="Enter your name"
                       value={value}
                       onChange={onChange}
-                      className="w-full  overflow-hidden   rounded-[12px] border border-[#333333] bg-transparent  p-4 h-[4.8rem] placeholder:text-[14px] font-medium text-white text-[12px] leading-[2.4rem]"
+                      className="w-full  overflow-hidden   rounded-[12px] border border-[#333333] bg-transparent  p-4 h-[4.8rem] "
                     />
                   </>
                 )}
@@ -148,7 +157,7 @@ export const Creator = ({
                       placeholder="Enter email address"
                       value={value}
                       onChange={onChange}
-                      className="w-full  overflow-hidden  font-medium  rounded-[12px] border border-[#333333] bg-transparent  p-4 h-[4.8rem] placeholder:text-[14px] text-white text-[12px] leading-[2.4rem]"
+                      className="w-full  overflow-hidden  font-medium  rounded-[12px] border border-[#333333] bg-transparent  p-4 h-[4.8rem] "
                     />
                   </>
                 )}
@@ -170,7 +179,7 @@ export const Creator = ({
                       placeholder="Enter referral code"
                       value={value}
                       onChange={onChange}
-                      className="w-full  overflow-hidden  font-medium  rounded-[12px] border border-[#333333] bg-transparent  p-4 h-[4.8rem] placeholder:text-[14px] text-white text-[12px] leading-[2.4rem]"
+                      className="w-full  overflow-hidden  font-medium  rounded-[12px] border border-[#333333] bg-transparent  p-4 h-[4.8rem] "
                     />
                   </>
                 )}

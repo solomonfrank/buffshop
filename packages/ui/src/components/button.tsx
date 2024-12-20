@@ -30,15 +30,14 @@ const buttonClasses = cva(
         outline: "border-brand text-solid duration-75 hover:bg-gray-100",
         success:
           "border-success bg-success text-brand hover:bg-success hover:ring-4 hover:ring-success",
-        danger:
-          "border-brand-default bg-brand-default text-brand hover:bg-brand hover:ring-4 hover:ring-red-100",
+        danger: "bg-brand-default text-brand hover:bg-brand",
         "danger-outline":
           "border-error bg-white text-red-500 hover:bg-brand-default hover:text-white",
       },
       size: {
         small: "text-xs px-3 h-7",
         medium: "text-md px-4 h-9",
-        large: "text-[1.6rem] leading-[19.2px] px-6 h-[4.5rem]",
+        large: "text-[1.6rem] leading-[19.2px] px-6 h-[4.8rem]",
       },
     },
 

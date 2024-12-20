@@ -9,9 +9,9 @@ export async function fetchJson<JSON = unknown>(
 
   if (!res.ok) {
     let error = await res.text();
-    if (res.status === 401) {
-      error = res.statusText;
-    }
+    // if (res.status === 401) {
+    //   error = res.;
+    // }
 
     const err = new Error(error) as FetchError;
     err.status = res.status;

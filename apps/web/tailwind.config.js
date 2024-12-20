@@ -22,7 +22,7 @@ export default {
         error: "var( --vms-bg-dark-error)",
 
         brand: {
-          default: "var(--vms-brand, #ED1C24)",
+          default: "var(--vms-brand, #FFBE0A)",
           emphasis: "var(--vms-brand-emphasis,#fff)",
           light: "var(--vms-brand-light, #ED1C24)",
           muted: "var(--vms-brand-muted)",

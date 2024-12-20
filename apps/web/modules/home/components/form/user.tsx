@@ -1,5 +1,7 @@
+"use client";
 import { Button, InputField, Label, showToast } from "@buff/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSearchParams } from "next/navigation";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -27,9 +29,15 @@ export const User = ({
   userType: string;
   handleOpenSuccessDrawer: () => void;
 }) => {
+  const query = useSearchParams();
+
+  const referralCode = query.get("referralCode");
   const methods = useForm<CreatorInput>({
     resolver: zodResolver(CreatorInputSchema),
     mode: "onChange",
+    defaultValues: {
+      referral: referralCode || "",
+    },
   });
 
   const onSuccess = (response: ServerResponse) => {

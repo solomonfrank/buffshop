@@ -41,7 +41,7 @@ export const Input = forwardRef<HTMLInputElement, Inputprops>(function Input(
       {...props}
       ref={ref}
       className={classNames(
-        "placeholder:text-[12px] placeholder:text-[#848484] overflow-hidden  mt-0 text-[1.6rem]  block text-black   rounded-md px-3 py-2 outline-none  focus:outline-none",
+        "placeholder:text-[12px] font-medium placeholder:text-[#848484] bg-transparent overflow-hidden  mt-0 text-[1.6rem]  block text-white   rounded-md px-3 py-2 outline-none  focus:outline-none",
         isFullwidth && "w-full",
         props.className
       )}
@@ -68,7 +68,7 @@ export const InputField = forwardRef<HTMLInputElement, Inputprops>(
         {label && <Label {...labelProps}>{label}</Label>}
 
         {prefixIcon || suffixIcon ? (
-          <div className="border transition-all border-default relative  focus-within:ring-slate-900 flex  items-center justify-center rounded-[12px] focus-within:outline-none focus-within:ring-1">
+          <div className="border border-[#333333] transition-all  relative  focus-within:ring-slate-900 flex  items-center justify-center rounded-[12px] focus-within:outline-none focus-within:ring-1">
             {prefixIcon && (
               <Addon className={classNames("border-r-2")}>{prefixIcon}</Addon>
             )}
