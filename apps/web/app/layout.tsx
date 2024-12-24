@@ -1,6 +1,7 @@
 import AppProvider from "@lib/tanstack-provider";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Suspense } from "react";
 import "./globals.css";
 
 const Helvetical = localFont({
@@ -47,7 +48,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${Helvetical.variable}`}>
       <body className={`font-sans`}>
-        <AppProvider>{children}</AppProvider>
+        <Suspense>
+          <AppProvider>{children}</AppProvider>
+        </Suspense>
       </body>
     </html>
   );

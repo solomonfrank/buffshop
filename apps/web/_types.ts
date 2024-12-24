@@ -40,4 +40,7 @@ export type Response = {
   data: Record<string, string>;
 };
 
-export type LayoutProps = { params: Params; children: React.ReactElement };
+export type LayoutProps = {
+  params: Promise<Params>;
+  children: React.ReactElement;
+};

@@ -1,15 +1,9 @@
 import { DashboardLayout } from "@components/layouts/dashboard-layout";
-import { Params } from "_types";
-import { ReactNode } from "react";
+import { LayoutProps } from "_types";
 
-const Layout = ({
-  children,
-  params,
-}: {
-  children: ReactNode;
-  params: Params;
-}) => {
-  return <DashboardLayout params={params}>{children}</DashboardLayout>;
+const Layout = async ({ children, params }: LayoutProps) => {
+  const pageParam = await params;
+  return <DashboardLayout params={pageParam}>{children}</DashboardLayout>;
 };
 
 export default Layout;
