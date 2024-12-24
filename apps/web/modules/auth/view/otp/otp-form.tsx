@@ -35,7 +35,7 @@ export const OtpForm = () => {
   const email = searchParams.get("uemail") as string;
 
   const onSuccess = (response: ServerResponseType) => {
-    router.replace(`/dashboard`);
+    router.replace(`/app/dashboard`);
     // localStorage.setItem(
     //   "user",
     //   JSON.stringify({

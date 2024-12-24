@@ -2,7 +2,7 @@
 
 import { Button, CustomSelect, InputField, Label, showToast } from "@buff/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import {
@@ -34,9 +34,10 @@ export const Creator = ({
   handleOpenSuccessDrawer,
 }: {
   userType: string;
-  handleOpenSuccessDrawer: () => void;
+  handleOpenSuccessDrawer: (data: Record<string, string>) => void;
 }) => {
   const query = useSearchParams();
+  const router = useRouter();
 
   const referralCode = query.get("referralCode");
   const methods = useForm<CreatorInput>({
@@ -50,7 +51,12 @@ export const Creator = ({
   const onSuccess = (response: ServerResponse) => {
     console.log("response", response);
 
-    handleOpenSuccessDrawer();
+    //  handleOpenSuccessDrawer(response.data);
+
+    showToast(response.message, "success");
+    router.push(
+      `/wait-list?rank=${response.data.rank}&referral_code=${response.data?.referral_code}&referrals_needed=${response.data?.referrals_needed}`
+    );
   };
 
   const onError = (errorResponse: any) => {

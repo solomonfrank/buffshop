@@ -1,7 +1,27 @@
+"use client";
+import { showToast } from "@buff/ui";
 import { Logo } from "@components/logo";
+import { useSearchParams } from "next/navigation";
 import ProgressBar from "./components/progress-bar";
 
 export const WaitList = () => {
+  const query = useSearchParams();
+
+  function copyTextToClipboard(url: string) {
+    // Check if the clipboard API is supported
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard
+        .writeText(url)
+        .then(() => {
+          showToast("Referral link copied successfully.", "success");
+        })
+        .catch((err) => {
+          showToast("Failed to copy link", "error");
+        });
+    } else {
+      showToast("Clipboard API is not supported in this browser.", "warning");
+    }
+  }
   return (
     <div className="h-screen w-screen relative">
       <div className="relative  w-full h-full">
@@ -14,7 +34,7 @@ export const WaitList = () => {
           <div className="text-center z-50 relative mb-[8px]">
             <h6 className="text-white  text-center ">
               <span className="text-[7.2rem]  md:text-[2.7rem] font-bold  lg:text-[2.7rem] leading-[3.2rem]">
-                Your Current Ranking: 92
+                Your Current Ranking: {query.get("rank")}
               </span>
             </h6>
           </div>
@@ -30,15 +50,23 @@ export const WaitList = () => {
                 showLabel={false}
               />
               <p className="text-center text-[#848484] text-[1.6rem] font-bold leading-[2rem] mt-[8px]">
-                You're 234 referrals away from the next rank!
+                {query.get("referrals_needed") &&
+                  `You're ${query.get("referrals_needed")} referrals away from the next rank!`}
               </p>
             </div>
 
             <div className="w-full bg-white h-[5.2rem] items-center flex rounded-[8px] text-[#282828] overflow-hidden mb-[2.8rem]">
               <span className="text-[2.7rem] leading-[3.2rem] ml-[81px] mr-auto">
-                buffshop.co/chioma1234
+                {window.location.origin}/{query.get("referral_code")}
               </span>
-              <div className="bg-[#848484]  flex items-center w-[21.5rem] justify-center  font-bold text-[18px] leading-[22.5px]  rounded-[8px] text-center h-full text-white">
+              <div
+                onClick={() =>
+                  copyTextToClipboard(
+                    `${window.location.origin}/home?referralCode=${query.get("referral_code")}`
+                  )
+                }
+                className="bg-[#848484]  flex items-center w-[21.5rem] justify-center  font-bold text-[18px] leading-[22.5px]  rounded-[8px] text-center h-full text-white"
+              >
                 <svg
                   width="21"
                   height="20"

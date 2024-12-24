@@ -15,6 +15,7 @@ input:-webkit-autofill:focus {
   --navigation-height: 6.4rem;
   --bottom-navigation-height: 8.4rem;
   --meeting-navigation-height: 8.4rem;
+  --header-navigation-height: 9.2rem;
 
   /* background */
   --buff-bg-black: #171717;
@@ -91,4 +92,13 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+.vms-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.vms-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

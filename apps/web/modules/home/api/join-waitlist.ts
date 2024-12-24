@@ -13,6 +13,7 @@ export type WaitListType = {
 
 export type ServerResponse = {
   data: Record<string, string>;
+  message: string;
 };
 
 export type EventResponse = {

@@ -20,7 +20,7 @@ export const Loader = ({
   const router = useRouter();
 
   useEffect(() => {
-    if (ref.current) {
+    if (ref.current && !loading) {
       timerId.current = setTimeout(() => {
         if (ref.current) {
           ref.current.style.display = "none";

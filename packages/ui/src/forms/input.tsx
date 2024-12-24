@@ -8,6 +8,7 @@ export type Inputprops = {
   isFullwidth?: boolean;
   containerClassName?: string;
   labelClassName?: string;
+  inputContainer?: string;
   prefixIcon?: React.ReactNode;
   suffixIcon?: React.ReactNode;
   label?: React.ReactNode;
@@ -60,6 +61,7 @@ export const InputField = forwardRef<HTMLInputElement, Inputprops>(
       labelClassName,
       label,
       type,
+      inputContainer,
       ...otherProps
     } = props;
 
@@ -68,10 +70,13 @@ export const InputField = forwardRef<HTMLInputElement, Inputprops>(
         {label && <Label {...labelProps}>{label}</Label>}
 
         {prefixIcon || suffixIcon ? (
-          <div className="border border-[#333333] transition-all  relative  focus-within:ring-slate-900 flex  items-center justify-center rounded-[12px] focus-within:outline-none focus-within:ring-1">
-            {prefixIcon && (
-              <Addon className={classNames("border-r-2")}>{prefixIcon}</Addon>
+          <div
+            className={classNames(
+              "border border-[#333333] transition-all  relative  focus-within:ring-slate-900 flex  items-center justify-center rounded-[12px] focus-within:outline-none focus-within:ring-1",
+              inputContainer
             )}
+          >
+            {prefixIcon && <Addon>{prefixIcon}</Addon>}
 
             <Input
               type={props.type}
@@ -80,15 +85,18 @@ export const InputField = forwardRef<HTMLInputElement, Inputprops>(
               ref={ref}
             />
             {suffixIcon && (
-              <Addon
-                className={classNames("border-l-2  border-none px-7 pr-7")}
-              >
+              <Addon className={classNames("border-none px-7 pr-7")}>
                 {suffixIcon}
               </Addon>
             )}
           </div>
         ) : (
-          <div className="border border-[#333333] overflow-hidden  group  focus-within:ring-slate-900 flex  items-center justify-center rounded-[12px] focus-within:outline-none focus-within:ring-1">
+          <div
+            className={classNames(
+              "border border-[#333333] overflow-hidden  group  focus-within:ring-slate-900 flex  items-center justify-center rounded-[12px] focus-within:outline-none focus-within:ring-1",
+              inputContainer
+            )}
+          >
             <Input isFullwidth={isFullwidth} {...otherProps} ref={ref} />
           </div>
         )}

@@ -14,7 +14,7 @@ export type loginInput = z.infer<typeof loginInputSchema>;
 export type LoginRequest = loginInput;
 
 export const loginFn = (data: LoginRequest) => {
-  return fetchJson<LoginServerResponse>(`${API_BASE_URL}/user/admin/login`, {
+  return fetchJson<LoginServerResponse>(`${API_BASE_URL}/user/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
