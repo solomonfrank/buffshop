@@ -54,7 +54,7 @@ export const LoginForm = () => {
 
     document.cookie = `role=${userData.role};path=/;max-age=${exp};SameSite=Lax;`;
     document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
-    if (userData?.role === "superadmin") {
+    if (userData?.role === "admin") {
       router.push(
         redirectTo
           ? redirectTo
@@ -63,6 +63,8 @@ export const LoginForm = () => {
 
       return;
     }
+
+    router.replace(`/app/dashboard`);
   };
 
   const onError = (error: unknown) => {
@@ -82,8 +84,6 @@ export const LoginForm = () => {
 
     login.mutate(payload);
   };
-
-  console.log("login.error", login.error);
 
   return (
     <FormProvider {...methods}>

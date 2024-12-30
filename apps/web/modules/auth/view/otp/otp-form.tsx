@@ -36,6 +36,8 @@ export const OtpForm = () => {
 
   const onSuccess = (response: ServerResponseType) => {
     router.replace(`/app/dashboard`);
+
+    //  router.replace(`/app/dashboard`);
     // localStorage.setItem(
     //   "user",
     //   JSON.stringify({
