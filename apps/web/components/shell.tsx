@@ -244,7 +244,7 @@ const NavigationItem: React.FC<{
         aria-label={item.name}
         target={item.target}
         onClick={(e) => {
-          showToast("Not yet available", "warning");
+          showToast("Not yet available.", "warning");
           e.preventDefault();
         }}
         className={classNames(
