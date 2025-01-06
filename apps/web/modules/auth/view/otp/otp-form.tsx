@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ErrorMessageProps } from "_types";
 import classNames from "classnames";
+import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -35,7 +36,16 @@ export const OtpForm = () => {
   const email = searchParams.get("uemail") as string;
 
   const onSuccess = (response: ServerResponseType) => {
-    router.replace(`/app/dashboard`);
+    const token = localStorage.getItem("accessToken");
+
+    if (token) {
+      const { exp } = jwtDecode(token);
+      document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
+      localStorage.removeItem("accessToken");
+      router.replace(`/app/dashboard`);
+    } else {
+      router.replace(`/auth/login`);
+    }
 
     //  router.replace(`/app/dashboard`);
     // localStorage.setItem(

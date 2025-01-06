@@ -44,6 +44,7 @@ export type LoginResponse = {
   userName: string;
   otp?: string;
   role: string;
+  name: string;
 };
 
 export const useLogin = (

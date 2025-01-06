@@ -6,11 +6,13 @@ import { usePathname } from "next/navigation";
 import { cloneElement, Fragment, ReactElement, ReactNode } from "react";
 import { IoMdSettings } from "react-icons/io";
 
-import { InputField, Logo } from "@buff/ui";
+import { deleteCookie } from "@buff/lib";
+import { InputField, Logo, showToast } from "@buff/ui";
 import { Params } from "_types";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { IconType } from "react-icons";
+import { useProfileStore } from "store/use-edit";
 import {
   AdsIcon,
   AuditIcon,
@@ -241,6 +243,10 @@ const NavigationItem: React.FC<{
         href={item.href}
         aria-label={item.name}
         target={item.target}
+        onClick={(e) => {
+          showToast("Not yet available", "warning");
+          e.preventDefault();
+        }}
         className={classNames(
           "text-[#848484] mb-[2rem] group leading-[2rem] flex items-center rounded-md  px-2 py-1.5 text-[1.6rem] h-[2.4rem] font-medium transition hover:text-default [&_span]:text-[#B8B8B8] hover:[&_span]:text-default",
 
@@ -292,6 +298,7 @@ const Navigation = ({ navigation }: { navigation: NavigationItemType[] }) => {
 };
 
 const Sidebar = ({ navigation }: { navigation: NavigationItemType[] }) => {
+  const userProfile = useProfileStore((state) => state.userDetails);
   return (
     <div className="relative max-h-screen ">
       <aside className="border-[#4E4848] lg:pb-[6rem] vms-scrollbar border-r bg-[#202020]  hidden h-full  w-14 flex-col overflow-y-auto overflow-x-hidden  md:sticky md:flex lg:w-[33.6rem] lg:pl-[32px] lg:pr-[2rem] lg:pt-[3.2rem]">
@@ -368,10 +375,10 @@ const Sidebar = ({ navigation }: { navigation: NavigationItemType[] }) => {
               </svg>
               <div>
                 <h3 className="text-[#FFFFFF] text-[1.6rem] leading-[2rem]">
-                  Danjuma Jones
+                  {`${userProfile?.name}`}
                 </h3>
                 <p className="text-[1.3rem] leading-[2rem]">
-                  danjuma.jones@gmail.com
+                  {userProfile?.email}
                 </p>
               </div>
             </div>
@@ -434,6 +441,14 @@ const adminBottonNavigation: NavigationItemType[] = [
 ];
 
 const Header = () => {
+  const logoutHandler = (url: string) => {
+    deleteCookie("accessToken");
+    deleteCookie("rememberMe");
+    deleteCookie("role");
+    // router.refresh();
+    // router.replace("/logout");
+    window.location.href = url;
+  };
   return (
     <div className="w-full h-[calc(var(--header-navigation-height))] bg-[#202020]  px-[3.2rem] py-[2.6rem] flex items-center">
       <div className="mr-auto w-[33.3rem]">
@@ -521,7 +536,7 @@ const Header = () => {
             />
           </svg>
         </span>
-        <span>
+        <span onClick={() => logoutHandler("/auth/login")}>
           <svg
             width="40"
             height="40"

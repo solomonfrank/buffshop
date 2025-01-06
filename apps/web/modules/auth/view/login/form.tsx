@@ -2,7 +2,7 @@
 import { Button, InputField, Loader, PasswordInputField } from "@buff/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { ErrorMessageProps } from "_types";
+import { ErrorMessageProps, ROLES } from "_types";
 import classNames from "classnames";
 import Link from "next/link";
 
@@ -10,6 +10,7 @@ import { jwtDecode } from "jwt-decode";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useProfileStore } from "store/use-edit";
 import { z } from "zod";
 import { LoginServerResponse, useLogin } from "~/auth/api/login";
 
@@ -29,7 +30,7 @@ export const LoginForm = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTo = searchParams?.get("redirectTo");
-  // const updateUserDetail = useProfileStore((state) => state.updateUserDetail);
+  const updateUserDetail = useProfileStore((state) => state.updateUserDetail);
 
   const methods = useForm<FormValue>({
     resolver: zodResolver(loginScheme),
@@ -50,19 +51,28 @@ export const LoginForm = () => {
       })
     );
 
+    updateUserDetail({
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      name: userData.name,
+    });
+
     const { exp } = jwtDecode(token);
 
-    document.cookie = `role=${userData.role};path=/;max-age=${exp};SameSite=Lax;`;
-    document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
-    if (userData?.role === "admin") {
+    if (userData?.role === ROLES.SUPERADMIN || userData?.role === ROLES.ADMIN) {
+      localStorage.setItem("accessToken", token);
       router.push(
         redirectTo
           ? redirectTo
-          : `/auth/otp?&uid=${userData.id}&uemail=${userData.email}`
+          : `/auth/otp?&uid=${userData.id}&uemail=${userData.email}&role=${userData?.role}`
       );
 
       return;
     }
+
+    document.cookie = `role=${userData.role};path=/;max-age=${exp};SameSite=Lax;`;
+    document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
 
     router.replace(`/app/dashboard`);
   };

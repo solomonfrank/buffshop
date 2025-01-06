@@ -1,3 +1,4 @@
+import { ROLES } from "_types";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
@@ -54,7 +55,9 @@ export default async function middleware(req: NextRequest) {
     if (path.startsWith("/auth/login")) {
       if (token) {
         const redirectTo =
-          role?.value === "superadmin" ? "/dashboard" : "/dashboard";
+          role?.value === ROLES.SUPERADMIN || role?.value === ROLES.ADMIN
+            ? "/app/dashboard"
+            : "/app/dashboard";
         return NextResponse.redirect(new URL(redirectTo, req.url));
       }
     }

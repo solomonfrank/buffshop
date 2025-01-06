@@ -32,8 +32,8 @@ export type ServerResponse<T> = {
 };
 
 export enum ROLES {
-  SUPERADMIN = "SuperAdmin",
-  TENANT = "Tenant",
+  SUPERADMIN = "superadmin",
+  TENANT = "tenant",
   ADMIN = "admin",
 }
 
