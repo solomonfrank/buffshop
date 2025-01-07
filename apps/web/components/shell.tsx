@@ -391,10 +391,9 @@ const Sidebar = ({ navigation }: { navigation: NavigationItemType[] }) => {
 
 const MainContainer = ({ children }: { children: ReactNode }) => {
   return (
-    <main className="relative z-0 flex-1 bg-black">
+    <main className="relative z-0 flex-1 bg-[#171717] max-h-screen overflow-y-auto overflow-x-hidden">
       <Header />
-      <div className="max-w-full px-2 py-4 lg:px-6">
-        <div className="flex flex-1 flex-col"></div>
+      <div className="max-w-full px-2 py-4 lg:py-[3.2rem] lg:px-[3.2rem]">
         {children}
       </div>
     </main>

@@ -102,3 +102,7 @@ a {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+.rechart-cs {
+  font-family: var(--font-buff) !important;
+}
