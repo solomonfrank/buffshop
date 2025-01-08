@@ -1,4 +1,5 @@
 import { ROLES } from "_types";
+import { jwtDecode } from "jwt-decode";
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
@@ -54,6 +55,16 @@ export default async function middleware(req: NextRequest) {
 
     if (path.startsWith("/auth/login")) {
       if (token) {
+        const { exp } = jwtDecode(token);
+
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        if (exp) {
+          if (exp < currentTime) {
+            const path = "/auth/login";
+            return NextResponse.redirect(new URL(path, req.url));
+          }
+        }
         const redirectTo =
           role?.value === ROLES.SUPERADMIN || role?.value === ROLES.ADMIN
             ? "/app/dashboard"
@@ -69,7 +80,18 @@ export default async function middleware(req: NextRequest) {
         const path = "/auth/login";
         return NextResponse.redirect(new URL(path, req.url));
       }
+      const { exp } = jwtDecode(token);
+
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (exp) {
+        if (exp < currentTime) {
+          const path = "/auth/login";
+          return NextResponse.redirect(new URL(path, req.url));
+        }
+      }
     }
+
     // rewrites for app pages
     if (hostname == `app.${process.env.ROOT_DOMAIN}`) {
       return NextResponse.rewrite(

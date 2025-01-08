@@ -33,6 +33,7 @@ const ADMIN_NAVIGATION: NavigationItemType[] = [
   {
     name: "Home",
     href: "/app/dashboard",
+    isEnabled: true,
     icon: HomeIcon,
     isCurrent: ({ pathname }) => {
       return pathname?.includes("/dashboard") ?? false;
@@ -59,6 +60,7 @@ const ADMIN_NAVIGATION: NavigationItemType[] = [
   {
     name: "Super Admin Management",
     href: "/app/super-admin-management",
+    isEnabled: true,
     icon: SettingsIcon,
 
     isCurrent: ({ pathname }) => {
@@ -244,8 +246,10 @@ const NavigationItem: React.FC<{
         aria-label={item.name}
         target={item.target}
         onClick={(e) => {
-          showToast("Not yet available.", "warning");
-          e.preventDefault();
+          if (!item.isEnabled) {
+            showToast("Not yet available.", "warning");
+            e.preventDefault();
+          }
         }}
         className={classNames(
           "text-[#848484] mb-[2rem] group leading-[2rem] flex items-center rounded-md  px-2 py-1.5 text-[1.6rem] h-[2.4rem] font-medium transition hover:text-default [&_span]:text-[#B8B8B8] hover:[&_span]:text-default",
@@ -410,6 +414,7 @@ export type NavigationItemType = {
   pro?: true;
   onlyMobile?: boolean;
   onlyDesktop?: boolean;
+  isEnabled?: boolean;
   isCurrent?: ({
     item,
     isChild,

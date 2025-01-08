@@ -6,7 +6,7 @@ export * from "./loader";
 
 // export * from "./otp-input";
 
-// export * from "./table";
+export * from "./table";
 
 // export * from "./file-upload";
 
@@ -36,4 +36,5 @@ export * from "./custom-tabs";
 // export * from "./radio-card";
 // export * from "./tool-tip";
 // export * from "./custom-dropdown";
+export * from "./custom-radio";
 export * from "./loading";

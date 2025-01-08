@@ -19,18 +19,19 @@
     "@types/node": "^20.11.24",
     "@types/react": "18.3.0",
     "@types/react-dom": "18.3.1",
-    "typescript": "5.5.4",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.16"
+    "tailwindcss": "^3.4.16",
+    "typescript": "5.5.4"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "@buff/lib": "*",
     "@radix-ui/react-checkbox": "^1.1.1",
     "class-variance-authority": "^0.7.0",
+    "rc-pagination": "^5.0.0",
+    "react": "^19.0.0",
     "react-countdown": "^2.3.6",
-    "@buff/lib": "*",
+    "react-dom": "^19.0.0",
     "react-hook-form": "^7.53.0",
     "react-hot-toast": "^2.4.1",
     "react-select": "^5.8.1"

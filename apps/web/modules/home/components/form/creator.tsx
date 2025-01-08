@@ -49,14 +49,17 @@ export const Creator = ({
   });
 
   const onSuccess = (response: ServerResponse) => {
-    console.log("response", response);
+    handleOpenSuccessDrawer(response.data);
 
-    //  handleOpenSuccessDrawer(response.data);
-
-    showToast(response.message, "success");
-    router.push(
-      `/wait-list?rank=${response.data.rank}&referral_code=${response.data?.referral_code}&referrals_needed=${response.data?.referrals_needed}`
+    setTimeout(
+      () =>
+        router.push(
+          `/wait-list?rank=${response.data.rank}&referral_code=${response.data?.referral_code}&referrals_needed=${response.data?.referrals_needed}`
+        ),
+      2000
     );
+
+    // showToast(response.message, "success");
   };
 
   const onError = (errorResponse: any) => {

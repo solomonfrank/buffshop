@@ -42,9 +42,14 @@ export const User = ({
   });
 
   const onSuccess = (response: ServerResponse) => {
-    showToast(response.message, "success");
-    router.push(
-      `/wait-list?rank=${response.data.rank}&referral_code=${response.data?.referral_code}&referrals_needed=${response.data?.referrals_needed}`
+    handleOpenSuccessDrawer(response.data);
+
+    setTimeout(
+      () =>
+        router.push(
+          `/wait-list?rank=${response.data.rank}&referral_code=${response.data?.referral_code}&referrals_needed=${response.data?.referrals_needed}`
+        ),
+      2000
     );
   };
 
