@@ -2,10 +2,14 @@
 
 import { dayjs } from "@buff/lib";
 import { Button, CustomSelect, InputField, Table } from "@buff/ui";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import classNames from "classnames";
 import { SearchIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
+import { FaEye } from "react-icons/fa";
+import { MdMoreHoriz } from "react-icons/md";
 import { AdminTableProps, useGetAdmins } from "./api/get-admins";
 
 export const SuperAdminPage = () => {
@@ -22,7 +26,6 @@ export const SuperAdminPage = () => {
     enabled: true,
   });
 
-  console.log("admins=>", admins.data);
   return (
     <div className="w-full">
       <div className="w-full bg-[#202020] px-[4rem] rounded-tl-[12px] rounded-tr-[12px] py-[3rem]">
@@ -274,6 +277,13 @@ export const SuperAdminPage = () => {
             },
             { title: "emails", field: "email" },
             { title: "last login", field: "lastlogin" },
+
+            {
+              title: "Action",
+              field: "id",
+
+              Cell: ({ entry }) => <MoreMenu entry={entry} />,
+            },
           ]}
           data={
             admins.data?.map((item) => {
@@ -296,5 +306,43 @@ export const SuperAdminPage = () => {
         />
       </div>
     </div>
+  );
+};
+
+const MoreMenu = ({ entry }: { entry: AdminTableProps }) => {
+  const router = useRouter();
+
+  const dropdownMenuItemClass =
+    "flex  gap-3 group text-[13px] cursor-pointer leading-none text-violet11 rounded-[3px] items-center h-[25px] px-[5px] relative  select-none outline-none data-[disabled]:text-mauve8 data-[disabled]:pointer-events-none data-[highlighted]:bg-violet9 data-[highlighted]:text-violet1";
+
+  return (
+    <>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild>
+          <button className="" aria-label="Customise options">
+            <MdMoreHoriz size={24} />
+          </button>
+        </DropdownMenu.Trigger>
+
+        <DropdownMenu.Portal>
+          <DropdownMenu.Content
+            className=" space-y-6  border min-w-[200px] bg-[#202020] rounded-md p-[5px] shadow-[0px_10px_38px_-10px_rgba(22,_23,_24,_0.35),_0px_10px_20px_-15px_rgba(22,_23,_24,_0.2)] will-change-[opacity,transform] data-[side=top]:animate-slideDownAndFade data-[side=right]:animate-slideLeftAndFade data-[side=bottom]:animate-slideUpAndFade data-[side=left]:animate-slideRightAndFade"
+            side="bottom"
+          >
+            <DropdownMenu.Item
+              className={dropdownMenuItemClass}
+              onClick={() =>
+                router.push(`/app/super-admin-management/${entry.id}`)
+              }
+            >
+              <span>
+                <FaEye size={15} />
+              </span>
+              <span className="text-[16px]">View Admin</span>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
+    </>
   );
 };

@@ -19,8 +19,6 @@ export const getAdminHandler = async (
     }
   );
 
-  console.log("insideeee", res.data);
-
   return res.data as AdminProps[];
 };
 

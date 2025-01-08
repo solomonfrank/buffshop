@@ -55,16 +55,6 @@ export default async function middleware(req: NextRequest) {
 
     if (path.startsWith("/auth/login")) {
       if (token) {
-        const { exp } = jwtDecode(token);
-
-        const currentTime = Math.floor(Date.now() / 1000);
-
-        if (exp) {
-          if (exp < currentTime) {
-            const path = "/auth/login";
-            return NextResponse.redirect(new URL(path, req.url));
-          }
-        }
         const redirectTo =
           role?.value === ROLES.SUPERADMIN || role?.value === ROLES.ADMIN
             ? "/app/dashboard"
@@ -75,8 +65,6 @@ export default async function middleware(req: NextRequest) {
 
     if (path.startsWith("/app")) {
       if (!token) {
-        const from = req.cookies.get("from");
-
         const path = "/auth/login";
         return NextResponse.redirect(new URL(path, req.url));
       }
@@ -84,12 +72,30 @@ export default async function middleware(req: NextRequest) {
 
       const currentTime = Math.floor(Date.now() / 1000);
 
-      if (exp) {
-        if (exp < currentTime) {
-          const path = "/auth/login";
-          return NextResponse.redirect(new URL(path, req.url));
-        }
+      if (exp && exp < currentTime) {
+        const response = NextResponse.next();
+        response.cookies.delete("accessToken");
+
+        return response;
       }
+
+      // if (exp) {
+      //   if (exp < currentTime) {
+      //     console.log("Enenene");
+      //     const path = "/auth/login";
+
+      //     req.cookies.delete("accessToken");
+      //     const response = NextResponse.next();
+
+      //     response.cookies.delete("accessToken");
+      //     // response.cookies.set(
+      //     //   "accessToken",
+      //     //   "yourCookieName=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      //     // );
+
+      //     return NextResponse.redirect(new URL(path, req.url));
+      //   }
+      // }
     }
 
     // rewrites for app pages
