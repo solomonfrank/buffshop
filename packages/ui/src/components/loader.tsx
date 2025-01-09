@@ -7,12 +7,14 @@ type LoaderProps = {
   loading: true;
   Message?: () => JSX.Element;
   redirectUrl?: string;
+  closeModal?: () => void;
 };
 
 export const Loader = ({
   loading,
   Message = MessageDisplay,
   redirectUrl,
+  closeModal,
 }: LoaderProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const timerId = useRef<NodeJS.Timeout>();
@@ -24,8 +26,13 @@ export const Loader = ({
       timerId.current = setTimeout(() => {
         if (ref.current) {
           ref.current.style.display = "none";
+
           if (redirectUrl) {
             router.push(redirectUrl);
+          }
+
+          if (closeModal) {
+            closeModal();
           }
         }
       }, 5000);

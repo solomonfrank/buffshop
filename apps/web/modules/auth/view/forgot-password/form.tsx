@@ -6,7 +6,7 @@ import { ErrorMessageProps } from "_types";
 import classNames from "classnames";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useForgotPassword } from "~/auth/api/forgot-password";
@@ -25,6 +25,8 @@ export const ForgotPasswordForm = () => {
   const searchParams = useSearchParams();
   const redirectTo = searchParams?.get("redirectTo");
 
+  const [openSuccessModal, setOpenSuccessModal] = useState(false);
+
   const methods = useForm<FormValue>({
     resolver: zodResolver(loginScheme),
     mode: "onChange",
@@ -33,28 +35,7 @@ export const ForgotPasswordForm = () => {
   const { register, handleSubmit, formState } = methods;
 
   const onSuccess = (response: ServerResponseType) => {
-    // const token = response.data.token;
-    // const userData = response.data.userData;
-    // localStorage.setItem(
-    //   "user",
-    //   JSON.stringify({
-    //     role: userData.role,
-    //     firstName: userData.firstName,
-    //     userId: userData.id,
-    //   })
-    // );
-    // //  const { exp } = jwtDecode(response.data?.accessToken);
-    // const exp = "3600";
-    // document.cookie = `role=${userData.role};path=/;max-age=${exp};SameSite=Lax;`;
-    // document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
-    // if (userData?.role === "superadmin") {
-    //   router.push(
-    //     redirectTo
-    //       ? redirectTo
-    //       : `/auth/otp?&uid=${userData.id}&uemail=${userData.email}`
-    //   );
-    //   return;
-    // }
+    setOpenSuccessModal(true);
   };
 
   const login = useForgotPassword({
@@ -111,9 +92,21 @@ export const ForgotPasswordForm = () => {
           Reset Password
         </Button>
 
-        {login.isPending && <Loader loading={login.isPending} />}
-        {login.isSuccess && (
-          <Loader loading={login.isSuccess} Message={SuccessDisplay} />
+        {login.isPending && <Loader loading={login.isPending} key="loading" />}
+        {openSuccessModal && (
+          <Loader
+            loading={openSuccessModal}
+            Message={() => (
+              <SuccessDisplay
+                closeModal={() => {
+                  setOpenSuccessModal(false);
+                  router.push("/auth/login");
+                }}
+              />
+            )}
+            key="successModal"
+            closeModal={() => setOpenSuccessModal(false)}
+          />
         )}
       </form>
     </FormProvider>
@@ -182,9 +175,27 @@ const MessageDisplay = () => {
   );
 };
 
-const SuccessDisplay = () => {
+const SuccessDisplay = ({ closeModal }: { closeModal?: () => void }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const timerId = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    if (ref.current) {
+      timerId.current = setTimeout(() => {
+        if (ref.current) {
+          if (closeModal) {
+            closeModal();
+          }
+        }
+      }, 3000);
+    }
+
+    () => {
+      clearTimeout(timerId.current);
+    };
+  }, []);
   return (
-    <div>
+    <div ref={ref}>
       <div className=" border rounded-[8px] border-[#848484] flex flex-col gap-2 items-center justify-center bg-brand-black w-[29.9rem] h-[16.6rem]">
         <svg
           width="43"
