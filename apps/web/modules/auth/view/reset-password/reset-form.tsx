@@ -41,10 +41,6 @@ export const ResetPasswordForm = () => {
     setOpenSuccessModal(true);
   };
 
-  const onError = (error: unknown) => {
-    console.log("est=>", error);
-  };
-
   const resetPassword = useResetPassword({
     onSuccess,
     // onError,

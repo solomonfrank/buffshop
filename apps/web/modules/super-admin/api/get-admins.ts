@@ -43,6 +43,7 @@ export type AdminProps = {
   email: string;
   status: string;
   updatedAt: string;
+  createdAt: string;
   lastlogin: string;
   id: string;
 };

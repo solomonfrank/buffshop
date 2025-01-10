@@ -238,14 +238,20 @@ export const ErrorMessage = ({ message, code }: ErrorMessageProps) => {
   );
 };
 
-const ConfirmModal = ({
+export const ConfirmModal = ({
   closeModal,
   isPending,
   okHandler,
+  okText = "Yes, Add Super Admin",
+  cancelText = "No, Cancel",
+  title = " Confirm New Super Admin",
 }: {
   closeModal: () => void;
   isPending: boolean;
   okHandler: () => void;
+  okText?: string;
+  cancelText?: string;
+  title?: string;
 }) => {
   return (
     <div>
@@ -281,7 +287,7 @@ const ConfirmModal = ({
         </svg>
 
         <p className="text-center text-white text-[1.6rem] leading-[2.4rem] mb-[1.4rem]">
-          Confirm New Super Admin
+          {title}
         </p>
 
         <div className="flex gap-[1.9rem]">
@@ -291,7 +297,7 @@ const ConfirmModal = ({
             onClick={closeModal}
             className=" font-medium leading-[1.8rem] text-[1.2rem]   bg-[848484] text-[#848484] rounded-[8px] w-[8.3rem] h-[3.4rem] border border-[#848484]"
           >
-            No, Cancel
+            {cancelText}
           </Button>
           <Button
             type="button"
@@ -302,7 +308,7 @@ const ConfirmModal = ({
             disabled={isPending}
             className=" font-medium leading-[1.8rem] text-[1.2rem]  rounded-[8px]  h-[3.4rem] border border-[#848484]"
           >
-            Yes, Add Super Admin
+            {okText}
           </Button>
         </div>
       </div>
