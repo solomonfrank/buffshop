@@ -51,6 +51,7 @@ const ADMIN_NAVIGATION: NavigationItemType[] = [
   {
     name: "Tenant Management",
     href: "/app/tenant-management",
+    isEnabled: true,
     icon: UserIcon,
 
     isCurrent: ({ pathname }) => {

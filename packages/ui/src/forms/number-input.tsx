@@ -16,7 +16,7 @@ export const NumberInput = ({
       <NumericFormat
         {...props}
         className={classNames(
-          " border transition-all border-default relative  focus-within:ring-slate-900   focus-within:outline-none focus-within:ring-1 placeholder:text-[14px] overflow-hidden  mt-0 text-[1.6rem] bg-white block text-black   rounded-md px-3 py-2 outline-none  focus:outline-none",
+          "border border-[#333333] rounded-[12px] transition-all bg-transparent  relative  focus-within:ring-slate-900 flex  items-center justify-center  focus-within:outline-none focus-within:ring-1",
           isFullwidth && "w-full",
           props.className
         )}

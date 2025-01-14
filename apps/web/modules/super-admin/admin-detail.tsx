@@ -4,8 +4,10 @@ import { dayjs } from "@buff/lib";
 import { Loader, showToast } from "@buff/ui";
 import * as Switch from "@radix-ui/react-switch";
 import { useQueryClient } from "@tanstack/react-query";
+import { ROLES } from "_types";
 import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
+import { useProfileStore } from "store/use-edit";
 import { ServerResponseType } from "~/auth/api/reset-password";
 import { useAssignPermAdminUser } from "./api/assign-perm";
 import { useDeactivateAdminUser } from "./api/deactivate-admin";
@@ -17,6 +19,7 @@ const SuperAdminDetails: React.FC = () => {
   const [accesses, setAccesses] = useState<string[]>(["1", "2", "3", "5", "6"]);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [profileStatus, setProfileStatus] = useState("");
+  const userProfile = useProfileStore((state) => state.userDetails);
 
   const { id } = useParams()!;
   const router = useRouter();
@@ -245,85 +248,88 @@ const SuperAdminDetails: React.FC = () => {
         </div>
 
         {/* Permissions Section */}
-        <div className="bg-[#202020] p-[3.1rem] rounded-[12px]  w-[60%]">
-          <div className="flex gap-[1.8rem] mr-auto mb-[3.2rem]">
-            <span>
-              <svg
-                width="24"
-                height="25"
-                viewBox="0 0 24 25"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11.0029 2.5H10.0062C6.72443 2.5 5.08355 2.5 3.92039 3.31382C3.49006 3.6149 3.11577 3.98891 2.81445 4.41891C2 5.58116 2 7.22077 2 10.5C2 13.7792 2 15.4188 2.81445 16.5811C3.11577 17.0111 3.49006 17.3851 3.92039 17.6862C5.08355 18.5 6.72443 18.5 10.0062 18.5H14.0093C17.2911 18.5 18.932 18.5 20.0951 17.6862C20.5254 17.3851 20.8997 17.0111 21.2011 16.5811C21.8156 15.7042 21.9663 14.5941 22 13.5"
-                  stroke="#FFBE0A"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M18 10.2143V11.5M18 10.2143C16.8432 10.2143 15.8241 9.64608 15.2263 8.78331M18 10.2143C19.1568 10.2143 20.1759 9.64608 20.7737 8.78331M15.2263 8.78331L14.0004 9.57143M15.2263 8.78331C14.8728 8.27304 14.6667 7.65973 14.6667 7C14.6667 6.34035 14.8727 5.72711 15.2262 5.21688M20.7737 8.78331L21.9996 9.57143M20.7737 8.78331C21.1272 8.27304 21.3333 7.65973 21.3333 7C21.3333 6.34035 21.1273 5.72711 20.7738 5.21688M18 3.78571C19.1569 3.78571 20.1761 4.354 20.7738 5.21688M18 3.78571C16.8431 3.78571 15.8239 4.354 15.2262 5.21688M18 3.78571V2.5M20.7738 5.21688L22 4.42857M15.2262 5.21688L14 4.42857"
-                  stroke="#FFBE0A"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M11 15.5H13"
-                  stroke="#FFBE0A"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path d="M12 18.5V22.5" stroke="#FFBE0A" stroke-width="1.5" />
-                <path
-                  d="M8 22.5H16"
-                  stroke="#FFBE0A"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </span>
-            <h3 className="text-[2rem] capitalize font-medium text-white leading-[2.7rem]">
-              Super Admin pemissions
-            </h3>
-          </div>
-          <div className="flex flex-col gap-[24px]">
-            {userPermissions.isFetching && (
-              <div className="animate-pulse relative h-10 block bg-[#282828] mb-4 w-full"></div>
-            )}
-            {!userPermissions.isFetching &&
-            userPermissions.data &&
-            userPermissions.data.length
-              ? userPermissions.data.map((permissionKey) => (
-                  <div key={permissionKey.name} className="flex items-center">
-                    <span className=" inline-block min-w-[250px] capitalize font-medium text-[1.6rem] text-[#D1D5DB] leading-[2.4rem]">
-                      {permissionKey.name.replace(/([A-Z])/g, " $1")}
-                    </span>
 
-                    <Switch.Root
-                      className={`relative w-[40px] h-[20px] rounded-full ${
-                        accesses.includes(permissionKey.id)
-                          ? "bg-[#FFBE0A]"
-                          : "bg-[#B8B8B8]"
-                      }`}
-                      checked={accesses.includes(permissionKey.id)}
-                      onCheckedChange={(value) =>
-                        togglePermission(value, permissionKey.id)
-                      }
-                    >
-                      <Switch.Thumb
-                        className={`block w-[14px] h-[14px] bg-white rounded-full transition-transform duration-200 ${
+        {userProfile.role === ROLES.SUPERADMIN && (
+          <div className="bg-[#202020] p-[3.1rem] rounded-[12px]  w-[60%]">
+            <div className="flex gap-[1.8rem] mr-auto mb-[3.2rem]">
+              <span>
+                <svg
+                  width="24"
+                  height="25"
+                  viewBox="0 0 24 25"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11.0029 2.5H10.0062C6.72443 2.5 5.08355 2.5 3.92039 3.31382C3.49006 3.6149 3.11577 3.98891 2.81445 4.41891C2 5.58116 2 7.22077 2 10.5C2 13.7792 2 15.4188 2.81445 16.5811C3.11577 17.0111 3.49006 17.3851 3.92039 17.6862C5.08355 18.5 6.72443 18.5 10.0062 18.5H14.0093C17.2911 18.5 18.932 18.5 20.0951 17.6862C20.5254 17.3851 20.8997 17.0111 21.2011 16.5811C21.8156 15.7042 21.9663 14.5941 22 13.5"
+                    stroke="#FFBE0A"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M18 10.2143V11.5M18 10.2143C16.8432 10.2143 15.8241 9.64608 15.2263 8.78331M18 10.2143C19.1568 10.2143 20.1759 9.64608 20.7737 8.78331M15.2263 8.78331L14.0004 9.57143M15.2263 8.78331C14.8728 8.27304 14.6667 7.65973 14.6667 7C14.6667 6.34035 14.8727 5.72711 15.2262 5.21688M20.7737 8.78331L21.9996 9.57143M20.7737 8.78331C21.1272 8.27304 21.3333 7.65973 21.3333 7C21.3333 6.34035 21.1273 5.72711 20.7738 5.21688M18 3.78571C19.1569 3.78571 20.1761 4.354 20.7738 5.21688M18 3.78571C16.8431 3.78571 15.8239 4.354 15.2262 5.21688M18 3.78571V2.5M20.7738 5.21688L22 4.42857M15.2262 5.21688L14 4.42857"
+                    stroke="#FFBE0A"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    d="M11 15.5H13"
+                    stroke="#FFBE0A"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M12 18.5V22.5" stroke="#FFBE0A" stroke-width="1.5" />
+                  <path
+                    d="M8 22.5H16"
+                    stroke="#FFBE0A"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+              <h3 className="text-[2rem] capitalize font-medium text-white leading-[2.7rem]">
+                Super Admin pemissions
+              </h3>
+            </div>
+            <div className="flex flex-col gap-[24px]">
+              {userPermissions.isFetching && (
+                <div className="animate-pulse relative h-10 block bg-[#282828] mb-4 w-full"></div>
+              )}
+              {!userPermissions.isFetching &&
+              userPermissions.data &&
+              userPermissions.data.length
+                ? userPermissions.data.map((permissionKey) => (
+                    <div key={permissionKey.name} className="flex items-center">
+                      <span className=" inline-block min-w-[250px] capitalize font-medium text-[1.6rem] text-[#D1D5DB] leading-[2.4rem]">
+                        {permissionKey.name.replace(/([A-Z])/g, " $1")}
+                      </span>
+
+                      <Switch.Root
+                        className={`relative w-[40px] h-[20px] rounded-full ${
                           accesses.includes(permissionKey.id)
-                            ? "translate-x-[20px]"
-                            : "translate-x-[3px]"
+                            ? "bg-[#FFBE0A]"
+                            : "bg-[#B8B8B8]"
                         }`}
-                      />
-                    </Switch.Root>
-                  </div>
-                ))
-              : null}
+                        checked={accesses.includes(permissionKey.id)}
+                        onCheckedChange={(value) =>
+                          togglePermission(value, permissionKey.id)
+                        }
+                      >
+                        <Switch.Thumb
+                          className={`block w-[14px] h-[14px] bg-white rounded-full transition-transform duration-200 ${
+                            accesses.includes(permissionKey.id)
+                              ? "translate-x-[20px]"
+                              : "translate-x-[3px]"
+                          }`}
+                        />
+                      </Switch.Root>
+                    </div>
+                  ))
+                : null}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {openConfirmModal && (
