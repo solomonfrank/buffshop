@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Buff Shop</title>
+    <style type="text/css">
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+      /* Reset styles */
+
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      *,
+      *::after,
+      *::before {
+        box-sizing: inherit;
+      }
+      body,
+      p,
+      h1,
+      h2,
+      h3,
+      div {
+        margin: 0;
+        padding: 0;
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+      }
+
+      /* Base styles */
+      .email-container {
+        max-width: 680px;
+        margin: 0 auto;
+        background-color: #0a0a0a;
+        color: #ffffff;
+      }
+
+      /* Logo section */
+      .logo-section {
+        padding: 48px 0 32px;
+        text-align: center;
+      }
+
+      .logo-image {
+        width: 120px;
+        height: auto;
+      }
+
+      /* Header section */
+      .header {
+        padding: 0 32px;
+        text-align: center;
+      }
+
+      .header h1 {
+        color: #ffb800;
+        font-size: 40px;
+        font-weight: 500;
+        margin-bottom: 24px;
+        line-height: 48.84px;
+        letter-spacing: 0.13px;
+      }
+
+      .referral-position {
+        color: #ffb800;
+      }
+
+      .header p {
+        font-size: 14px;
+        line-height: 22px;
+        color: #ffffff;
+        max-width: 480px;
+        margin: 0 auto;
+        padding-bottom: 24px;
+      }
+
+      .referral-text {
+        font-size: 16px;
+        color: #ffffff;
+        margin-bottom: 48px;
+      }
+
+      /* Hero image */
+      .hero-image {
+        padding: 0 32px;
+        text-align: center;
+        margin-bottom: 48px;
+      }
+
+      .hero-image img {
+        width: 100%;
+        max-width: 387px;
+        height: auto;
+      }
+
+      .otp-code {
+        color:#ffb800;
+        font-size: 36px;
+        font-weight: 500;
+        line-height: 43.96px;
+      }
+
+      /* Why Refer section */
+      .why-refer {
+        background-color: #ffffff;
+        padding: 34px;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        gap: 27px;
+      }
+
+      .why-refer-content {
+        max-width: 70%;
+      }
+
+      .why-refer h2 {
+        color: #000000;
+        font-size: 32px;
+        font-weight: 500;
+        margin-bottom: 20px;
+      }
+
+      .why-subtitle {
+        color: #6b6867;
+        font-size: 14px;
+        line-height: 22px;
+        margin-bottom: 20px;
+      }
+
+      .feature-container {
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .feature-container:last-child {
+        margin-bottom: 0;
+      }
+
+      .checkmark {
+        color: #00c853;
+        font-size: 20px;
+        margin-right: 12px;
+        font-weight: bold;
+        line-height: 1;
+      }
+
+      .feature-text {
+        color: #6b6867;
+        font-size: 14px;
+        line-height: 22px;
+      }
+
+      .feature-text strong {
+        color: #6b6867;
+        font-weight: 600;
+      }
+
+    
+
+      .otp-detail-section {
+        padding: 47px 69px;
+        background-color: #fff;
+        text-align: center;
+      }
+
+      .referral-link {
+        color: #6b6867;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+
+      .help-text {
+        color: #6b6867;
+        font-size: 14px;
+      }
+
+      .help-text a {
+        color: #6b6867;
+        text-decoration: none;
+      }
+
+      /*   Referral */
+
+      .referral-content {
+        color: #6b6867;
+        margin-bottom: 20px;
+      }
+
+      .otp-detail-section p {
+        margin-bottom: 20px;
+      }
+      
+
+      .referral-content-sub {
+        color: #6b6867;
+      }
+      /* Footer */
+      .footer {
+        /* padding: 48px 32px; */
+        text-align: center;
+        padding-top: 32px;
+        border-top: 1px solid #1a1a1a;
+      }
+
+      .footer-logo {
+        width: 80px;
+        margin-bottom: 24px;
+      }
+
+      .team-text {
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 32px;
+      }
+
+      .social-links {
+        margin-bottom: 32px;
+      }
+
+      .social-links a {
+        color: #ffffff;
+        text-decoration: none;
+        margin: 0 12px;
+        font-size: 14px;
+      }
+
+      .footer-links {
+        margin-bottom: 32px;
+      }
+
+      .footer-links a {
+        color: #ffffff;
+        text-decoration: underline;
+        margin: 0 12px;
+        font-size: 14px;
+      }
+
+      .copyright {
+        color: #f0f1f1;
+        font-size: 12px;
+        line-height: 16px;
+        border-top: 1px solid #848484;
+        padding-block: 15px;
+      }
+
+      /* Mobile responsiveness */
+      @media screen and (max-width: 480px) {
+        .why-refer-content {
+          max-width: 100%;
+        }
+
+        .character-illustration {
+          display: none;
+        }
+
+        .header h1 {
+          font-size: 32px;
+        }
+
+        .why-refer h2,
+        .how-it-works h2 {
+          font-size: 28px;
+        }
+
+        .why-refer {
+          padding: 32px 24px;
+        }
+
+        .logo-section,
+        .header,
+        .hero-image,
+        .how-it-works,
+        .footer {
+          padding-left: 24px;
+          padding-right: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <table
+      class="email-container"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      role="presentation"
+    >
+      <!-- Logo -->
+      <tr>
+        <td class="logo-section">
+          <img 
+          src="https://res.cloudinary.com/solomonfrank/image/upload/v1736688831/logo_twvn0f.png"
+          
+          alt="Buff Shop" class="logo-image" />
+        </td>
+      </tr>
+
+      <!-- Header -->
+      <tr>
+        <td class="header">
+          <h1>Hi Oluwaseun!</h1>
+          <p>
+            For enhanced security, please use the following One-Time Password
+            (OTP) to complete your login process:
+            <br />
+
+            <h3 class="otp-code">256 067</h3>
+          </p>
+        </td>
+      </tr>
+
+      <!-- Hero Image -->
+      <tr>
+        <td class="hero-image">
+          <img src="https://res.cloudinary.com/solomonfrank/image/upload/v1736688832/otp-hero_epqjbz.png" alt="3D character riding rocket" />
+        </td>
+      </tr>
+
+      <!-- How It Works -->
+      <tr>
+        <td class="otp-detail-section ">
+          <div class="referral-content">
+            <p class="">This OTP is valid for the next 1 hour and can only be used once. If you did not request this, please contact our support team immediately.</p>
+            <p>Steps to proceed:</p>
+            
+            <p>1. Enter the OTP in the verification field on your screen.
+            </p>
+            <p>
+                2. Click "Verify" to continue.
+            </p>
+            
+            <h4>Thank you for prioritizing your security with us!</h4>
+            
+          </div>
+        
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td class="footer">
+          <img 
+          
+          src="https://res.cloudinary.com/solomonfrank/image/upload/v1736688831/logo_twvn0f.png"
+          alt="Buff Shop" class="footer-logo" />
+          <p class="team-text">Let's grow together,<br />The Buff Shop Team</p>
+
+          <div class="social-links">
+            <a href="#">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M10.4856 0.959961H1.51436C1.20817 0.959961 0.959961 1.20817 0.959961 1.51436V10.4856C0.959961 10.6326 1.01837 10.7736 1.12234 10.8776C1.22631 10.9816 1.36732 11.04 1.51436 11.04H6.34268V7.13396H5.03228V5.62196H6.34268V4.48796C6.28773 3.94904 6.47377 3.41339 6.85095 3.02455C7.22812 2.63571 7.75786 2.43345 8.2982 2.47196C8.69048 2.46955 9.08257 2.48974 9.47252 2.53244V3.89324H8.67116C8.03612 3.89324 7.91516 4.19564 7.91516 4.63412V5.60684H9.42716L9.2306 7.11884H7.91516V11.04H10.4856C10.6326 11.04 10.7736 10.9816 10.8776 10.8776C10.9816 10.7736 11.04 10.6326 11.04 10.4856V1.51436C11.04 1.36732 10.9816 1.22631 10.8776 1.12234C10.7736 1.01837 10.6326 0.959961 10.4856 0.959961Z"
+                  fill="white"
+                />
+              </svg>
+            </a>
+            <a href="#">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 13 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M10.6965 0.999829H1.803C1.6011 0.997025 1.40635 1.07455 1.26162 1.21535C1.11688 1.35615 1.03402 1.54868 1.03125 1.75058V10.7491C1.03402 10.951 1.11688 11.1435 1.26162 11.2843C1.40635 11.4251 1.6011 11.5026 1.803 11.4998H10.6965C10.8984 11.5026 11.0931 11.4251 11.2379 11.2843C11.3826 11.1435 11.4655 10.951 11.4683 10.7491V1.75058C11.4655 1.54868 11.3826 1.35615 11.2379 1.21535C11.0931 1.07455 10.8984 0.997025 10.6965 0.999829ZM4.197 9.78833H2.622V5.06333H4.197V9.78833ZM3.4095 4.40183C2.95718 4.40183 2.5905 4.03515 2.5905 3.58283C2.5905 3.13051 2.95718 2.76383 3.4095 2.76383C3.72424 2.72813 4.0316 2.87596 4.20019 3.14413C4.36878 3.4123 4.36878 3.75336 4.20019 4.02153C4.0316 4.28969 3.72424 4.43752 3.4095 4.40183ZM9.8775 9.78833H8.3025V7.25258C8.3025 6.61733 8.07675 6.20258 7.5045 6.20258C7.14177 6.20523 6.8191 6.43361 6.696 6.77483C6.65492 6.89823 6.63711 7.02818 6.6435 7.15808V9.78308H5.0685C5.0685 9.78308 5.0685 5.48858 5.0685 5.05808H6.6435V5.72483C6.93509 5.21887 7.48268 4.91577 8.06625 4.93733C9.11625 4.93733 9.8775 5.61458 9.8775 7.06883V9.78833Z"
+                  fill="white"
+                />
+              </svg>
+            </a>
+            <a href="#">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 13 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="Iconspace_User 1_25px">
+                  <g id="instagram (1)">
+                    <path
+                      id="Shape"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M9.0535 2.8165C8.79869 2.8165 8.56897 2.96999 8.47146 3.20541C8.37394 3.44082 8.42784 3.7118 8.60802 3.89198C8.7882 4.07216 9.05918 4.12606 9.29459 4.02854C9.53001 3.93103 9.6835 3.70131 9.6835 3.4465C9.6835 3.09856 9.40144 2.8165 9.0535 2.8165ZM11.4685 4.087C11.4583 3.65141 11.3767 3.22044 11.227 2.81125C11.0935 2.46114 10.8857 2.14412 10.618 1.882C10.358 1.6129 10.0403 1.40644 9.68875 1.27825C9.28065 1.12398 8.8492 1.04054 8.413 1.0315C7.8565 1 7.678 1 6.25 1C4.822 1 4.6435 1 4.087 1.0315C3.6508 1.04054 3.21936 1.12398 2.81125 1.27825C2.46038 1.40774 2.14289 1.61402 1.882 1.882C1.6129 2.14197 1.40644 2.45973 1.27825 2.81125C1.12398 3.21936 1.04054 3.6508 1.0315 4.087C1 4.6435 1 4.822 1 6.25C1 7.678 1 7.8565 1.0315 8.413C1.04054 8.8492 1.12398 9.28065 1.27825 9.68875C1.40644 10.0403 1.6129 10.358 1.882 10.618C2.14289 10.886 2.46038 11.0923 2.81125 11.2218C3.21936 11.376 3.6508 11.4595 4.087 11.4685C4.6435 11.5 4.822 11.5 6.25 11.5C7.678 11.5 7.8565 11.5 8.413 11.4685C8.8492 11.4595 9.28065 11.376 9.68875 11.2218C10.0403 11.0936 10.358 10.8871 10.618 10.618C10.8869 10.3569 11.0949 10.0396 11.227 9.68875C11.3767 9.27956 11.4583 8.84859 11.4685 8.413C11.4685 7.8565 11.5 7.678 11.5 6.25C11.5 4.822 11.5 4.6435 11.4685 4.087ZM10.5235 8.35C10.5197 8.68326 10.4593 9.01344 10.345 9.3265C10.2612 9.55498 10.1265 9.76142 9.95125 9.93025C9.78096 10.1038 9.57494 10.2381 9.3475 10.324C9.03444 10.4383 8.70426 10.4987 8.371 10.5025C7.846 10.5287 7.65175 10.534 6.271 10.534C4.89025 10.534 4.696 10.534 4.171 10.5025C3.82497 10.509 3.48041 10.4557 3.1525 10.345C2.93504 10.2547 2.73846 10.1207 2.575 9.95125C2.40075 9.78259 2.26779 9.57598 2.1865 9.3475C2.05832 9.02995 1.98723 8.69227 1.9765 8.35C1.9765 7.825 1.945 7.63075 1.945 6.25C1.945 4.86925 1.945 4.675 1.9765 4.15C1.97885 3.8093 2.04105 3.47167 2.16025 3.1525C2.25267 2.9309 2.39454 2.73337 2.575 2.575C2.7345 2.39449 2.93163 2.25113 3.1525 2.155C3.47251 2.03952 3.8098 1.97917 4.15 1.9765C4.675 1.9765 4.86925 1.945 6.25 1.945C7.63075 1.945 7.825 1.945 8.35 1.9765C8.68326 1.98032 9.01344 2.04068 9.3265 2.155C9.56507 2.24354 9.7792 2.38749 9.95125 2.575C10.1233 2.73627 10.2577 2.93343 10.345 3.1525C10.4617 3.47219 10.5221 3.80968 10.5235 4.15C10.5497 4.675 10.555 4.86925 10.555 6.25C10.555 7.63075 10.5497 7.825 10.5235 8.35ZM6.25 3.55675C4.76325 3.55965 3.56007 4.76674 3.562 6.25349C3.56393 7.74025 4.77024 8.94421 6.257 8.94324C7.74375 8.94228 8.9485 7.73676 8.9485 6.25C8.9499 5.53437 8.66588 4.84771 8.15936 4.34218C7.65283 3.83664 6.96563 3.55395 6.25 3.55675ZM6.25 7.99825C5.28447 7.99825 4.50175 7.21553 4.50175 6.25C4.50175 5.28447 5.28447 4.50175 6.25 4.50175C7.21553 4.50175 7.99825 5.28447 7.99825 6.25C7.99825 6.71366 7.81406 7.15834 7.4862 7.4862C7.15834 7.81406 6.71366 7.99825 6.25 7.99825Z"
+                      fill="white"
+                    />
+                  </g>
+                </g>
+              </svg>
+            </a>
+
+            <a href="#"
+              ><svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.5 8.5L5.59675 6.40325M5.59675 6.40325L3.5 3.5H4.88889L6.40325 5.59675M5.59675 6.40325L7.1111 8.5H8.5L6.40325 5.59675M8.5 3.5L6.40325 5.59675"
+                  stroke="white"
+                  stroke-width="0.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M11 6C11 8.7614 8.7614 11 6 11C3.23857 11 1 8.7614 1 6C1 3.23857 3.23857 1 6 1C8.7614 1 11 3.23857 11 6Z"
+                  stroke="white"
+                />
+              </svg>
+            </a>
+          </div>
+
+          <div class="footer-links">
+            <a href="#">Unsubscribe</a>
+            <a href="#">Update Preferences</a>
+          </div>
+
+          <p class="copyright">
+            Copyright © BuffShop, 2024. All Rights Reserved
+          </p>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

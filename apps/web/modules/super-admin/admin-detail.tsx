@@ -4,7 +4,7 @@ import { dayjs } from "@buff/lib";
 import { Loader, showToast } from "@buff/ui";
 import * as Switch from "@radix-ui/react-switch";
 import { useQueryClient } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { ServerResponseType } from "~/auth/api/reset-password";
 import { useAssignPermAdminUser } from "./api/assign-perm";
@@ -19,6 +19,7 @@ const SuperAdminDetails: React.FC = () => {
   const [profileStatus, setProfileStatus] = useState("");
 
   const { id } = useParams()!;
+  const router = useRouter();
 
   const admins = useGetAdmins({
     filter: {
@@ -91,7 +92,7 @@ const SuperAdminDetails: React.FC = () => {
   return (
     <div>
       <div className="flex items-center gap-[4rem] mb-[3.6rem]">
-        <span>
+        <span onClick={() => router.back()} className="cursor-pointer">
           <svg
             width="40"
             height="40"

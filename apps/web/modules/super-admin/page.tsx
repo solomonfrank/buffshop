@@ -3,6 +3,7 @@
 import { dayjs } from "@buff/lib";
 import { Button, CustomSelect, InputField, Table } from "@buff/ui";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { ROLES } from "_types";
 import classNames from "classnames";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,7 @@ import { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { FaEye } from "react-icons/fa";
 import { MdMoreHoriz } from "react-icons/md";
+import { useProfileStore } from "store/use-edit";
 import { AdminTableProps, useGetAdmins } from "./api/get-admins";
 
 export const SuperAdminPage = () => {
@@ -25,6 +27,8 @@ export const SuperAdminPage = () => {
     },
     enabled: true,
   });
+
+  const userProfile = useProfileStore((state) => state.userDetails);
 
   return (
     <div className="w-full">
@@ -226,15 +230,17 @@ export const SuperAdminPage = () => {
                 />
               </div>
 
-              <Button
-                href="/app/super-admin-management/create"
-                variant="danger"
-                size="large"
-                prefixIcon={<AiOutlinePlus />}
-                className={classNames("rounded-[8px] h-[4rem]")}
-              >
-                Add Super Admin
-              </Button>
+              {userProfile.role === ROLES.SUPERADMIN && (
+                <Button
+                  href="/app/super-admin-management/create"
+                  variant="danger"
+                  size="large"
+                  prefixIcon={<AiOutlinePlus />}
+                  className={classNames("rounded-[8px] h-[4rem]")}
+                >
+                  Add Super Admin
+                </Button>
+              )}
             </div>
           </div>
         </div>

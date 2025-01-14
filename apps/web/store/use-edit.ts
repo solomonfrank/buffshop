@@ -6,6 +6,7 @@ type UserDetails = {
   lastName: string;
   email: string;
   name: string;
+  role: string;
 };
 interface UserInfo {
   userDetails: UserDetails;
@@ -20,6 +21,7 @@ export const useProfileStore = create<UserInfo>()(
           lastName: "",
           email: "",
           name: "",
+          role: "",
         },
         updateUserDetail: (data) => set({ userDetails: data }),
       };

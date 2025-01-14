@@ -1,12 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { CreateAdminForm } from "./components/create-admin";
 
 export const CreateSuperAdminPage = () => {
+  const router = useRouter();
   return (
     <div className="w-full">
       <div className="flex items-center gap-[4rem]">
-        <span>
+        <span onClick={() => router.back()} className="cursor-pointer">
           <svg
             width="40"
             height="40"

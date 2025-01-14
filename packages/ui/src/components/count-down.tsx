@@ -5,7 +5,7 @@ import Countdown, { CountdownRenderProps, zeroPad } from "react-countdown";
 
 type CustomCountDownVProps = {
   otpExpiryTime?: string;
-  expiredHandler: (uniqid: string) => void;
+  expiredHandler: (uniqid: string) => ReturnType<typeof memo>;
 };
 
 const CustomCountDownV = ({
