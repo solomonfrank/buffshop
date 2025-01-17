@@ -182,12 +182,12 @@ export function FileUpload({
       )}
     >
       {loading && (
-        <div className='absolute inset-0 z-[5] flex items-center justify-center rounded-[inherit] bg-white'>
+        <div className="absolute inset-0 z-[5] flex items-center justify-center rounded-[inherit] bg-white">
           <div>Loading....</div>
         </div>
       )}
       <div
-        className='absolute inset-0 z-[5]'
+        className="absolute inset-0 z-[5]"
         onDragOver={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -212,11 +212,11 @@ export function FileUpload({
       />
       <div
         className={classNames(
-          "absolute inset-0 z-[3] flex flex-col items-center justify-center rounded-[inherit] bg-white transition-all",
+          "absolute inset-0 z-[3] flex flex-col items-center justify-center rounded-[inherit] bg-transparent transition-all",
           disabled && "bg-gray-50",
           dragActive &&
             !disabled &&
-            "cursor-copy border-2 border-black bg-gray-50 opacity-100",
+            "cursor-copy border-1 border-[#848484] bg-gray-50 opacity-100",
           imageSrc
             ? classNames(
                 "opacity-0",
@@ -251,20 +251,20 @@ export function FileUpload({
             )}
           </div>
         )}
-        <span className='sr-only'>{accessibilityLabel}</span>
+        <span className="sr-only">{accessibilityLabel}</span>
       </div>
       {imageSrc && (
         <img
           src={imageSrc}
-          alt='Preview'
-          className='h-full w-full rounded-[inherit] object-cover'
+          alt="Preview"
+          className="h-full w-full rounded-[inherit] object-cover"
         />
       )}
       {clickToUpload && (
-        <div className='sr-only mt-1 flex shadow-sm'>
+        <div className="sr-only mt-1 flex shadow-sm">
           <input
             key={fileName} // Gets us a fresh input every time a file is uploaded
-            type='file'
+            type="file"
             accept={acceptFileTypes[accept]?.types.join(",")}
             onChange={onFileChange}
             disabled={disabled}

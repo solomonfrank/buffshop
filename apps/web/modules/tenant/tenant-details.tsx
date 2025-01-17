@@ -195,9 +195,9 @@ const TenantDetails: React.FC = () => {
                     </button>
 
                     <button
-                      // onClick={() => setOpenConfirmModal(true)}
-
-                      onClick={() => toggleConfirmModal(item.status)}
+                      onClick={() =>
+                        router.push(`/app/tenant-management/${item.id}/edit`)
+                      }
                       className="bg-[#FFBE0A] text-[#171717] py-[12px] px-[37px] rounded-[8px] flex items-center space-x-2"
                     >
                       <span>

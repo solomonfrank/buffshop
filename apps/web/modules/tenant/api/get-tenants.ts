@@ -45,6 +45,8 @@ export type TenantsProps = {
   updatedAt: string;
   createdAt: string;
   lastlogin: string;
+  business_name: string;
+  phone: string;
   id: string;
 };
 

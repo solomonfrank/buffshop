@@ -58,6 +58,17 @@ const ADMIN_NAVIGATION: NavigationItemType[] = [
       return pathname?.includes("/tenant-management") ?? false;
     },
   },
+
+  {
+    name: "Product Management",
+    href: "/app/product-management",
+    isEnabled: true,
+    icon: UserIcon,
+
+    isCurrent: ({ pathname }) => {
+      return pathname?.includes("/product-management") ?? false;
+    },
+  },
   {
     name: "Super Admin Management",
     href: "/app/super-admin-management",

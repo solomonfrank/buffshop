@@ -8,7 +8,7 @@ export * from "./loader";
 
 export * from "./table";
 
-// export * from "./file-upload";
+export * from "./file-upload";
 
 export * from "./toast/show-toast";
 
