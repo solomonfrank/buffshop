@@ -146,7 +146,7 @@ export const ProductManagementPage = () => {
         </div>
       ),
       key: "physical",
-      children: <div>Physical Product (0)</div>,
+      children: <DigitalProduct />,
     },
   ];
 

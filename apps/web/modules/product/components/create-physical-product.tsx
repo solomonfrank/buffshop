@@ -1,7 +1,6 @@
 "use client";
 import {
   Button,
-  CustomSelect,
   InputField,
   Label,
   Loader,
@@ -10,7 +9,6 @@ import {
 } from "@buff/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as Slider from "@radix-ui/react-slider";
-import * as Switch from "@radix-ui/react-switch";
 import { ErrorMessageProps } from "_types";
 import classNames from "classnames";
 import { useRouter } from "next/navigation";
@@ -19,18 +17,17 @@ import { Controller, FormProvider, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineWarning } from "react-icons/md";
 import {
-  ProductCreationInput,
-  ProductInputSchema,
+  PhysicalProductCreationInput,
+  ProductPhysicalInputSchema,
   useCreateProduct,
 } from "../api/create-product";
 import CustomFileUpload from "./file-upload";
 
-export const CreateDigitalForm = () => {
+export const CreatePhysicalForm = () => {
   const router = useRouter();
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [image, setImage] = useState<string>();
-  const methods = useForm<ProductCreationInput>({
-    resolver: zodResolver(ProductInputSchema),
+  const methods = useForm<PhysicalProductCreationInput>({
+    resolver: zodResolver(ProductPhysicalInputSchema),
     mode: "onChange",
     defaultValues: {
       discount: 50,
@@ -56,9 +53,9 @@ export const CreateDigitalForm = () => {
     onError,
   });
 
-  const { register, handleSubmit, formState } = methods;
+  const { handleSubmit, formState } = methods;
 
-  const onSubmit = (data: ProductCreationInput) => {
+  const onSubmit = (data: PhysicalProductCreationInput) => {
     console.log("ddddd", data);
     setOpenConfirmModal(true);
 
@@ -71,11 +68,12 @@ export const CreateDigitalForm = () => {
     const payload = {
       ...data,
       price: data.price.replace("₦", ""),
-      product_type: "digital",
+      product_type: "physical",
     };
 
     product.mutate(payload);
   };
+
   return (
     <FormProvider {...methods}>
       <form
@@ -96,7 +94,7 @@ export const CreateDigitalForm = () => {
                         name="name"
                         labelProps={{ className: "text-[#B8B8B8]" }}
                         type="text"
-                        placeholder="Enter Product Name"
+                        placeholder="Enter product name"
                         containerClassName="mb-3"
                         onChange={onChange}
                         value={value}
@@ -106,88 +104,80 @@ export const CreateDigitalForm = () => {
                   )}
                 />
 
+                <div className="flex gap-[2.4rem]">
+                  <div className="w-1/2">
+                    <div>
+                      <Controller
+                        control={methods.control}
+                        name="number_of_products"
+                        render={({ field: { value, onChange } }) => (
+                          <>
+                            <Label className="text-[1rem] uppercase  leading-[16px] inline-block text-[#B8B8B8]">
+                              Number of products available
+                            </Label>
+                            <NumberInput
+                              name="number_of_products"
+                              placeholder="Enter number of products available"
+                              thousandSeparator={true}
+                              allowLeadingZeros={true}
+                              onChange={(e) => {
+                                const value = e.target.value.replace(/,/g, "");
+                                onChange(value);
+                              }}
+                              value={value}
+                              allowNegative={false}
+                              className=" w-full p-4  h-[4.8rem] placeholder:text-[14px] placeholder:text-[#848484]  text-[16px]"
+                            />
+                          </>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <div className="w-1/2">
+                    <div>
+                      <Controller
+                        control={methods.control}
+                        name="currency"
+                        render={({ field: { value, onChange } }) => (
+                          <>
+                            <Label className="text-[1rem] uppercase leading-[16px] inline-block text-[#B8B8B8]">
+                              estimate days for pickup (days)
+                            </Label>
+                            <NumberInput
+                              name="currency"
+                              placeholder="Enter estimate days"
+                              thousandSeparator={false}
+                              allowLeadingZeros={true}
+                              onChange={(e) => {
+                                const value = e.target.value.replace(/,/g, "");
+                                onChange(value);
+                              }}
+                              value={value}
+                              allowNegative={false}
+                              className=" w-full p-4  h-[4.8rem] placeholder:text-[14px] placeholder:text-[#848484]  text-[16px]"
+                            />
+                          </>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div>
-                  {" "}
                   <Controller
                     control={methods.control}
-                    name="subscription_type"
+                    name="pickup_location"
                     render={({ field: { value, onChange } }) => (
                       <>
-                        <Label className="text-[1rem] leading-[16px] inline-block text-[#B8B8B8]">
-                          SELECT SUBSCRIPTION TYPE
-                        </Label>
-                        <CustomSelect
-                          name="subscription_type"
-                          placeholder="Select Subscription Type"
-                          options={[
-                            {
-                              label: "Console Game",
-                              value: "category",
-                            },
-                            {
-                              label: "Console Game",
-                              value: "category1",
-                            },
-                          ]}
+                        <InputField
+                          label="PICKUP ADDRESS"
+                          name="pickup_location"
+                          labelProps={{ className: "text-[#B8B8B8]" }}
+                          type="text"
+                          placeholder="Enter pickup address"
+                          containerClassName="mb-3"
+                          onChange={onChange}
                           value={value}
-                          onChange={(e) => {
-                            onChange(e);
-                          }}
-                          styles={{
-                            menuList: (provided) => ({
-                              ...provided,
-                              color: "#fff",
-                              fontSize: "1.4rem",
-                              background: "#333333",
-                              ":hover": {
-                                borderColor: "#000",
-                              },
-                            }),
-                            option: (provided, state) => ({
-                              ...provided,
-                              backgroundColor: state.isSelected
-                                ? "#FFBE0A"
-                                : "#333333",
-                              color: "white",
-
-                              cursor: "pointer",
-                              "&:hover": {
-                                backgroundColor: state.isSelected
-                                  ? "#FFBE0A"
-                                  : "#333333",
-                              },
-                            }),
-                            singleValue: (provided) => ({
-                              ...provided,
-                              fontSize: "1.2rem",
-                              lineHeight: "2.4rem",
-                              fontWeight: 500,
-                              color: "#fff",
-                            }),
-                            placeholder: (provided) => ({
-                              ...provided,
-                              fontSize: "1.2rem",
-                            }),
-                            control: (provided, state) => ({
-                              ...provided,
-                              minHeight: "45px",
-                              borderColor: "#333333",
-                              boxShadow: "none",
-                              borderRadius: "12px",
-                              background: "transparent",
-                              flexShrink: 0,
-                              color: "#fff",
-
-                              ":hover": {
-                                borderColor: "#333333",
-                              },
-
-                              ":active": {
-                                borderColor: "#333333",
-                                color: "#fff",
-                              },
-                            }),
-                          }}
+                          className=" w-full p-4 rounded-lg  h-[4.8rem] placeholder:text-[14px]  text-[16px]"
                         />
                       </>
                     )}
@@ -266,33 +256,6 @@ export const CreateDigitalForm = () => {
           </div>
           <div className="w-1/2">
             <div className="space-y-[3.2rem] w-full">
-              <div>
-                <div className="w-full mb-3  bg-neutral-900 flex items-center gap-[1.6rem]">
-                  <Label
-                    className=" leading-[24px] w-[200px] text-[16px] inline-block text-[#D1D5DB] font-medium"
-                    htmlFor="drm-mode"
-                  >
-                    DRM Protection
-                  </Label>
-                  <Controller
-                    name="drmProtection"
-                    control={methods.control}
-                    render={({ field: { value, onChange } }) => (
-                      <Switch.Root
-                        id="drm-mode"
-                        checked={value}
-                        onCheckedChange={onChange}
-                        className="w-[42px] h-[24px] bg-neutral-700 rounded-full relative data-[state=checked]:bg-yellow-400 outline-none cursor-default"
-                      >
-                        <Switch.Thumb className="block w-[20px] h-[20px] bg-white rounded-full transition-transform duration-100 translate-x-0.5 will-change-transform data-[state=checked]:translate-x-[20px] m-[2px]" />
-                      </Switch.Root>
-                    )}
-                  />
-                </div>
-                <p className=" text-[#848484] uppercase font-medium text-[1rem] leading-[16px]">
-                  ENABLING THE DRM PROTECTION ATTRACTS FEE ADJUSTMENTS
-                </p>
-              </div>
               <div>
                 <Controller
                   control={methods.control}

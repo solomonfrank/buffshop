@@ -1,5 +1,9 @@
 import { fetchJson, getCookie } from "@buff/lib";
-import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+import {
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { z } from "zod";
 
 import { API_BASE_URL } from "@config/constant";
@@ -67,8 +71,13 @@ export const useCreateTenant = (
     "mutationFn"
   >
 ) => {
+  const queryClient = useQueryClient();
   return useMutation({
     ...options,
     mutationFn: createATenantFn,
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: ["tenants"] });
+      options?.onSuccess?.(...args);
+    },
   });
 };

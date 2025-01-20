@@ -5,7 +5,7 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query";
-import { ServerResponse } from "_types";
+import { ErrorMessageProps, ServerResponse } from "_types";
 
 import { z } from "zod";
 
@@ -40,56 +40,71 @@ export const ProductInputSchema = z.object({
   }),
 });
 
-export type ProductCreationInput = z.infer<typeof ProductInputSchema>;
+export const ProductPhysicalInputSchema = z.object({
+  name: z.string().min(3, "Product name is required"),
+  price: z.string().min(1, "Price is required"),
+  discount: z.number().min(0, "Discount required"),
+  description: z.string().min(1, "Description is required"),
+  currency: z.string().nullable(),
+  number_of_products: z.string().min(1, "Number of product is required"),
+  pickup_location: z.string().min(1, "Pickup location is required"),
+  files: z
+    .array(z.instanceof(File))
+    .min(1, "At least one image is required")
+    .max(3, "Maximum 3 images allowed")
+    .refine(
+      (files) =>
+        files.every((file) =>
+          ["image/jpeg", "image/png", "image/gif"].includes(file.type)
+        ),
+      "All files must be JPG, PNG or GIF"
+    )
+    .refine(
+      (files) => files.every((file) => file.size <= 25 * 1024 * 1024),
+      "Each file must be less than 25MB"
+    )
+    .refine((files) => {
+      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
+      return totalSize <= 50 * 1024 * 1024;
+    }, "Total size must not exceed 50MB"),
+});
 
-// type ServerResponse = {
-//   data: TenantResponse;
-// };
+export type ProductCreationInput = z.infer<typeof ProductInputSchema>;
+export type PhysicalProductCreationInput = z.infer<
+  typeof ProductPhysicalInputSchema
+>;
 
 export type TenantResponse = {
   data: Record<string, string>;
 };
 
-export const createProductFn = (data: ProductCreationInput) => {
+export const createProductFn = (
+  data: ProductCreationInput | PhysicalProductCreationInput
+) => {
   const token = getCookie("accessToken");
 
-  const payload = {
-    ...data,
-    subscription_type: data.subscription_type.value,
-    // files: data.files.map((item) => {
-    //   if ("preview" in item) {
-    //     return {
-    //       ...item,
-    //       preview: undefined,
-    //     };
-    //   } else {
-    //     return item;
-    //   }
-    // }),
-  };
+  let payload: ProductCreationInput | PhysicalProductCreationInput = data;
 
-  console.log("payload=>", payload);
+  if ("subscription_type" in data) {
+    payload = {
+      ...data,
+      subscription_type: data.subscription_type,
+    };
+  }
 
   const formData = new FormData();
 
-  Object.entries(payload).forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      console.log("previewpreview", value);
-      value.forEach((document, index) => {
-        console.log("document=>", document);
-        console.log("keyee=>", key);
-
-        formData.append(`${key}[${index}]`, document);
-        // Object.entries(document).forEach(([innerkey, value]) => {
-        //   console.log("innerkey=>", innerkey);
-
-        //   if (innerkey !== "preview") {
-        //     formData.append(`${key}[${index}].${innerkey}`, value);
-        //   }
-        // });
+  Object.entries(payload).forEach(([key, bvalue]) => {
+    if (Array.isArray(bvalue)) {
+      bvalue.forEach((document, index) => {
+        formData.append(`${key}`, document);
       });
     } else {
-      formData.append(key, `${value}`);
+      if (typeof bvalue === "object") {
+        formData.append(key, `${bvalue?.value as string}`);
+      } else {
+        formData.append(key, `${bvalue}`);
+      }
     }
   });
   return fetchJson<ServerResponse<TenantResponse>>(`${API_BASE_URL}/product`, {
@@ -103,7 +118,11 @@ export const createProductFn = (data: ProductCreationInput) => {
 
 export const useCreateProduct = (
   options?: Omit<
-    UseMutationOptions<ServerResponse<TenantResponse>, Error, unknown>,
+    UseMutationOptions<
+      ServerResponse<TenantResponse>,
+      ErrorMessageProps,
+      unknown
+    >,
     "mutationFn"
   >
 ) => {

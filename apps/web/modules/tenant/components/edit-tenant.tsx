@@ -12,7 +12,7 @@ import { ErrorMessageProps } from "_types";
 import classNames from "classnames";
 import { AiOutlinePlus } from "react-icons/ai";
 
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { LoginServerResponse } from "~/auth/api/login";
@@ -25,6 +25,7 @@ import { TenantsProps } from "../api/get-tenants";
 
 export const EditTenantForm = ({ details }: { details: TenantsProps }) => {
   const router = useRouter();
+  const { id } = useParams()!;
 
   console.log("details", details);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -43,7 +44,7 @@ export const EditTenantForm = ({ details }: { details: TenantsProps }) => {
   const { register, handleSubmit, formState } = methods;
 
   const onSuccess = (response: LoginServerResponse) => {
-    showToast("Tenant created successfully", "success");
+    showToast("Tenant updated successfully", "success");
     router.replace(`/app/tenant-management`);
   };
 
@@ -65,11 +66,12 @@ export const EditTenantForm = ({ details }: { details: TenantsProps }) => {
   const submitHandler = () => {
     const data = methods.getValues();
 
-    const payload = {
+    const payload: createTenantInput & { id: string } = {
       email: data.email,
       phone: data.phone,
       business_name: data.business_name,
       name: data.name,
+      id: id as string,
     };
 
     login.mutate(payload);
@@ -141,6 +143,7 @@ export const EditTenantForm = ({ details }: { details: TenantsProps }) => {
                     <InputField
                       label="Email"
                       name="email"
+                      readOnly
                       labelProps={{ className: "text-[#B8B8B8]" }}
                       type="email"
                       placeholder="Enter email address"

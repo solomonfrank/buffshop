@@ -4,6 +4,7 @@ import { CustomTabs, TabsNavigationItem } from "@buff/ui";
 import classNames from "classnames";
 import { useRouter } from "next/navigation";
 import { CreateDigitalForm } from "./components/create-digital-product";
+import { CreatePhysicalForm } from "./components/create-physical-product";
 
 export const CreateProduct = () => {
   const router = useRouter();
@@ -143,7 +144,7 @@ export const CreateProduct = () => {
         </div>
       ),
       key: "physical",
-      children: <CreateDigitalForm />,
+      children: <CreatePhysicalForm />,
     },
   ];
   return (

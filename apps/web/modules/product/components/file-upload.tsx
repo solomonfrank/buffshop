@@ -117,8 +117,6 @@ const CustomFileUpload: React.FC<FileUploadProps> = ({
     };
   }, []);
 
-  console.log("sssssssssssssss", files);
-
   return (
     <div className="w-full">
       {files.length < maxFiles && (

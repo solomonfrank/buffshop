@@ -1,10 +1,20 @@
 import { fetchJson, getCookie } from "@buff/lib";
-import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+import {
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { API_BASE_URL } from "@config/constant";
 import { createTenantInput } from "./create-tenant";
 
-export const updateTenantFn = (data: createTenantInput) => {
+export const updateTenantFn = (data: createTenantInput & { id: string }) => {
+  const payload = {
+    phone: data.phone,
+    business_name: data.business_name,
+    name: data.name,
+    id: data.id,
+  };
   const token = getCookie("accessToken");
   return fetchJson<LoginServerResponse>(`${API_BASE_URL}/user/admin/tenant`, {
     method: "PATCH",
@@ -12,7 +22,7 @@ export const updateTenantFn = (data: createTenantInput) => {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(payload),
   });
 };
 
@@ -46,8 +56,13 @@ export const useUpdateTenant = (
     "mutationFn"
   >
 ) => {
+  const queryClient = useQueryClient();
   return useMutation({
     ...options,
     mutationFn: updateTenantFn,
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: ["tenants"] });
+      options?.onSuccess?.(...args);
+    },
   });
 };
