@@ -5,8 +5,12 @@ import { PageProps } from "_types";
 
 const OtpPage = async (props: PageProps) => {
   const pageParam = await props.params;
+  const query = await props.searchParams;
+
+  const imageUrl =
+    query.role === "tenant" ? "/images/tenant.png" : "/images/girl.png";
   return (
-    <AuthLayout imageSrc="/images/girl.png" params={pageParam}>
+    <AuthLayout imageSrc={imageUrl} params={pageParam}>
       <Otp />
     </AuthLayout>
   );

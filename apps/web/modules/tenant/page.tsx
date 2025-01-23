@@ -263,7 +263,7 @@ export const TenantPage = () => {
                 if (entry.status === "inactive") {
                   return (
                     <button className="outline-none bg-[#171717] px-[1rem] text-[1.2rem] leading-[1.8rem] border rounded-[6px] text-[#D1D5DB] border-[#D1D5DB] capitalize">
-                      Active
+                      {entry.status}
                     </button>
                   );
                 }

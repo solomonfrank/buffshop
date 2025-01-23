@@ -8,7 +8,7 @@ import { IoMdSettings } from "react-icons/io";
 
 import { deleteCookie } from "@buff/lib";
 import { InputField, Logo, showToast } from "@buff/ui";
-import { Params } from "_types";
+import { Params, ROLES } from "_types";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { IconType } from "react-icons";
@@ -552,7 +552,11 @@ const Header = () => {
             />
           </svg>
         </span>
-        <span onClick={() => logoutHandler("/auth/login")}>
+        <span
+          onClick={() =>
+            logoutHandler(ROLES.TENANT ? "/auth/tenant" : "/auth/login")
+          }
+        >
           <svg
             width="40"
             height="40"

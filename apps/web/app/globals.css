@@ -106,3 +106,7 @@ a {
 .rechart-cs {
   font-family: var(--font-buff) !important;
 }
+.rc-steps {
+  display: block !important;
+  height: auto !important;
+}
