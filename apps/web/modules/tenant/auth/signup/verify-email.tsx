@@ -4,10 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ErrorMessageProps } from "_types";
 import classNames from "classnames";
-import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,9 +26,7 @@ export const VerifyEmailForm = ({
 }: {
   nextStep: (index: number) => void;
 }) => {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams?.get("redirectTo");
 
   const methods = useForm<FormValue>({
     resolver: zodResolver(loginScheme),
@@ -37,23 +34,9 @@ export const VerifyEmailForm = ({
   });
 
   const { register, handleSubmit, formState } = methods;
-  const email = searchParams.get("uemail") as string;
 
   const onSuccess = (response: ServerResponseType) => {
-    const token = localStorage.getItem("accessToken");
-
-    if (token) {
-      const { exp } = jwtDecode(token);
-      document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
-      localStorage.removeItem("accessToken");
-      router.replace(`/app/dashboard`);
-    } else {
-      router.replace(`/auth/login`);
-    }
-  };
-
-  const onError = (error: unknown) => {
-    console.log("est=>", error);
+    nextStep(2);
   };
 
   const login = useOtp({
@@ -62,14 +45,15 @@ export const VerifyEmailForm = ({
   });
 
   const onSubmit = (data: FormValue) => {
+    const userInfo = localStorage.getItem("tenant_user");
+    const userData = userInfo && JSON.parse(userInfo);
+
     const payload = {
       otp: data.otp,
-      email,
+      email: userData.email || "creyton.whitten@fileexp.com",
     };
 
-    nextStep(2);
-
-    // login.mutate(payload);
+    login.mutate(payload);
   };
 
   return (

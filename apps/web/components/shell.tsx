@@ -13,6 +13,7 @@ import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { IconType } from "react-icons";
 import { useProfileStore } from "store/use-edit";
+import { uselogout } from "~/auth/api/logout";
 import {
   AdsIcon,
   AuditIcon,
@@ -457,6 +458,10 @@ const adminBottonNavigation: NavigationItemType[] = [
 ];
 
 const Header = () => {
+  const onSuccess = (response: unknown) => {
+    logoutHandler(ROLES.TENANT ? "/auth/tenant" : "/auth/login");
+  };
+  const logout = uselogout({ onSuccess });
   const logoutHandler = (url: string) => {
     deleteCookie("accessToken");
     deleteCookie("rememberMe");
@@ -553,9 +558,9 @@ const Header = () => {
           </svg>
         </span>
         <span
-          onClick={() =>
-            logoutHandler(ROLES.TENANT ? "/auth/tenant" : "/auth/login")
-          }
+          onClick={() => {
+            logout.mutate(null);
+          }}
         >
           <svg
             width="40"

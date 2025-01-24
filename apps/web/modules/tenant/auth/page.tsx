@@ -6,7 +6,7 @@ import classNames from "classnames";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 // import Steps from "rc-steps";
 
 import "rc-steps/assets/index.css";
@@ -20,10 +20,14 @@ import { VerifyEmailForm } from "./signup/verify-email";
 export const TenantAuthTab = () => {
   const query = useSearchParams();
   const setpStep = useSetStep("q");
-
-  const step = query.get("step");
+  const router = useRouter();
 
   const [currentStep, setCurrentStep] = useState(0);
+
+  const [userIfo, setUserInfo] = useState<{
+    name: string;
+    firstName: string;
+  } | null>(null);
 
   const [steps, setSteps] = useState<StepProps[]>([
     {
@@ -165,6 +169,15 @@ export const TenantAuthTab = () => {
   useEffect(() => {
     if (!query.has("q")) {
       setpStep("signup");
+    }
+  }, []);
+
+  useEffect(() => {
+    const userInfo = localStorage.getItem("tenant_user");
+
+    if (userInfo) {
+      const userData = userInfo && JSON.parse(userInfo);
+      setUserInfo(userData);
     }
   }, []);
 
@@ -419,7 +432,35 @@ export const TenantAuthTab = () => {
         )}
 
         {currentStep === 2 && !allStepsCompleted && (
-          <div className="w-0 flex-1 flex flex-col  items-center text-brand justify-center">
+          <div className="w-0 flex-1 flex flex-col relative  items-center text-brand justify-center">
+            <div className="flex items-center top-[10rem] left-[2rem] gap-[8px] mb-[3.6rem] absolute">
+              <svg
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M6.66638 20.0003L33.333 20.0003"
+                  stroke="#848484"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M14.9993 11.6666C14.9993 11.6666 6.66618 17.804 6.66618 20C6.66618 22.196 14.9995 28.3333 14.9995 28.3333"
+                  stroke="#848484"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+
+              <h3 className="text-[#B8B8B8] text-[1.4rem] leading-[2rem] font-medium">
+                Back to home
+              </h3>
+            </div>
             <div className="flex w-[43rem] flex-col items-center justify-center">
               <div className="w-full flex gap-[2.4rem] flex-col">
                 <div>
@@ -448,14 +489,24 @@ export const TenantAuthTab = () => {
               <div className="w-full flex gap-[2.4rem] flex-col">
                 <div>
                   <h2 className="leading-[3.6rem] font-bold text-[2.4rem] text-center mb-[1.6rem] text-white">
-                    Account created! Welcome aboard,
-                    <br /> Amad Diallo. 🎉
+                    Account created! Welcome aboard{" "}
+                    {userIfo?.name && (
+                      <>
+                        ,<br />
+                        {userIfo?.name} 🎉
+                      </>
+                    )}
                   </h2>
                 </div>
 
                 <div className="w-full block mb-[1.6rem]">
                   <Button
-                    type="submit"
+                    type="button"
+                    onClick={() => {
+                      handleStepClick(0);
+
+                      router.push("/auth/tenant");
+                    }}
                     variant="danger"
                     size="large"
                     className={classNames(

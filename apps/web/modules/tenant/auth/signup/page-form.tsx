@@ -51,6 +51,10 @@ export const SignupForm = ({
       JSON.stringify({
         token,
         userId: userData.id,
+        email: userData.email,
+        name: userData?.name,
+        lastName: userData?.lastName,
+        firstName: userData?.firstName,
       })
     );
     onClick(1);

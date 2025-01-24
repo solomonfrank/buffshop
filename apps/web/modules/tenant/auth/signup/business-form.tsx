@@ -4,67 +4,43 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ErrorMessageProps } from "_types";
 import classNames from "classnames";
-import { jwtDecode } from "jwt-decode";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { z } from "zod";
-import { useOtp } from "~/auth/api/otp";
-import { ServerResponseType } from "~/auth/api/reset-password";
-
-export const BusinessFormScheme = z.object({
-  businessName: z.string().trim().min(1, { message: "OTP is required" }),
-});
-
-type FormValue = {
-  businessName: string;
-};
+import {
+  BusinessFormInput,
+  BusinessFormScheme,
+  BusinessServerResponse,
+  useUpdateTenantBusiness,
+} from "../api/update-business";
 
 export const BusinessForm = ({
   nextStep,
 }: {
   nextStep: (index: number) => void;
 }) => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams?.get("redirectTo");
-
-  const methods = useForm<FormValue>({
+  const methods = useForm<BusinessFormInput>({
     resolver: zodResolver(BusinessFormScheme),
     mode: "onChange",
   });
 
   const { register, handleSubmit, formState } = methods;
 
-  const onSuccess = (response: ServerResponseType) => {
+  const onSuccess = (response: BusinessServerResponse) => {
     const token = localStorage.getItem("accessToken");
-
-    if (token) {
-      const { exp } = jwtDecode(token);
-      document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
-      localStorage.removeItem("accessToken");
-      router.replace(`/app/dashboard`);
-    } else {
-      router.replace(`/auth/login`);
-    }
+    nextStep(3);
   };
 
-  const onError = (error: unknown) => {
-    console.log("est=>", error);
-  };
-
-  const login = useOtp({
+  const login = useUpdateTenantBusiness({
     onSuccess,
     // onError,
   });
 
-  const onSubmit = (data: FormValue) => {
+  const onSubmit = (data: BusinessFormInput) => {
     const payload = {
       businessName: data.businessName,
     };
-
-    nextStep(3);
+    login.mutate(payload);
   };
 
   return (
@@ -91,11 +67,10 @@ export const BusinessForm = ({
 
         <div className="flex gap-[2.4rem]">
           <Button
-            type="submit"
+            type="button"
             variant="danger"
             size="large"
-            loading={login.isPending}
-            disabled={login.isPending}
+            onClick={() => nextStep(2)}
             className={classNames(
               "bg-transparent text-[14px] leading-[2rem] basis-[calc(50%-1.2rem)] text-[#848484] border border-[#848484] rounded-[12px]"
             )}
