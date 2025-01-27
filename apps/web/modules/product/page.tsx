@@ -217,7 +217,8 @@ export const ProductManagementPage = () => {
             </div>
 
             <div className="">
-              {userProfile.role === ROLES.SUPERADMIN && (
+              {(userProfile.role === ROLES.SUPERADMIN ||
+                userProfile.role === ROLES.ADMIN) && (
                 <Button
                   href="/app/product-management/create"
                   variant="danger"

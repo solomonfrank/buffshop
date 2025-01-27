@@ -1,7 +1,10 @@
 import { Button } from "@buff/ui";
+import { ROLES } from "_types";
 import { HiOutlinePlus } from "react-icons/hi2";
+import { useProfileStore } from "store/use-edit";
 
 export const NoRecord = () => {
+  const userProfile = useProfileStore((state) => state.userDetails);
   return (
     <div className="flex flex-col items-center gap-[1.8rem]">
       <span>
@@ -31,12 +34,17 @@ export const NoRecord = () => {
         </svg>
       </span>
       <h4 className="text-[16px] leading-[16px] text-white">No Record</h4>
-      <Button
-        className="rounded-[8px] font-medium text-[12px] leading-[15px] bg-brand-default w-[149px] h-[40px] "
-        prefixIcon={<HiOutlinePlus />}
-      >
-        Add New Product
-      </Button>
+
+      {(userProfile.role === ROLES.SUPERADMIN ||
+        userProfile.role === ROLES.ADMIN) && (
+        <Button
+          href="/app/product-management/create"
+          className="rounded-[8px] font-medium text-[12px] leading-[15px] bg-brand-default w-[149px] h-[40px] "
+          prefixIcon={<HiOutlinePlus />}
+        >
+          Add New Product
+        </Button>
+      )}
     </div>
   );
 };
