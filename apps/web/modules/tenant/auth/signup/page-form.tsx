@@ -75,6 +75,7 @@ export const SignupForm = ({
       password: data.password,
       firstName: data.firstName,
       lastName: data.lastName,
+      name: `${data.firstName} ${data.lastName}`,
     };
 
     login.mutate(payload);

@@ -1,5 +1,4 @@
 import { Button } from "@buff/ui";
-import { ROLES } from "_types";
 import { HiOutlinePlus } from "react-icons/hi2";
 import { useProfileStore } from "store/use-edit";
 
@@ -35,16 +34,13 @@ export const NoRecord = () => {
       </span>
       <h4 className="text-[16px] leading-[16px] text-white">No Record</h4>
 
-      {(userProfile.role === ROLES.SUPERADMIN ||
-        userProfile.role === ROLES.ADMIN) && (
-        <Button
-          href="/app/product-management/create"
-          className="rounded-[8px] font-medium text-[12px] leading-[15px] bg-brand-default w-[149px] h-[40px] "
-          prefixIcon={<HiOutlinePlus />}
-        >
-          Add New Product
-        </Button>
-      )}
+      <Button
+        href="/app/product-management/create"
+        className="rounded-[8px] font-medium text-[12px] leading-[15px] bg-brand-default w-[149px] h-[40px] "
+        prefixIcon={<HiOutlinePlus />}
+      >
+        Add New Product
+      </Button>
     </div>
   );
 };

@@ -92,7 +92,7 @@ export const ProductManagementPage = () => {
         </div>
       ),
       key: "digital",
-      children: <DigitalProduct />,
+      children: <DigitalProduct type="digital" />,
     },
 
     {
@@ -147,7 +147,7 @@ export const ProductManagementPage = () => {
         </div>
       ),
       key: "physical",
-      children: <DigitalProduct />,
+      children: <DigitalProduct type="physical" />,
     },
   ];
 
@@ -221,18 +221,15 @@ export const ProductManagementPage = () => {
               </div>
 
               <div className="">
-                {(userProfile.role === ROLES.SUPERADMIN ||
-                  userProfile.role === ROLES.ADMIN) && (
-                  <Button
-                    href="/app/product-management/create"
-                    variant="danger"
-                    size="large"
-                    prefixIcon={<AiOutlinePlus />}
-                    className={classNames("rounded-[8px] h-[4rem]")}
-                  >
-                    Add New Product
-                  </Button>
-                )}
+                <Button
+                  href="/app/product-management/create"
+                  variant="danger"
+                  size="large"
+                  prefixIcon={<AiOutlinePlus />}
+                  className={classNames("rounded-[8px] h-[4rem]")}
+                >
+                  Add New Product
+                </Button>
               </div>
             </div>
           </div>

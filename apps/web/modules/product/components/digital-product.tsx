@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useGetProducts } from "../api/get-product";
 import { NoRecord } from "./no-record";
 
-export const DigitalProduct = () => {
+export const DigitalProduct = ({ type = "physical" }: { type: string }) => {
   const [isEmpty, setIsEmpty] = useState(false);
 
   const [filter, setFilter] = useState({
@@ -15,6 +15,7 @@ export const DigitalProduct = () => {
       ...filter,
       PageNumber: `${filter.currentPage}`,
       PageSize: `${filter.pageSize}`,
+      product_type: type,
     },
     enabled: true,
   });
