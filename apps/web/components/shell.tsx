@@ -8,6 +8,7 @@ import { IoMdSettings } from "react-icons/io";
 
 import { deleteCookie } from "@buff/lib";
 import { InputField, Logo, showToast } from "@buff/ui";
+import { useAuthorization } from "@lib/hooks/useAuthorization";
 import { Params, ROLES } from "_types";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -17,6 +18,7 @@ import { uselogout } from "~/auth/api/logout";
 import {
   AdsIcon,
   AuditIcon,
+  CustomSupportIcon,
   HomeIcon,
   LiveChatIcon,
   NotificationIcon,
@@ -26,8 +28,10 @@ import {
   SettingsIcon,
   SettingTwoIcon,
   SupportIcon,
+  TenantSettingsIcon,
   TicketIcon,
   UserIcon,
+  WalletIcon,
 } from "./icons";
 
 const ADMIN_NAVIGATION: NavigationItemType[] = [
@@ -60,16 +64,16 @@ const ADMIN_NAVIGATION: NavigationItemType[] = [
     },
   },
 
-  {
-    name: "Product Management",
-    href: "/app/product-management",
-    isEnabled: true,
-    icon: UserIcon,
+  // {
+  //   name: "Product Management",
+  //   href: "/app/product-management",
+  //   isEnabled: true,
+  //   icon: UserIcon,
 
-    isCurrent: ({ pathname }) => {
-      return pathname?.includes("/product-management") ?? false;
-    },
-  },
+  //   isCurrent: ({ pathname }) => {
+  //     return pathname?.includes("/product-management") ?? false;
+  //   },
+  // },
   {
     name: "Super Admin Management",
     href: "/app/super-admin-management",
@@ -154,6 +158,67 @@ const ADMIN_NAVIGATION: NavigationItemType[] = [
   },
 ];
 
+const TENANT_NAVIGATION: NavigationItemType[] = [
+  {
+    name: "Home",
+    href: "/app/dashboard",
+    isEnabled: true,
+    icon: HomeIcon,
+    isCurrent: ({ pathname }) => {
+      return pathname?.includes("/dashboard") ?? false;
+    },
+  },
+
+  {
+    name: "Product Management",
+    href: "/app/product-management",
+    isEnabled: true,
+    icon: UserIcon,
+
+    isCurrent: ({ pathname }) => {
+      return pathname?.includes("/product-management") ?? false;
+    },
+  },
+
+  {
+    name: "Order Management",
+    href: "/app/order-management",
+    icon: OrderIcon,
+
+    isCurrent: ({ pathname }) => {
+      return pathname?.includes("/order-management") ?? false;
+    },
+  },
+  {
+    name: "Wallet Management",
+    href: "/app/wallet-management",
+    icon: WalletIcon,
+
+    isCurrent: ({ pathname }) => {
+      return pathname?.includes("/wallet-management") ?? false;
+    },
+  },
+  {
+    name: "Customer Support",
+    href: "/app/customer-support",
+    icon: CustomSupportIcon,
+
+    isCurrent: ({ pathname }) => {
+      return pathname?.includes("/customer-support") ?? false;
+    },
+  },
+
+  {
+    name: "Settings",
+    href: "/app/settings",
+    icon: TenantSettingsIcon,
+
+    isCurrent: ({ pathname }) => {
+      return pathname?.includes("/settings") ?? false;
+    },
+  },
+];
+
 const Shell = ({
   children,
   backPath,
@@ -167,9 +232,17 @@ const Shell = ({
   navigation?: NavigationItemType[];
   params: Params;
 }) => {
+  const { checkAccess } = useAuthorization();
   const router = useRouter();
+  const userProfile = useProfileStore((state) => state.userDetails);
 
-  navigation = ADMIN_NAVIGATION;
+  console.log("userProfile=>", userProfile.role, ROLES.TENANT);
+
+  navigation =
+    userProfile.role.toString().toLowerCase() ===
+    ROLES.TENANT.toString().toLowerCase()
+      ? TENANT_NAVIGATION
+      : ADMIN_NAVIGATION;
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
@@ -458,8 +531,11 @@ const adminBottonNavigation: NavigationItemType[] = [
 ];
 
 const Header = () => {
+  const userProfile = useProfileStore((state) => state.userDetails);
   const onSuccess = (response: unknown) => {
-    logoutHandler(ROLES.TENANT ? "/auth/tenant" : "/auth/login");
+    logoutHandler(
+      userProfile.role === ROLES.TENANT ? "/auth/tenant" : "/auth/login"
+    );
   };
   const logout = uselogout({ onSuccess });
   const logoutHandler = (url: string) => {

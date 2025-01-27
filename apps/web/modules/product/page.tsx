@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, CustomTabs, InputField, TabsNavigationItem } from "@buff/ui";
+import { Authorization } from "@lib/hooks/useAuthorization";
 import { ROLES } from "_types";
 import classNames from "classnames";
 import { SearchIcon } from "lucide-react";
@@ -151,100 +152,104 @@ export const ProductManagementPage = () => {
   ];
 
   return (
-    <div className="w-full">
-      <div className="w-full bg-[#202020] px-[4rem] rounded-tl-[12px] rounded-tr-[12px] py-[3rem]">
-        <div className="flex items-center w-full border-b border-[#848484] pb-[3rem]">
-          <div className="flex items-center w-full gap-[1.6rem]">
-            <div className="flex items-center gap-[1.8rem] mr-auto">
-              <div className="flex items-center gap-[1.8rem]  ">
-                <span>
-                  <svg
-                    width="24"
-                    height="25"
-                    viewBox="0 0 24 25"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+    <Authorization allowedRoles={[ROLES.TENANT]}>
+      <div className="w-full">
+        <div className="w-full bg-[#202020] px-[4rem] rounded-tl-[12px] rounded-tr-[12px] py-[3rem]">
+          <div className="flex items-center w-full border-b border-[#848484] pb-[3rem]">
+            <div className="flex items-center w-full gap-[1.6rem]">
+              <div className="flex items-center gap-[1.8rem] mr-auto">
+                <div className="flex items-center gap-[1.8rem]  ">
+                  <span>
+                    <svg
+                      width="24"
+                      height="25"
+                      viewBox="0 0 24 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M8 16.5H15.2632C19.7508 16.5 20.4333 13.6808 21.261 9.56908C21.4998 8.38311 21.6192 7.79013 21.3321 7.39507C21.045 7 20.4947 7 19.3941 7H6"
+                        stroke="#FFBE0A"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M8 16.5L5.37873 4.01493C5.15615 3.12459 4.35618 2.5 3.43845 2.5H2.5"
+                        stroke="#FFBE0A"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        d="M8.88 16.5H8.46857C7.10522 16.5 6 17.6513 6 19.0714C6 19.3081 6.1842 19.5 6.41143 19.5H17.5"
+                        stroke="#FFBE0A"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M10.5 22.5C11.3284 22.5 12 21.8284 12 21C12 20.1716 11.3284 19.5 10.5 19.5C9.67157 19.5 9 20.1716 9 21C9 21.8284 9.67157 22.5 10.5 22.5Z"
+                        stroke="#FFBE0A"
+                        stroke-width="1.5"
+                      />
+                      <path
+                        d="M17.5 22.5C18.3284 22.5 19 21.8284 19 21C19 20.1716 18.3284 19.5 17.5 19.5C16.6716 19.5 16 20.1716 16 21C16 21.8284 16.6716 22.5 17.5 22.5Z"
+                        stroke="#FFBE0A"
+                        stroke-width="1.5"
+                      />
+                    </svg>
+                  </span>
+                  <h3 className="text-white text-[2rem] leading-[2.7rem] font-medium">
+                    Product Management
+                  </h3>
+                </div>
+                <div className="w-[454px] flex h-[4rem]">
+                  <InputField
+                    placeholder="Search"
+                    className="w-full h-[4rem] border-none"
+                    inputContainer="bg-[#171717] border-none  rounded-none rounded-tl-[8px] rounded-bl-[8px]"
+                    prefixIcon={
+                      <SearchIcon className="h-[1.6rem] w-[1.6rem]" />
+                    }
+                  />
+                  <button
+                    type="button"
+                    className="px-[1.2rem] font-medium text-black text-[1.4rem] leading-[2.1rem] bg-brand-default h-full rounded-none rounded-tr-[8px] rounded-br-[8px]"
                   >
-                    <path
-                      d="M8 16.5H15.2632C19.7508 16.5 20.4333 13.6808 21.261 9.56908C21.4998 8.38311 21.6192 7.79013 21.3321 7.39507C21.045 7 20.4947 7 19.3941 7H6"
-                      stroke="#FFBE0A"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M8 16.5L5.37873 4.01493C5.15615 3.12459 4.35618 2.5 3.43845 2.5H2.5"
-                      stroke="#FFBE0A"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                    />
-                    <path
-                      d="M8.88 16.5H8.46857C7.10522 16.5 6 17.6513 6 19.0714C6 19.3081 6.1842 19.5 6.41143 19.5H17.5"
-                      stroke="#FFBE0A"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M10.5 22.5C11.3284 22.5 12 21.8284 12 21C12 20.1716 11.3284 19.5 10.5 19.5C9.67157 19.5 9 20.1716 9 21C9 21.8284 9.67157 22.5 10.5 22.5Z"
-                      stroke="#FFBE0A"
-                      stroke-width="1.5"
-                    />
-                    <path
-                      d="M17.5 22.5C18.3284 22.5 19 21.8284 19 21C19 20.1716 18.3284 19.5 17.5 19.5C16.6716 19.5 16 20.1716 16 21C16 21.8284 16.6716 22.5 17.5 22.5Z"
-                      stroke="#FFBE0A"
-                      stroke-width="1.5"
-                    />
-                  </svg>
-                </span>
-                <h3 className="text-white text-[2rem] leading-[2.7rem] font-medium">
-                  Product Management
-                </h3>
+                    Search
+                  </button>
+                </div>
               </div>
-              <div className="w-[454px] flex h-[4rem]">
-                <InputField
-                  placeholder="Search"
-                  className="w-full h-[4rem] border-none"
-                  inputContainer="bg-[#171717] border-none  rounded-none rounded-tl-[8px] rounded-bl-[8px]"
-                  prefixIcon={<SearchIcon className="h-[1.6rem] w-[1.6rem]" />}
-                />
-                <button
-                  type="button"
-                  className="px-[1.2rem] font-medium text-black text-[1.4rem] leading-[2.1rem] bg-brand-default h-full rounded-none rounded-tr-[8px] rounded-br-[8px]"
-                >
-                  Search
-                </button>
-              </div>
-            </div>
 
-            <div className="">
-              {(userProfile.role === ROLES.SUPERADMIN ||
-                userProfile.role === ROLES.ADMIN) && (
-                <Button
-                  href="/app/product-management/create"
-                  variant="danger"
-                  size="large"
-                  prefixIcon={<AiOutlinePlus />}
-                  className={classNames("rounded-[8px] h-[4rem]")}
-                >
-                  Add New Product
-                </Button>
-              )}
+              <div className="">
+                {(userProfile.role === ROLES.SUPERADMIN ||
+                  userProfile.role === ROLES.ADMIN) && (
+                  <Button
+                    href="/app/product-management/create"
+                    variant="danger"
+                    size="large"
+                    prefixIcon={<AiOutlinePlus />}
+                    className={classNames("rounded-[8px] h-[4rem]")}
+                  >
+                    Add New Product
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="w-full mt-[3.2rem]">
-        <div>
-          <CustomTabs
-            items={items}
-            defaultActiveKey="digital"
-            activeClassName="border-none text-left bg-[#848484] text-[#FFFFFF] "
-            tabItemClassName=" text-left  cursor-pointer  flex-1  items-center  py-[1.5rem]  overflow-hidden  "
-            headerClassName="bg-[#282828] mb-[2.4rem] rounded-[12px] leading-[2.1rem] overflow-hidden items-center   justify-center shadow-[0px_1px_2px_rgba(0, 0, 0, 0.08)] !w-1/2 "
-          />
+        <div className="w-full mt-[3.2rem]">
+          <div>
+            <CustomTabs
+              items={items}
+              defaultActiveKey="digital"
+              activeClassName="border-none text-left bg-[#848484] text-[#FFFFFF] "
+              tabItemClassName=" text-left  cursor-pointer  flex-1  items-center  py-[1.5rem]  overflow-hidden  "
+              headerClassName="bg-[#282828] mb-[2.4rem] rounded-[12px] leading-[2.1rem] overflow-hidden items-center   justify-center shadow-[0px_1px_2px_rgba(0, 0, 0, 0.08)] !w-1/2 "
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </Authorization>
   );
 };

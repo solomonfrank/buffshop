@@ -68,7 +68,7 @@ export const LoginForm = ({
       lastName: userData.lastName,
       email: userData.email,
       name: userData.name,
-      role: userData.role,
+      role: userData.role as ROLES,
     });
 
     const { exp } = jwtDecode(token);

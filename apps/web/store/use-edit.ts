@@ -1,3 +1,4 @@
+import { ROLES } from "_types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -6,7 +7,7 @@ type UserDetails = {
   lastName: string;
   email: string;
   name: string;
-  role: string;
+  role: ROLES;
 };
 interface UserInfo {
   userDetails: UserDetails;
@@ -21,7 +22,7 @@ export const useProfileStore = create<UserInfo>()(
           lastName: "",
           email: "",
           name: "",
-          role: "",
+          role: ROLES.TENANT,
         },
         updateUserDetail: (data) => set({ userDetails: data }),
       };

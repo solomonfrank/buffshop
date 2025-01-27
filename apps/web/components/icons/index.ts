@@ -11,3 +11,8 @@ export * from "./settings";
 export * from "./support";
 export * from "./ticket";
 export * from "./user-icon";
+
+export * from "./customer-support";
+export * from "./product";
+export * from "./tenant-settings";
+export * from "./wallet";
