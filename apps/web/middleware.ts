@@ -70,7 +70,7 @@ export default async function middleware(req: NextRequest) {
       }
       const { exp } = jwtDecode(token);
 
-      const currentTime = Math.floor(Date.now() / 1000);
+      const currentTime = Math.floor(Date.now());
 
       if (exp && exp < currentTime) {
         const response = NextResponse.next();

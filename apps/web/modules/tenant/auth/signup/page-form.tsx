@@ -134,7 +134,7 @@ export const SignupForm = ({
                 }}
                 type="password"
                 placeholder="Enter your password"
-                className="w-full p-4 rounded-lg text-[1rem] leading-[1.6rem] uppercase placeholder:capitalize  h-[4.8rem] placeholder:text-[14px]"
+                className="w-full p-4 rounded-lg text-[1rem] leading-[1.6rem]  placeholder:capitalize  h-[4.8rem] placeholder:text-[14px]"
                 {...register("password")}
               />
             </div>

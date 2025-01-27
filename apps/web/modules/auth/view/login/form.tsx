@@ -30,7 +30,13 @@ type FormValue = {
   password: string;
 };
 
-export const LoginForm = ({ showRememberMe }: { showRememberMe: boolean }) => {
+export const LoginForm = ({
+  showRememberMe,
+  role,
+}: {
+  showRememberMe: boolean;
+  role?: string;
+}) => {
   const [isChecked, setIsChecked] = useState<boolean | "indeterminate">(false);
 
   const router = useRouter();
@@ -135,7 +141,7 @@ export const LoginForm = ({ showRememberMe }: { showRememberMe: boolean }) => {
 
               <p className="text-right">
                 <Link
-                  href="/auth/forgot-password"
+                  href={`/auth/forgot-password?ref=${role}`}
                   className=" text-[#B8B8B8] uppercase  hover:text-[#B8B8B8] font-medium text-[1rem] leading-[16px] text-right"
                 >
                   FORGOT PASSWORD?

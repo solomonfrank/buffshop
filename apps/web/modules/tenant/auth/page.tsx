@@ -292,7 +292,7 @@ export const TenantAuthTab = () => {
         </div>
       ),
       key: "signin",
-      children: <LoginForm showRememberMe={true} />,
+      children: <LoginForm showRememberMe={true} role="tenant" />,
     },
   ];
 
@@ -313,7 +313,7 @@ export const TenantAuthTab = () => {
             }}
           />
           <div className="z-50 ml-[3.2rem] mt-[11.24%]">
-            <Link href="/auth/login">
+            <Link href="/auth/tenant">
               <Logo />
             </Link>
           </div>
