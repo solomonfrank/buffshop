@@ -20,7 +20,6 @@ export const DigitalProduct = ({ type = "physical" }: { type: string }) => {
     enabled: true,
   });
 
-  console.log("products=>", products.data);
   return (
     <div className="w-full">
       <div className="w-full">
