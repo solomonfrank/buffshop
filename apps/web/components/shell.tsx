@@ -635,7 +635,11 @@ const Header = () => {
         </span>
         <span
           onClick={() => {
-            logout.mutate(null);
+            //  logout.mutate(null);
+
+            logoutHandler(
+              userProfile.role === ROLES.TENANT ? "/auth/tenant" : "/auth/login"
+            );
           }}
         >
           <svg
