@@ -28,6 +28,7 @@ import {
   ProductInputSchema,
   useCreateProduct,
 } from "../api/create-product";
+import { SUBSCRIPTION_TYPE } from "../product-details";
 import CustomFileUpload, { FileWithPreview } from "./file-upload";
 
 export const CreateDigitalForm = () => {
@@ -41,6 +42,7 @@ export const CreateDigitalForm = () => {
     defaultValues: {
       discount: 50,
       files: [],
+      drmProtection: false,
     },
   });
   const previousValues = useRef<ProductCreationInput | null>(null);
@@ -135,16 +137,7 @@ export const CreateDigitalForm = () => {
                         <CustomSelect
                           name="subscription_type"
                           placeholder="Select Subscription Type"
-                          options={[
-                            {
-                              label: "Console Game",
-                              value: "category",
-                            },
-                            {
-                              label: "Console Game",
-                              value: "category1",
-                            },
-                          ]}
+                          options={SUBSCRIPTION_TYPE}
                           value={value}
                           onChange={(e) => {
                             onChange(e);
@@ -545,7 +538,7 @@ export const ProductFileUpload = () => {
 
   useEffect(() => {
     methods.setValue("files", copyfile, {
-      shouldValidate: true,
+      // shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });

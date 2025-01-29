@@ -8,6 +8,22 @@ import { useProfileStore } from "store/use-edit";
 import { ServerResponseType } from "~/auth/api/reset-password";
 import ReviewsComponent from "./components/review";
 
+export const SUBSCRIPTION_TYPE = [
+  {
+    label: "Monthly",
+    value: "monthly",
+  },
+  {
+    label: "1 Week",
+    value: "1 weeks",
+  },
+
+  {
+    label: "2 Week",
+    value: "1 weeks",
+  },
+];
+
 const ProductDetailsPage: React.FC = () => {
   const [accesses, setAccesses] = useState<string[]>(["1", "2", "3", "5", "6"]);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -203,16 +219,7 @@ const ProductDetailsPage: React.FC = () => {
               <CustomSelect
                 name="subscription_type"
                 placeholder="Immediately"
-                options={[
-                  {
-                    label: "Console Game",
-                    value: "category",
-                  },
-                  {
-                    label: "Console Game",
-                    value: "category1",
-                  },
-                ]}
+                options={SUBSCRIPTION_TYPE}
                 styles={{
                   menuList: (provided) => ({
                     ...provided,

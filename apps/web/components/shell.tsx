@@ -3,11 +3,17 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cloneElement, Fragment, ReactElement, ReactNode } from "react";
+import {
+  cloneElement,
+  Fragment,
+  ReactElement,
+  ReactNode,
+  useState,
+} from "react";
 import { IoMdSettings } from "react-icons/io";
 
 import { deleteCookie } from "@buff/lib";
-import { InputField, Logo, showToast } from "@buff/ui";
+import { Button, InputField, Loader, Logo, showToast } from "@buff/ui";
 import { useAuthorization } from "@lib/hooks/useAuthorization";
 import { Params, ROLES } from "_types";
 import { SearchIcon } from "lucide-react";
@@ -531,6 +537,7 @@ const adminBottonNavigation: NavigationItemType[] = [
 ];
 
 const Header = () => {
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const userProfile = useProfileStore((state) => state.userDetails);
   const onSuccess = (response: unknown) => {
     logoutHandler(
@@ -634,12 +641,13 @@ const Header = () => {
           </svg>
         </span>
         <span
+          className="cursor-pointer"
           onClick={() => {
+            setOpenConfirmModal(true);
             //  logout.mutate(null);
-
-            logoutHandler(
-              userProfile.role === ROLES.TENANT ? "/auth/tenant" : "/auth/login"
-            );
+            // logoutHandler(
+            //   userProfile.role === ROLES.TENANT ? "/auth/tenant" : "/auth/login"
+            // );
           }}
         >
           <svg
@@ -657,6 +665,93 @@ const Header = () => {
             />
           </svg>
         </span>
+      </div>
+
+      {openConfirmModal && (
+        <Loader
+          loading={openConfirmModal}
+          Message={() => (
+            <ConfirmLogoutModal
+              okText="Yes, Log Out"
+              title="Logging Out?"
+              isPending={logout.isPending}
+              closeModal={() => setOpenConfirmModal(false)}
+              okHandler={() => {
+                logout.mutate(null);
+              }}
+            />
+          )}
+        />
+      )}
+    </div>
+  );
+};
+
+export const ConfirmLogoutModal = ({
+  closeModal,
+  isPending,
+  okHandler,
+  okText = "Yes, Add Super Admin",
+  cancelText = "No, Cancel",
+  title = " Confirm New Super Admin",
+}: {
+  closeModal: () => void;
+  isPending: boolean;
+  okHandler: () => void;
+  okText?: string;
+  cancelText?: string;
+  title?: string;
+}) => {
+  return (
+    <div>
+      <div className=" border rounded-[8px] border-[#848484] flex flex-col gap-2 items-center justify-center bg-brand-black w-[29.9rem] h-[16.6rem]">
+        <svg
+          width="43"
+          height="42"
+          viewBox="0 0 43 42"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M26.75 30.8437C26.6212 34.0846 23.9204 36.8364 20.3023 36.7479C19.4606 36.7272 18.4202 36.4339 16.3395 35.847C11.3318 34.4344 6.98471 32.0605 5.94173 26.7426C5.75 25.7652 5.75 24.6652 5.75 22.4653V19.5347C5.75 17.3348 5.75 16.2348 5.94173 15.2573C6.98471 9.93938 11.3318 7.56553 16.3395 6.15305C18.4202 5.56612 19.4606 5.27266 20.3023 5.25208C23.9204 5.16356 26.6212 7.91537 26.75 11.1563"
+            stroke="#E12827"
+            stroke-width="2.625"
+            stroke-linecap="round"
+          />
+          <path
+            d="M37.25 21H18M37.25 21C37.25 19.7746 33.76 17.4852 32.875 16.625M37.25 21C37.25 22.2254 33.76 24.5149 32.875 25.375"
+            stroke="#E12827"
+            stroke-width="2.625"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+
+        <p className="text-center text-white text-[1.6rem] leading-[2.4rem] mb-[1.4rem]">
+          Logging Out?
+        </p>
+
+        <div className="flex gap-[1.9rem]">
+          <Button
+            type="button"
+            size="medium"
+            onClick={closeModal}
+            className=" font-medium leading-[1.8rem] text-[1.2rem]   bg-[848484] text-[#848484] rounded-[8px] w-[8.3rem] h-[3.4rem] border border-[#848484]"
+          >
+            {cancelText}
+          </Button>
+          <Button
+            type="button"
+            size="medium"
+            onClick={okHandler}
+            variant="danger"
+            loading={isPending}
+            disabled={isPending}
+            className=" font-medium leading-[1.8rem] text-[1.2rem]  rounded-[8px]  h-[3.4rem] border border-[#848484] bg-[#E12827]"
+          >
+            {okText}
+          </Button>
+        </div>
       </div>
     </div>
   );
