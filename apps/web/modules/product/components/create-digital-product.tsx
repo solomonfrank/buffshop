@@ -15,7 +15,12 @@ import { ErrorMessageProps } from "_types";
 import classNames from "classnames";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { Controller, FormProvider, useForm } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdOutlineWarning } from "react-icons/md";
 import {
@@ -38,6 +43,7 @@ export const CreateDigitalForm = () => {
       files: [],
     },
   });
+  const previousValues = useRef<ProductCreationInput | null>(null);
 
   const onSuccess = (response: unknown) => {
     showToast("Product created successfully", "success");
@@ -59,7 +65,14 @@ export const CreateDigitalForm = () => {
 
   const { register, handleSubmit, formState, watch } = methods;
 
-  console.log("wtagcgcgc", watch("files"));
+  const currentValues = watch();
+
+  // Track previous values
+  useEffect(() => {
+    previousValues.current = currentValues;
+  }, [currentValues]);
+
+  console.log("previousValues=>", previousValues.current);
 
   const onSubmit = (data: ProductCreationInput) => {
     console.log("ddddd", data);
@@ -329,7 +342,9 @@ export const CreateDigitalForm = () => {
                 />
               </div>
 
-              <div>
+              <ProductFileUpload />
+
+              {/* <div>
                 <Controller
                   control={methods.control}
                   name="price"
@@ -351,9 +366,10 @@ export const CreateDigitalForm = () => {
                                     "image/png",
                                     "image/gif",
                                   ]}
-                                  files={value}
+                                  files={copyfile}
                                   onFilesChange={(files) => {
-                                    onChange([...value, ...files]);
+                                    setCopyFile((prev) => [...prev, ...files]);
+                                    // onChange([...value, ...files]);
                                   }}
                                 />
                                 {formState?.errors.files?.message && (
@@ -374,7 +390,7 @@ export const CreateDigitalForm = () => {
                     </>
                   )}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -515,6 +531,66 @@ export const ConfirmModal = ({
           </Button>
         </div>
       </div>
+    </div>
+  );
+};
+
+export const ProductFileUpload = () => {
+  const methods = useFormContext();
+
+  const { formState } = methods;
+
+  const [copyfile, setCopyFile] = useState<FileWithPreview[]>([]);
+  console.log("copyfile", copyfile);
+
+  useEffect(() => {
+    methods.setValue("files", copyfile, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+  }, [copyfile.length]);
+
+  console.log("formState?.errors.files", formState?.errors.files);
+
+  return (
+    <div>
+      <Controller
+        control={methods.control}
+        name="files"
+        render={({ field: { value, onChange } }) => {
+          console.log("ddddvvvv", value);
+          return (
+            <>
+              <CustomFileUpload
+                maxFiles={3}
+                maxFileSize={25 * 1024 * 1024} // 25MB
+                allowedFileTypes={["image/jpeg", "image/png", "image/gif"]}
+                files={value}
+                onFilesChange={(files, isDelete) => {
+                  // handleFileUpload(files);
+
+                  console.log("files", files);
+
+                  if (isDelete) {
+                    setCopyFile(files);
+                  } else {
+                    setCopyFile((prev) => [...prev, ...files]);
+                  }
+                }}
+              />
+              {formState?.errors.files?.message && (
+                <div className="text-red-900 flex space-x-1 text-center text-[10px] mt-1">
+                  <span className="flex items-center">
+                    <MdOutlineWarning className="text-red-900 h-5 w-5" />
+                  </span>
+                  <span>{formState?.errors.files.message as string}</span>
+                </div>
+              )}
+            </>
+          );
+        }}
+      />
     </div>
   );
 };

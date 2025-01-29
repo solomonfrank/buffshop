@@ -8,7 +8,7 @@ interface FileUploadProps {
   maxFiles?: number;
   maxFileSize?: number; // in bytes
   allowedFileTypes?: string[];
-  onFilesChange?: (files: File[]) => void;
+  onFilesChange?: (files: File[], isDelete: boolean) => void;
   files: FileWithPreview[];
 }
 
@@ -51,7 +51,8 @@ const CustomFileUpload: React.FC<FileUploadProps> = ({
       );
 
     const updatedFiles = [...files, ...validFiles].slice(0, maxFiles);
-    onFilesChange?.(updatedFiles);
+    console.log("updatedFiles", updatedFiles, files);
+    onFilesChange?.(updatedFiles, false);
 
     setError(null);
   };
@@ -101,7 +102,7 @@ const CustomFileUpload: React.FC<FileUploadProps> = ({
   const removeFile = useCallback(
     (index: number): void => {
       const updatedFiles = files.filter((_, i) => i !== index);
-      onFilesChange?.(updatedFiles);
+      onFilesChange?.(updatedFiles, true);
     },
     [onFilesChange]
   );

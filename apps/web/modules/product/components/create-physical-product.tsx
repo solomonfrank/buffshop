@@ -21,7 +21,7 @@ import {
   ProductPhysicalInputSchema,
   useCreateProduct,
 } from "../api/create-product";
-import CustomFileUpload from "./file-upload";
+import { ProductFileUpload } from "./create-digital-product";
 
 export const CreatePhysicalForm = () => {
   const router = useRouter();
@@ -288,8 +288,9 @@ export const CreatePhysicalForm = () => {
                   )}
                 />
               </div>
+              <ProductFileUpload />
 
-              <div>
+              {/* <div>
                 <Controller
                   control={methods.control}
                   name="price"
@@ -331,7 +332,7 @@ export const CreatePhysicalForm = () => {
                     </>
                   )}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
