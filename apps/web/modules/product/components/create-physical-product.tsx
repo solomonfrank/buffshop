@@ -309,9 +309,8 @@ export const CreatePhysicalForm = () => {
                                   "image/png",
                                   "image/gif",
                                 ]}
-                                files={value || []}
+                                files={value}
                                 onFilesChange={(files) => {
-                                  console.log("files=>", files);
                                   onChange(files);
                                 }}
                               />

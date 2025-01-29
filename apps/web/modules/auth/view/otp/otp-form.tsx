@@ -34,6 +34,7 @@ export const OtpForm = () => {
 
   const { register, handleSubmit, formState } = methods;
   const email = searchParams.get("uemail") as string;
+  const role = searchParams.get("role") as string;
 
   const onSuccess = (response: ServerResponseType) => {
     const token = localStorage.getItem("accessToken");
@@ -41,6 +42,7 @@ export const OtpForm = () => {
     if (token) {
       const { exp } = jwtDecode(token);
       document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
+      document.cookie = `role=${role};path=/;max-age=${exp};SameSite=Lax;`;
       localStorage.removeItem("accessToken");
       router.replace(`/app/dashboard`);
     } else {

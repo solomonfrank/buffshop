@@ -197,8 +197,8 @@ const ProductDetailsPage: React.FC = () => {
         <div className="w-[33%]">
           <div className="mb-[2rem]">
             <>
-              <Label className="text-[1rem] leading-[16px] inline-block text-[#B8B8B8]">
-                PRODUCT ALERT
+              <Label className="text-[1rem] uppercase leading-[16px] inline-block text-[#B8B8B8]">
+                product notification alert
               </Label>
               <CustomSelect
                 name="subscription_type"

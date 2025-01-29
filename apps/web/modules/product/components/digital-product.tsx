@@ -4,8 +4,6 @@ import { useGetProducts } from "../api/get-product";
 import { NoRecord } from "./no-record";
 
 export const DigitalProduct = ({ type = "physical" }: { type: string }) => {
-  const [isEmpty, setIsEmpty] = useState(false);
-
   const [filter, setFilter] = useState({
     currentPage: "1",
     pageSize: "10",

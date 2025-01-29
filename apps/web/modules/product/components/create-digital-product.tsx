@@ -23,12 +23,13 @@ import {
   ProductInputSchema,
   useCreateProduct,
 } from "../api/create-product";
-import CustomFileUpload from "./file-upload";
+import CustomFileUpload, { FileWithPreview } from "./file-upload";
 
 export const CreateDigitalForm = () => {
   const router = useRouter();
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [image, setImage] = useState<string>();
+  const [copyfile, setCopyFile] = useState<FileWithPreview[]>([]);
   const methods = useForm<ProductCreationInput>({
     resolver: zodResolver(ProductInputSchema),
     mode: "onChange",
@@ -56,7 +57,9 @@ export const CreateDigitalForm = () => {
     onError,
   });
 
-  const { register, handleSubmit, formState } = methods;
+  const { register, handleSubmit, formState, watch } = methods;
+
+  console.log("wtagcgcgc", watch("files"));
 
   const onSubmit = (data: ProductCreationInput) => {
     console.log("ddddd", data);
@@ -336,34 +339,36 @@ export const CreateDigitalForm = () => {
                         <Controller
                           control={methods.control}
                           name="files"
-                          render={({ field: { value, onChange } }) => (
-                            <>
-                              <CustomFileUpload
-                                maxFiles={3}
-                                maxFileSize={25 * 1024 * 1024} // 25MB
-                                allowedFileTypes={[
-                                  "image/jpeg",
-                                  "image/png",
-                                  "image/gif",
-                                ]}
-                                files={value || []}
-                                onFilesChange={(files) => {
-                                  console.log("files=>", files);
-                                  onChange(files);
-                                }}
-                              />
-                              {formState?.errors.files?.message && (
-                                <div className="text-red-900 flex space-x-1 text-center text-[10px] mt-1">
-                                  <span className="flex items-center">
-                                    <MdOutlineWarning className="text-red-900 h-5 w-5" />
-                                  </span>
-                                  <span>
-                                    {formState?.errors.files?.message ?? ""}
-                                  </span>
-                                </div>
-                              )}
-                            </>
-                          )}
+                          render={({ field: { value, onChange } }) => {
+                            console.log("ddddvvvv", value);
+                            return (
+                              <>
+                                <CustomFileUpload
+                                  maxFiles={3}
+                                  maxFileSize={25 * 1024 * 1024} // 25MB
+                                  allowedFileTypes={[
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/gif",
+                                  ]}
+                                  files={value}
+                                  onFilesChange={(files) => {
+                                    onChange([...value, ...files]);
+                                  }}
+                                />
+                                {formState?.errors.files?.message && (
+                                  <div className="text-red-900 flex space-x-1 text-center text-[10px] mt-1">
+                                    <span className="flex items-center">
+                                      <MdOutlineWarning className="text-red-900 h-5 w-5" />
+                                    </span>
+                                    <span>
+                                      {formState?.errors.files?.message ?? ""}
+                                    </span>
+                                  </div>
+                                )}
+                              </>
+                            );
+                          }}
                         />
                       </div>
                     </>
