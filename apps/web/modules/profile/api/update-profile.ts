@@ -8,9 +8,10 @@ import {
 import { ErrorMessageProps, ServerResponse } from "_types";
 
 import { z } from "zod";
+import { LoginResponse } from "~/tenant/api/create-tenant";
 
 export const ProfileInputSchema = z.object({
-  address: z.string().min(3, "Contact Address is required"),
+  address: z.string().optional(),
   phone: z.string().min(1, "Phone number is required"),
   name: z.string().min(1, "Name is required"),
   email: z.string(),
@@ -18,26 +19,24 @@ export const ProfileInputSchema = z.object({
 
 export type ProfileUpdateInput = z.infer<typeof ProfileInputSchema>;
 
-export type TenantResponse = {
-  data: Record<string, string>;
-};
-
 export const updateProfileFn = (data: ProfileUpdateInput) => {
   const token = getCookie("accessToken");
 
-  return fetchJson<ServerResponse<TenantResponse>>(`${API_BASE_URL}/user`, {
+  const { email, ...rest } = data;
+
+  return fetchJson<ServerResponse<LoginResponse>>(`${API_BASE_URL}/user`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(rest),
   });
 };
 
 export const useUpdateProfile = (
   options?: Omit<
     UseMutationOptions<
-      ServerResponse<TenantResponse>,
+      ServerResponse<LoginResponse>,
       ErrorMessageProps,
       unknown
     >,

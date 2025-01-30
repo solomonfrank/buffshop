@@ -12,9 +12,9 @@ interface FileUploadProps {
   files: FileWithPreview[];
 }
 
-const DEFAULT_MAX_FILES = 3;
-const DEFAULT_MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
-const DEFAULT_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif"];
+export const DEFAULT_MAX_FILES = 3;
+export const DEFAULT_MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
+export const DEFAULT_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif"];
 
 const CustomFileUpload: React.FC<FileUploadProps> = ({
   maxFiles = DEFAULT_MAX_FILES,

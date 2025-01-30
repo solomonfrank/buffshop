@@ -40,7 +40,7 @@ export const CustomTabs = ({
     activeClassName
   );
   return (
-    <div className="w-full flex">
+    <div className="w-full">
       <div
         className={classNames(
           "w-full flex  text-[#848484] font-bold",

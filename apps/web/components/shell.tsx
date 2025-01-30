@@ -243,8 +243,7 @@ const Shell = ({
   const userProfile = useProfileStore((state) => state.userDetails);
 
   navigation =
-    userProfile.role.toString().toLowerCase() ===
-    ROLES.TENANT.toString().toLowerCase()
+    userProfile && userProfile.role === ROLES.TENANT
       ? TENANT_NAVIGATION
       : ADMIN_NAVIGATION;
 
@@ -424,55 +423,62 @@ const Sidebar = ({ navigation }: { navigation: NavigationItemType[] }) => {
           </div>
           <div className="mt-[4rem]">
             <div className="flex gap-[1.6rem] text-[#848484] items-center text-[1.6rem] leading-[2rem]">
-              <svg
-                width="42"
-                height="40"
-                viewBox="0 0 42 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <ellipse
-                  cx="20.5769"
-                  cy="20"
-                  rx="20.5769"
-                  ry="20"
-                  fill="#FFBE0A"
-                />
-                <ellipse
-                  cx="20.9726"
-                  cy="15"
-                  rx="7.51849"
-                  ry="7.30769"
-                  fill="white"
-                />
-                <mask
-                  id="mask0_196_56"
-                  // style="mask-type:luminance"
-                  style={{ maskType: "luminance" }}
-                  maskUnits="userSpaceOnUse"
-                  x="2"
-                  y="2"
-                  width="37"
-                  height="36"
+              {userProfile.image ? (
+                <figure className="w-[4.8rem] h-[4.8rem] rounded-full overflow-hidden">
+                  <img src={userProfile?.image} className="w-full h-full" />
+                </figure>
+              ) : (
+                <svg
+                  width="42"
+                  height="40"
+                  viewBox="0 0 42 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <ellipse
-                    cx="20.5767"
+                    cx="20.5769"
                     cy="20"
-                    rx="18.2027"
-                    ry="17.6923"
-                    fill="white"
+                    rx="20.5769"
+                    ry="20"
+                    fill="#FFBE0A"
                   />
-                </mask>
-                <g mask="url(#mask0_196_56)">
                   <ellipse
-                    cx="20.5762"
-                    cy="37.6924"
-                    rx="13.834"
-                    ry="13.4462"
+                    cx="20.9726"
+                    cy="15"
+                    rx="7.51849"
+                    ry="7.30769"
                     fill="white"
                   />
-                </g>
-              </svg>
+                  <mask
+                    id="mask0_196_56"
+                    // style="mask-type:luminance"
+                    style={{ maskType: "luminance" }}
+                    maskUnits="userSpaceOnUse"
+                    x="2"
+                    y="2"
+                    width="37"
+                    height="36"
+                  >
+                    <ellipse
+                      cx="20.5767"
+                      cy="20"
+                      rx="18.2027"
+                      ry="17.6923"
+                      fill="white"
+                    />
+                  </mask>
+                  <g mask="url(#mask0_196_56)">
+                    <ellipse
+                      cx="20.5762"
+                      cy="37.6924"
+                      rx="13.834"
+                      ry="13.4462"
+                      fill="white"
+                    />
+                  </g>
+                </svg>
+              )}
+
               <div
                 onClick={() => router.push("/app/profile?tab=information")}
                 className="cursor-pointer"
@@ -712,8 +718,6 @@ export const MenuItem: React.FC<{
     item,
     pathname: currentMenuItem,
   });
-
-  console.log("`currentMenuItem=>", currentMenuItem);
 
   return (
     <Fragment>

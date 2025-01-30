@@ -1,16 +1,21 @@
 "use client";
-import { Button, InputField, Label, NumberInput } from "@buff/ui";
+import { Button, InputField, Label, NumberInput, showToast } from "@buff/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { ErrorMessageProps } from "_types";
+import { ErrorMessageProps, ROLES, ServerResponse } from "_types";
 import classNames from "classnames";
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useProfileStore } from "store/use-edit";
 import { z } from "zod";
-import { ProfileInputSchema, ProfileUpdateInput } from "../api/update-profile";
+import { LoginResponse } from "~/tenant/api/create-tenant";
+import {
+  ProfileInputSchema,
+  ProfileUpdateInput,
+  useUpdateProfile,
+} from "../api/update-profile";
 
 export const loginScheme = z.object({
   password: z.string().trim().min(1, { message: "Password is required" }),
@@ -18,12 +23,10 @@ export const loginScheme = z.object({
 });
 
 export const EditProfileForm = () => {
-  const [isChecked, setIsChecked] = useState<boolean | "indeterminate">(false);
-
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams?.get("redirectTo");
+
   const updateUserDetail = useProfileStore((state) => state.updateUserDetail);
+  const userProfile = useProfileStore((state) => state.userDetails);
 
   const methods = useForm<ProfileUpdateInput>({
     resolver: zodResolver(ProfileInputSchema),
@@ -32,7 +35,38 @@ export const EditProfileForm = () => {
 
   const { register, handleSubmit, formState } = methods;
 
-  const onSubmit = (data: unknown) => {};
+  const onSuccess = (response: ServerResponse<LoginResponse>) => {
+    if (response.data) {
+      updateUserDetail({
+        ...userProfile,
+        firstName: response.data.name.split(" ")[0] || "",
+        lastName: response.data.name.split(" ")[1] || "",
+        name: response.data.name as string,
+        email: response.data.email as string,
+        role: response.data.role as ROLES,
+      });
+
+      showToast("Profile updated successfully", "success");
+    }
+  };
+
+  const onError = (errorResponse: any) => {
+    const serverError = JSON.parse(errorResponse.message);
+    showToast(serverError.message, "error");
+  };
+
+  const updateProfile = useUpdateProfile({ onSuccess, onError });
+
+  const onSubmit = (data: ProfileUpdateInput) => {
+    updateProfile.mutate(data);
+  };
+
+  useEffect(() => {
+    if (userProfile) {
+      methods.setValue("name", userProfile?.name ?? "");
+      methods.setValue("email", userProfile?.email ?? "");
+    }
+  }, [userProfile]);
 
   return (
     <FormProvider {...methods}>
@@ -48,7 +82,7 @@ export const EditProfileForm = () => {
                 name="phone"
                 render={({ field: { value, onChange } }) => (
                   <>
-                    <Label className="text-[1rem] leading-[16px] inline-block text-[#B8B8B8]">
+                    <Label className="text-[1rem] leading-[16px] inline-block text-[#B8B8B8] uppercase">
                       Phone Number
                     </Label>
                     <NumberInput
@@ -80,7 +114,7 @@ export const EditProfileForm = () => {
                       value={value}
                       name="name"
                       onChange={onChange}
-                      labelProps={{ className: "text-[#B8B8B8]" }}
+                      // labelProps={{ className: "text-[#B8B8B8], uppercase" }}
                       type="text"
                       placeholder="Enter fullname"
                       containerClassName="mb-3"
@@ -100,7 +134,7 @@ export const EditProfileForm = () => {
                     <InputField
                       label="Email"
                       name="email"
-                      labelProps={{ className: "text-[#B8B8B8]" }}
+                      labelProps={{ className: "text-[#B8B8B8] uppercase" }}
                       type="email"
                       readOnly
                       placeholder="Enter email address"
@@ -123,7 +157,7 @@ export const EditProfileForm = () => {
                     <InputField
                       label="contact address"
                       name="business_name"
-                      labelProps={{ className: "text-[#B8B8B8]" }}
+                      labelProps={{ className: "text-[#B8B8B8] uppercase" }}
                       type="text"
                       placeholder="Enter business name"
                       containerClassName="mb-3"
@@ -142,6 +176,8 @@ export const EditProfileForm = () => {
           type="submit"
           variant="danger"
           size="large"
+          disabled={updateProfile.isPending || !formState.isValid}
+          loading={updateProfile.isPending}
           prefixIcon={
             <svg
               width="21"
@@ -170,14 +206,12 @@ export const EditProfileForm = () => {
             formState.isValid
               ? "bg-brand-default text-brand hover:bg-brand-default opacity-100 "
               : "cursor-not-allowed",
-            "w-full"
-            // login.isPending && "opacity-60"
+            "w-full",
+            updateProfile.isPending && "opacity-60"
           )}
         >
           Edit Details
         </Button>
-
-        {/* {login.isPending && <Loader loading={login.isPending} />} */}
       </form>
     </FormProvider>
   );

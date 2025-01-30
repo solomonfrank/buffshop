@@ -56,7 +56,6 @@ export const CreatePhysicalForm = () => {
   const { handleSubmit, formState } = methods;
 
   const onSubmit = (data: PhysicalProductCreationInput) => {
-    console.log("ddddd", data);
     setOpenConfirmModal(true);
 
     // login.mutate(payload);
