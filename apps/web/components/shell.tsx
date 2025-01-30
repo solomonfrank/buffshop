@@ -2,7 +2,7 @@
 
 import classNames from "classnames";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   cloneElement,
   Fragment,
@@ -242,8 +242,6 @@ const Shell = ({
   const router = useRouter();
   const userProfile = useProfileStore((state) => state.userDetails);
 
-  console.log("userProfile=>", userProfile.role, ROLES.TENANT);
-
   navigation =
     userProfile.role.toString().toLowerCase() ===
     ROLES.TENANT.toString().toLowerCase()
@@ -319,7 +317,7 @@ const defaultIsCurrent: NavigationItemType["isCurrent"] = ({
       : false;
 };
 
-const NavigationItem: React.FC<{
+export const NavigationItem: React.FC<{
   index?: number;
   item: NavigationItemType;
   isChild?: boolean;
@@ -372,7 +370,11 @@ const NavigationItem: React.FC<{
   );
 };
 
-const Navigation = ({ navigation }: { navigation: NavigationItemType[] }) => {
+export const Navigation = ({
+  navigation,
+}: {
+  navigation: NavigationItemType[];
+}) => {
   const { desktopNavigationItems } = getDesktopNavigationItems(navigation);
 
   navigation = adminBottonNavigation;
@@ -395,6 +397,8 @@ const Navigation = ({ navigation }: { navigation: NavigationItemType[] }) => {
 
 const Sidebar = ({ navigation }: { navigation: NavigationItemType[] }) => {
   const userProfile = useProfileStore((state) => state.userDetails);
+
+  const router = useRouter();
   return (
     <div className="relative max-h-screen ">
       <aside className="border-[#4E4848] lg:pb-[6rem] vms-scrollbar border-r bg-[#202020]  hidden h-full  w-14 flex-col overflow-y-auto overflow-x-hidden  md:sticky md:flex lg:w-[33.6rem] lg:pl-[32px] lg:pr-[2rem] lg:pt-[3.2rem]">
@@ -469,7 +473,10 @@ const Sidebar = ({ navigation }: { navigation: NavigationItemType[] }) => {
                   />
                 </g>
               </svg>
-              <div>
+              <div
+                onClick={() => router.push("/app/profile?tab=information")}
+                className="cursor-pointer"
+              >
                 <h3 className="text-[#FFFFFF] text-[1.6rem] leading-[2rem]">
                   {`${userProfile?.name}`}
                 </h3>
@@ -507,6 +514,7 @@ export type NavigationItemType = {
   onlyMobile?: boolean;
   onlyDesktop?: boolean;
   isEnabled?: boolean;
+  defaultKey?: string;
   isCurrent?: ({
     item,
     isChild,
@@ -684,6 +692,69 @@ const Header = () => {
         />
       )}
     </div>
+  );
+};
+
+export const MenuItem: React.FC<{
+  index?: number;
+  item: NavigationItemType;
+  isChild?: boolean;
+}> = (props) => {
+  const { item, isChild } = props;
+  const query = useSearchParams();
+  const pathname = usePathname();
+  const currentMenuItem = query.get("tab") || item?.defaultKey || "";
+
+  const isCurrent: NavigationItemType["isCurrent"] =
+    item.isCurrent || defaultIsCurrent;
+  const current = isCurrent({
+    isChild: !!isChild,
+    item,
+    pathname: currentMenuItem,
+  });
+
+  console.log("`currentMenuItem=>", currentMenuItem);
+
+  return (
+    <Fragment>
+      <Link
+        data-test-id={item.name}
+        href={item.href}
+        aria-label={item.name}
+        target={item.target}
+        onClick={(e) => {
+          if (!item.isEnabled) {
+            showToast("Not yet available.", "warning");
+            e.preventDefault();
+          }
+        }}
+        className={classNames(
+          "text-[#848484] mb-[1.2rem] group leading-[1.8rem] flex items-center rounded-md  px-2  text-[1.2rem] h-[2rem] font-medium transition"
+        )}
+        aria-current={current ? "page" : undefined}
+      >
+        {item.icon && (
+          <item.icon
+            className={classNames(
+              `mr-2 lg:mr-[1.8rem] h-[1.6rem] w-[1.6rem] transition flex-shrink-0 `,
+              "[&[aria-current='page']]:text-default"
+            )}
+            aria-hidden="true"
+            aria-current={current ? "page" : undefined}
+          />
+        )}
+
+        <span
+          className={classNames(
+            "hidden w-full justify-between truncate text-ellipsis lg:flex text-[#B8B8B8] ",
+            current && "text-default"
+          )}
+          data-testid={`${item.name}-test`}
+        >
+          {item.name}
+        </span>
+      </Link>
+    </Fragment>
   );
 };
 

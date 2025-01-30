@@ -18,6 +18,7 @@ export type CustomTabsProps = {
   tabPanelClassName?: string;
   activeClassName?: string;
   tabItemClassName?: string;
+  direction?: "horizontal" | "vertical";
 };
 
 export const CustomTabs = ({
@@ -30,6 +31,8 @@ export const CustomTabs = ({
 }: CustomTabsProps) => {
   const [selected, setSelected] = useState(defaultActiveKey);
 
+  const container = classNames("");
+
   const selectedTab = items.find((item) => item.key == selected);
 
   const activeClasses = classNames(
@@ -37,7 +40,7 @@ export const CustomTabs = ({
     activeClassName
   );
   return (
-    <div className="w-full">
+    <div className="w-full flex">
       <div
         className={classNames(
           "w-full flex  text-[#848484] font-bold",

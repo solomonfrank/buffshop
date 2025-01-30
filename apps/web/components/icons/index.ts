@@ -13,6 +13,13 @@ export * from "./ticket";
 export * from "./user-icon";
 
 export * from "./customer-support";
+export * from "./notification-mgt";
+export * from "./payment";
 export * from "./product";
+export * from "./product-mgt";
+export * from "./security";
+export * from "./store";
 export * from "./tenant-settings";
 export * from "./wallet";
+
+export * from "./2fa";
