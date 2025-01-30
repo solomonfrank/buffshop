@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { CreateDigitalForm } from "./components/create-digital-product";
 import { CreatePhysicalForm } from "./components/create-physical-product";
 
-export const CreateProduct = () => {
+export const CreateProduct = ({
+  title = "Add New Product",
+}: {
+  title?: string;
+}) => {
   const router = useRouter();
 
   const items: TabsNavigationItem = [
@@ -175,7 +179,7 @@ export const CreateProduct = () => {
           </svg>
         </span>
         <h3 className="text-white text-[2.7rem] leading-[3.2rem] font-bold">
-          Add New Product
+          {title}
         </h3>
       </div>
 

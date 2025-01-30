@@ -52,6 +52,7 @@ export type ProductProps = {
   subscription_type: string;
   createdAt: string;
   updatedAt: string;
+  discount: string;
   images: Record<string, string>[];
 };
 
