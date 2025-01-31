@@ -198,6 +198,7 @@ const TENANT_NAVIGATION: NavigationItemType[] = [
   {
     name: "Wallet Management",
     href: "/app/wallet-management",
+    isEnabled: true,
     icon: WalletIcon,
 
     isCurrent: ({ pathname }) => {

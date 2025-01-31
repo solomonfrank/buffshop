@@ -22,6 +22,13 @@ const options = [
   { id: "deactive", label: "Deactive", value: "deactive" },
 ];
 
+export const TRANSACTION_OPTIONS = [
+  { id: "all", label: "All", value: "all" },
+  { id: "completed", label: "Completed", value: "completed" },
+  { id: "pending", label: "Pending", value: "pending" },
+  { id: "failed", label: "Failed", value: "failed" },
+];
+
 export type TableProps<Entry> = {
   data: Entry[];
   columns: TableColumn<Entry>[];
@@ -39,7 +46,12 @@ export type TableProps<Entry> = {
   showSearchField?: boolean;
   onSearchField?: (searchPhrase: string) => void;
   filterChildren?: () => JSX.Element;
-  filterFields?: { label: string; required: boolean; key: string }[];
+  filterFields?: {
+    label: string;
+    // required: boolean;
+    id: string;
+    value: string;
+  }[];
 };
 
 export const Table = <Entry extends { id: string }>({
@@ -55,7 +67,7 @@ export const Table = <Entry extends { id: string }>({
   showFilter,
   thClassName,
   tdClassName,
-  filterFields,
+  filterFields = options,
   setFiltered,
   onSearchField,
   showSearchField,
@@ -155,7 +167,7 @@ export const Table = <Entry extends { id: string }>({
         <h3 className="font-medium text-[1.4rem] leading-[21px]">Show only:</h3>
         <div>
           <CustomRadio
-            options={options}
+            options={filterFields}
             defaultValue="All"
             value="all"
             // value={value}
