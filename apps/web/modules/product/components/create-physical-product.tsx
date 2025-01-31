@@ -21,9 +21,15 @@ import {
   ProductPhysicalInputSchema,
   useCreateProduct,
 } from "../api/create-product";
+import { ProductProps } from "../api/get-product";
+import { useUpdateProduct } from "../api/update-product";
 import { ProductFileUpload } from "./create-digital-product";
 
-export const CreatePhysicalForm = () => {
+export const CreatePhysicalForm = ({
+  defaultValue,
+}: {
+  defaultValue?: ProductProps;
+}) => {
   const router = useRouter();
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const methods = useForm<PhysicalProductCreationInput>({
@@ -34,9 +40,13 @@ export const CreatePhysicalForm = () => {
       files: [],
     },
   });
-
   const onSuccess = (response: unknown) => {
-    showToast("Product created successfully", "success");
+    showToast(
+      defaultValue
+        ? "Product updated successfully"
+        : "Product created successfully",
+      "success"
+    );
     setOpenConfirmModal(false);
     router.replace(`/app/product-management`);
   };
@@ -49,6 +59,11 @@ export const CreatePhysicalForm = () => {
   };
 
   const product = useCreateProduct({
+    onSuccess,
+    onError,
+  });
+
+  const updateProduct = useUpdateProduct({
     onSuccess,
     onError,
   });
@@ -70,8 +85,39 @@ export const CreatePhysicalForm = () => {
       product_type: "physical",
     };
 
-    product.mutate(payload);
+    if (defaultValue) {
+      const req = {
+        id: defaultValue.id,
+        payload,
+      };
+      updateProduct.mutate(req);
+    } else {
+      product.mutate(payload);
+    }
   };
+
+  useEffect(() => {
+    console.log("defaultValue", defaultValue);
+    if (defaultValue) {
+      const {
+        name,
+        price,
+        description,
+        discount,
+        pickup_location,
+        number_of_products,
+        // drmProtection,
+        images,
+      } = defaultValue;
+      methods.setValue("name", name);
+      methods.setValue("price", `${price}`);
+      methods.setValue("number_of_products", number_of_products);
+      methods.setValue("pickup_location", pickup_location);
+      methods.setValue("description", description);
+      methods.setValue("discount", Number(discount || 0));
+      // methods.setValue("drmProtection", drmProtection);
+    }
+  }, [defaultValue]);
 
   return (
     <FormProvider {...methods}>
@@ -287,7 +333,7 @@ export const CreatePhysicalForm = () => {
                   )}
                 />
               </div>
-              <ProductFileUpload />
+              <ProductFileUpload defaultFiles={defaultValue?.images} />
 
               {/* <div>
                 <Controller
@@ -347,10 +393,11 @@ export const CreatePhysicalForm = () => {
               formState.isValid
                 ? "bg-brand-default text-brand hover:bg-brand-default opacity-100 "
                 : "cursor-not-allowed",
-              "w-[23.9rem]"
+              "w-[23.9rem]",
+              (product.isPending || updateProduct.isPending) && "opacity-60"
             )}
           >
-            Add Product
+            {defaultValue ? "Update Product" : " Add Product"}
           </Button>
         </div>
 
@@ -359,7 +406,13 @@ export const CreatePhysicalForm = () => {
             loading={openConfirmModal}
             Message={() => (
               <ConfirmModal
-                isPending={product.isPending}
+                okText={
+                  defaultValue ? "Yes, Update Product" : "Yes, Create Product"
+                }
+                title={defaultValue ? "Update Product" : "Add New Product"}
+                isPending={
+                  defaultValue ? updateProduct.isPending : product.isPending
+                }
                 closeModal={() => setOpenConfirmModal(false)}
                 okHandler={submitHandler}
               />

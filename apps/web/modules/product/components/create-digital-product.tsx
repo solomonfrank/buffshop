@@ -28,14 +28,20 @@ import {
   ProductInputSchema,
   useCreateProduct,
 } from "../api/create-product";
+import { ProductProps } from "../api/get-product";
+import { useUpdateProduct } from "../api/update-product";
 import { SUBSCRIPTION_TYPE } from "../product-details";
 import CustomFileUpload, { FileWithPreview } from "./file-upload";
 
-export const CreateDigitalForm = () => {
+export const CreateDigitalForm = ({
+  defaultValue,
+}: {
+  defaultValue?: ProductProps;
+}) => {
   const router = useRouter();
+
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [image, setImage] = useState<string>();
-  const [copyfile, setCopyFile] = useState<FileWithPreview[]>([]);
+
   const methods = useForm<ProductCreationInput>({
     resolver: zodResolver(ProductInputSchema),
     mode: "onChange",
@@ -45,10 +51,37 @@ export const CreateDigitalForm = () => {
       drmProtection: false,
     },
   });
-  const previousValues = useRef<ProductCreationInput | null>(null);
+
+  useEffect(() => {
+    if (defaultValue) {
+      const {
+        name,
+        price,
+        description,
+        discount,
+        subscription_type,
+        // drmProtection,
+        images,
+      } = defaultValue;
+      methods.setValue("name", name);
+      methods.setValue("price", `${price}`);
+      methods.setValue("description", description);
+      methods.setValue("discount", Number(discount || 0));
+      methods.setValue("subscription_type", {
+        label: subscription_type,
+        value: subscription_type,
+      });
+      // methods.setValue("drmProtection", drmProtection);
+    }
+  }, [defaultValue]);
 
   const onSuccess = (response: unknown) => {
-    showToast("Product created successfully", "success");
+    showToast(
+      defaultValue
+        ? "Product updated successfully"
+        : "Product created successfully",
+      "success"
+    );
     setOpenConfirmModal(false);
     router.replace(`/app/product-management`);
   };
@@ -65,19 +98,16 @@ export const CreateDigitalForm = () => {
     onError,
   });
 
+  const updateProduct = useUpdateProduct({
+    onSuccess,
+    onError,
+  });
+
   const { register, handleSubmit, formState, watch } = methods;
 
   const currentValues = watch();
 
-  // Track previous values
-  useEffect(() => {
-    previousValues.current = currentValues;
-  }, [currentValues]);
-
-  console.log("previousValues=>", previousValues.current);
-
   const onSubmit = (data: ProductCreationInput) => {
-    console.log("ddddd", data);
     setOpenConfirmModal(true);
 
     // login.mutate(payload);
@@ -92,7 +122,15 @@ export const CreateDigitalForm = () => {
       product_type: "digital",
     };
 
-    product.mutate(payload);
+    if (defaultValue) {
+      const req = {
+        id: defaultValue.id,
+        payload,
+      };
+      updateProduct.mutate(req);
+    } else {
+      product.mutate(payload);
+    }
   };
   return (
     <FormProvider {...methods}>
@@ -335,7 +373,7 @@ export const CreateDigitalForm = () => {
                 />
               </div>
 
-              <ProductFileUpload />
+              <ProductFileUpload defaultFiles={defaultValue?.images} />
 
               {/* <div>
                 <Controller
@@ -399,10 +437,11 @@ export const CreateDigitalForm = () => {
               formState.isValid
                 ? "bg-brand-default text-brand hover:bg-brand-default opacity-100 "
                 : "cursor-not-allowed",
-              "w-[23.9rem]"
+              "w-[23.9rem]",
+              (product.isPending || updateProduct.isPending) && "opacity-60"
             )}
           >
-            Add Product
+            {defaultValue ? "Update Product" : " Add Product"}
           </Button>
         </div>
 
@@ -411,7 +450,13 @@ export const CreateDigitalForm = () => {
             loading={openConfirmModal}
             Message={() => (
               <ConfirmModal
-                isPending={product.isPending}
+                okText={
+                  defaultValue ? "Yes, Update Product" : "Yes, Create Product"
+                }
+                title={defaultValue ? "Update Product" : "Add New Product"}
+                isPending={
+                  defaultValue ? updateProduct.isPending : product.isPending
+                }
                 closeModal={() => setOpenConfirmModal(false)}
                 okHandler={submitHandler}
               />
@@ -528,13 +573,18 @@ export const ConfirmModal = ({
   );
 };
 
-export const ProductFileUpload = () => {
+export const ProductFileUpload = ({
+  defaultFiles,
+}: {
+  defaultFiles?: FileWithPreview[];
+}) => {
   const methods = useFormContext();
 
   const { formState } = methods;
 
-  const [copyfile, setCopyFile] = useState<FileWithPreview[]>([]);
-  console.log("copyfile", copyfile);
+  const [copyfile, setCopyFile] = useState<FileWithPreview[]>(
+    () => defaultFiles ?? []
+  );
 
   useEffect(() => {
     methods.setValue("files", copyfile, {
@@ -544,7 +594,13 @@ export const ProductFileUpload = () => {
     });
   }, [copyfile.length]);
 
-  console.log("formState?.errors.files", formState?.errors.files);
+  useEffect(() => {
+    if (defaultFiles) {
+      methods.reset({
+        files: defaultFiles,
+      });
+    }
+  }, [defaultFiles]);
 
   return (
     <div>
@@ -552,7 +608,6 @@ export const ProductFileUpload = () => {
         control={methods.control}
         name="files"
         render={({ field: { value, onChange } }) => {
-          console.log("ddddvvvv", value);
           return (
             <>
               <CustomFileUpload
@@ -563,7 +618,11 @@ export const ProductFileUpload = () => {
                 onFilesChange={(files, isDelete) => {
                   // handleFileUpload(files);
 
-                  console.log("files", files);
+                  methods.setValue("files", copyfile, {
+                    // shouldValidate: true,
+                    shouldDirty: true,
+                    shouldTouch: true,
+                  });
 
                   if (isDelete) {
                     setCopyFile(files);

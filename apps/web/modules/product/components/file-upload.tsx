@@ -1,8 +1,15 @@
+import { File } from "buffer";
 import React, { useCallback, useState } from "react";
 
 export interface FileWithPreview extends File {
-  preview?: string;
+  // preview?: string;
+  image?: string;
 }
+
+export type FileWithPreviewType = {
+  preview?: string;
+  file: File | null;
+};
 
 interface FileUploadProps {
   maxFiles?: number;
@@ -42,11 +49,11 @@ const CustomFileUpload: React.FC<FileUploadProps> = ({
   };
 
   const handleFiles = (newFiles: FileList | File[]): void => {
-    const validFiles = Array.from(newFiles)
+    const validFiles = Array.from(newFiles as File[])
       .filter(validateFile)
       .map((file: File) =>
         Object.assign(file, {
-          preview: URL.createObjectURL(file),
+          image: URL.createObjectURL(file as Blob),
         })
       );
 
@@ -111,8 +118,8 @@ const CustomFileUpload: React.FC<FileUploadProps> = ({
     return () => {
       // Cleanup previews on unmount
       files.forEach((file) => {
-        if (file.preview) {
-          URL.revokeObjectURL(file.preview);
+        if (file.image) {
+          URL.revokeObjectURL(file.image);
         }
       });
     };
@@ -176,7 +183,7 @@ const CustomFileUpload: React.FC<FileUploadProps> = ({
               className="relative aspect-square rounded-lg overflow-hidden"
             >
               <img
-                src={file.preview}
+                src={file.image}
                 alt={`Upload ${index + 1}`}
                 className="w-full h-full object-cover"
               />

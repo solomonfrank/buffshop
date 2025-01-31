@@ -5,9 +5,15 @@ import {
   UseMutationOptions,
   useQueryClient,
 } from "@tanstack/react-query";
-import { ErrorMessageProps, ServerResponse } from "_types";
+import { ErrorMessageProps } from "_types";
 
 import { z } from "zod";
+import { ServerResponseType } from "~/auth/api/reset-password";
+
+export interface FileWithPreview extends File {
+  preview?: string;
+  image?: string;
+}
 
 export const ProductInputSchema = z.object({
   name: z.string().min(3, "Product name is required"),
@@ -69,14 +75,23 @@ export const ProductPhysicalInputSchema = z.object({
     }, "Total size must not exceed 50MB"),
 });
 
+export const UpdateProductInputSchema = z.object({
+  name: z.string().min(3, "Product name is required"),
+  price: z.string().min(1, "Price is required"),
+  discount: z.number().min(0, "Discount required"),
+  description: z.string().min(1, "Description is required"),
+  files: z.array(z.instanceof(File)).optional(),
+  drmProtection: z.boolean(),
+  subscription_type: z.object({
+    label: z.string(),
+    value: z.string(),
+  }),
+});
+
 export type ProductCreationInput = z.infer<typeof ProductInputSchema>;
 export type PhysicalProductCreationInput = z.infer<
   typeof ProductPhysicalInputSchema
 >;
-
-export type TenantResponse = {
-  data: Record<string, string>;
-};
 
 export const createProductFn = (
   data: ProductCreationInput | PhysicalProductCreationInput
@@ -107,7 +122,7 @@ export const createProductFn = (
       }
     }
   });
-  return fetchJson<ServerResponse<TenantResponse>>(`${API_BASE_URL}/product`, {
+  return fetchJson<ServerResponseType>(`${API_BASE_URL}/product`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
@@ -118,11 +133,7 @@ export const createProductFn = (
 
 export const useCreateProduct = (
   options?: Omit<
-    UseMutationOptions<
-      ServerResponse<TenantResponse>,
-      ErrorMessageProps,
-      unknown
-    >,
+    UseMutationOptions<ServerResponseType, ErrorMessageProps, unknown>,
     "mutationFn"
   >
 ) => {

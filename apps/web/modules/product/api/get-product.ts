@@ -2,6 +2,7 @@ import { fetchJson, getCookie } from "@buff/lib";
 import { API_BASE_URL } from "@config/constant";
 import { useQuery } from "@tanstack/react-query";
 import { ServerResponse } from "_types";
+import { FileWithPreview } from "../components/file-upload";
 
 export const getProductHandler = async (
   req: Record<string, string>
@@ -53,7 +54,7 @@ export type ProductProps = {
   createdAt: string;
   updatedAt: string;
   discount: string;
-  images: Record<string, string>[];
+  images: FileWithPreview[];
 };
 
 export const useGetProducts = ({ filter, enabled }: queryConfigOption) => {

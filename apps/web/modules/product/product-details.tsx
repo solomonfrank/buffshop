@@ -59,7 +59,7 @@ const ProductDetailsPage: React.FC = () => {
     setOpenConfirmModal(false);
     showToast(response.message, "success");
     queryClient.invalidateQueries({ queryKey: ["products"] });
-    router.push("/app/products");
+    router.push("/app/product-management");
 
     return;
   };
@@ -467,7 +467,9 @@ const ProductDetailsPage: React.FC = () => {
 
             <button
               onClick={() =>
-                router.push(`/app/product-management/${productDetails.id}/edit`)
+                router.push(
+                  `/app/product-management/${productDetails.name}/edit`
+                )
               }
               className="bg-[#FFBE0A] text-[#171717] py-[12px] px-[37px] rounded-[8px] flex items-center space-x-2"
             >

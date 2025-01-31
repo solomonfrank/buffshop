@@ -2,7 +2,8 @@
 
 import { CustomTabs, TabsNavigationItem } from "@buff/ui";
 import classNames from "classnames";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useGetProducts } from "./api/get-product";
 import { CreateDigitalForm } from "./components/create-digital-product";
 import { CreatePhysicalForm } from "./components/create-physical-product";
 
@@ -12,6 +13,18 @@ export const CreateProduct = ({
   title?: string;
 }) => {
   const router = useRouter();
+  const { id } = useParams()!;
+  const products = useGetProducts({
+    filter: {
+      PageNumber: `1`,
+      PageSize: `10`,
+      name: id as string,
+    },
+    enabled: Boolean(id),
+  });
+
+  console.log("products", products.data);
+  const product = products.data?.[0];
 
   const items: TabsNavigationItem = [
     {
@@ -93,7 +106,7 @@ export const CreateProduct = ({
         </div>
       ),
       key: "digital",
-      children: <CreateDigitalForm />,
+      children: <CreateDigitalForm defaultValue={product} />,
     },
 
     {
@@ -148,7 +161,7 @@ export const CreateProduct = ({
         </div>
       ),
       key: "physical",
-      children: <CreatePhysicalForm />,
+      children: <CreatePhysicalForm defaultValue={product} />,
     },
   ];
   return (
