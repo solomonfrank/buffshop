@@ -45,7 +45,7 @@ export type LoginResponse = {
   otp?: string;
   role: string;
   name: string;
-  image: string;
+  image?: string;
 };
 
 export const useLogin = (

@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
-import { LoginServerResponse } from "~/auth/api/login";
+import { ServerResponseType } from "~/auth/api/reset-password";
 import {
   createAdminInput,
   createAdminInputSchema,
@@ -39,7 +39,7 @@ export const CreateAdminForm = () => {
 
   const { register, handleSubmit, formState } = methods;
 
-  const onSuccess = (response: LoginServerResponse) => {
+  const onSuccess = (response: ServerResponseType) => {
     showToast("Admin created successfully", "success");
     router.replace(`/app/super-admin-management`);
   };

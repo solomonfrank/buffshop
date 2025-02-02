@@ -7,6 +7,7 @@ import {
 import { z } from "zod";
 
 import { API_BASE_URL } from "@config/constant";
+import { ServerResponseType } from "~/auth/api/reset-password";
 
 export const createTenantInputSchema = z.object({
   phone: z.string().trim().min(1, { message: "Phone number is required" }),
@@ -31,7 +32,7 @@ export type createTenantInput = z.infer<typeof createTenantInputSchema>;
 
 export const createATenantFn = (data: createTenantInput) => {
   const token = getCookie("accessToken");
-  return fetchJson<LoginServerResponse>(`${API_BASE_URL}/user/admin/tenant`, {
+  return fetchJson<ServerResponseType>(`${API_BASE_URL}/user/admin/tenant`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -68,7 +69,7 @@ export type LoginResponse = {
 
 export const useCreateTenant = (
   options?: Omit<
-    UseMutationOptions<LoginServerResponse, Error, unknown>,
+    UseMutationOptions<ServerResponseType, Error, unknown>,
     "mutationFn"
   >
 ) => {

@@ -3,6 +3,7 @@ import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 
 import { API_BASE_URL } from "@config/constant";
+import { ServerResponseType } from "~/auth/api/reset-password";
 
 export const createAdminInputSchema = z.object({
   password: z.string().trim().min(1, { message: "Password is required" }),
@@ -23,7 +24,7 @@ export type createAdminInput = z.infer<typeof createAdminInputSchema>;
 
 export const createAdminFn = (data: createAdminInput) => {
   const token = getCookie("accessToken");
-  return fetchJson<LoginServerResponse>(`${API_BASE_URL}/user/admin`, {
+  return fetchJson<ServerResponseType>(`${API_BASE_URL}/user/admin`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +60,7 @@ export type LoginResponse = {
 
 export const useCreateAdmin = (
   options?: Omit<
-    UseMutationOptions<LoginServerResponse, Error, unknown>,
+    UseMutationOptions<ServerResponseType, Error, unknown>,
     "mutationFn"
   >
 ) => {

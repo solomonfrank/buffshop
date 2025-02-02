@@ -15,7 +15,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
-import { LoginServerResponse } from "~/auth/api/login";
+import { ServerResponseType } from "~/auth/api/reset-password";
 import {
   createTenantInput,
   createTenantInputSchema,
@@ -33,7 +33,7 @@ export const CreateTenantForm = () => {
 
   const { register, handleSubmit, formState } = methods;
 
-  const onSuccess = (response: LoginServerResponse) => {
+  const onSuccess = (response: ServerResponseType) => {
     showToast("Admin created successfully", "success");
     router.replace(`/app/tenant-management`);
   };
