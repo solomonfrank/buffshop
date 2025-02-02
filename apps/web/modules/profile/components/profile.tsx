@@ -1,16 +1,20 @@
 import { showToast } from "@buff/ui";
-import { ServerResponse } from "_types";
+import { ROLES, ServerResponse } from "_types";
+import { useEffect } from "react";
 import { useProfileStore } from "store/use-edit";
 import {
   DEFAULT_ALLOWED_TYPES,
   DEFAULT_MAX_FILE_SIZE,
 } from "~/product/components/file-upload";
+import { useGetUser } from "~/wallet-management/api/get-user";
 import { useUpdateProfileImage } from "../api/update-photo";
 import { EditProfileForm } from "./edit-form";
 
 export const ProfileSection = () => {
   const userProfile = useProfileStore((state) => state.userDetails);
   const updateUserDetail = useProfileStore((state) => state.updateUserDetail);
+
+  const userDetail = useGetUser({ enabled: true });
 
   const onSuccess = (response: ServerResponse<string>) => {
     if (response.data) {
@@ -22,6 +26,17 @@ export const ProfileSection = () => {
       showToast("Profile image updated successfully", "success");
     }
   };
+
+  useEffect(() => {
+    if (userDetail.data && userDetail.data.data) {
+      updateUserDetail({
+        image: userDetail.data.data.image as string,
+        email: userDetail.data.data.email as string,
+        name: userDetail.data.data.name as string,
+        role: userDetail.data.data.role as ROLES,
+      });
+    }
+  }, [userDetail.data]);
 
   const onError = (errorResponse: any) => {
     const serverError = JSON.parse(errorResponse.message);

@@ -42,10 +42,11 @@ export const SignupForm = ({
   const { register, handleSubmit, formState } = methods;
 
   const onSuccess = (response: TenantUserServerResponse) => {
-    console.log("resume", response);
-
     const token = response.data.token;
     const userData = response.data.user;
+
+    const name = userData.name;
+    const nameArr = name.split(" ");
     localStorage.setItem(
       "tenant_user",
       JSON.stringify({
@@ -53,15 +54,11 @@ export const SignupForm = ({
         userId: userData.id,
         email: userData.email,
         name: userData?.name,
-        lastName: userData?.lastName,
-        firstName: userData?.firstName,
+        lastName: nameArr[1] || "",
+        firstName: nameArr[0] || "",
       })
     );
     onClick(1);
-  };
-
-  const onError = (error: unknown) => {
-    console.log("est=>", error);
   };
 
   const login = useCreateAuthTenant({

@@ -29,6 +29,8 @@ export const TenantAuthTab = () => {
     firstName: string;
   } | null>(null);
 
+  const userDetails = localStorage.getItem("tenant_user");
+
   const [steps, setSteps] = useState<StepProps[]>([
     {
       icon: MdCheck,
@@ -191,7 +193,6 @@ export const TenantAuthTab = () => {
       } else if (i === index) {
         step.status = "current";
       } else {
-        console.log("hereee", i);
         step.status = "upcoming";
       }
     });
@@ -489,8 +490,8 @@ export const TenantAuthTab = () => {
               <div className="w-full flex gap-[2.4rem] flex-col">
                 <div>
                   <h2 className="leading-[3.6rem] font-bold text-[2.4rem] text-center mb-[1.6rem] text-white">
-                    Account created! Welcome aboard{" "}
-                    {userIfo?.name && (
+                    Account created! one more thing{" "}
+                    {userIfo && userIfo.name && (
                       <>
                         ,<br />
                         {userIfo?.name} 🎉
@@ -505,7 +506,7 @@ export const TenantAuthTab = () => {
                     onClick={() => {
                       handleStepClick(0);
 
-                      router.push("/auth/tenant");
+                      router.push("/auth/tenant/kyc");
                     }}
                     variant="danger"
                     size="large"
@@ -515,7 +516,7 @@ export const TenantAuthTab = () => {
                       "bg-brand-default text-brand hover:bg-brand-default opacity-100 "
                     )}
                   >
-                    Go to dashboard
+                    Validate your identity
                   </Button>
                 </div>
               </div>

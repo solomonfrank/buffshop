@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { ServerResponseType } from "~/auth/api/reset-password";
-import { useCreateKycTenant } from "./api/kyc";
+import { useCreateBvn } from "./api/add-bvn";
 
 export const bvnScheme = z.object({
   bvn: z.string().trim().min(1, { message: "BVN is required" }),
@@ -39,7 +39,7 @@ export const BVNForm = () => {
     setOpenSuccessModal(true);
   };
 
-  const kycVerification = useCreateKycTenant({
+  const kycVerification = useCreateBvn({
     onSuccess,
     // onError,
   });
@@ -48,9 +48,13 @@ export const BVNForm = () => {
     const userInfo = localStorage.getItem("tenant_user");
     const userData = userInfo && JSON.parse(userInfo);
 
+    const name = userData.name as string;
+    const nameArr = name.split(" ");
+
     const payload = {
       bvn: data.bvn,
-      email: userData.email || "creyton.whitten@fileexp.com",
+      firstName: nameArr[0] as string,
+      lastName: nameArr[1] as string,
     };
 
     kycVerification.mutate(payload);
@@ -108,13 +112,13 @@ export const BVNForm = () => {
         )}
         {kycVerification.isSuccess && (
           <Loader
-            redirectUrl="/auth/tenant"
+            redirectUrl="/auth/tenant/kyc/photo"
             loading={kycVerification.isSuccess}
             Message={() => (
               <SuccessDisplay
                 closeModal={() => {
                   setOpenSuccessModal(false);
-                  router.push("/auth/login");
+                  router.push("/auth/tenant/kyc/photo");
                 }}
               />
             )}

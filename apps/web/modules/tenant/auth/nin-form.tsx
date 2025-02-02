@@ -10,16 +10,16 @@ import { useEffect, useRef, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { ServerResponseType } from "~/auth/api/reset-password";
-import { useCreateKycTenant } from "./api/kyc";
+import { useCreateNin } from "./api/add-nin";
 
-export const bvnScheme = z.object({
-  bvn: z.string().trim().min(1, { message: "NIN is required" }),
+export const NinScheme = z.object({
+  nin: z.string().trim().min(1, { message: "NIN is required" }),
 });
 
-export type BvnFormValue = z.infer<typeof bvnScheme>;
+export type NinFormValue = z.infer<typeof NinScheme>;
 
 type FormValue = {
-  bvn: string;
+  nin: string;
 };
 
 export const NINForm = () => {
@@ -28,8 +28,8 @@ export const NINForm = () => {
 
   const router = useRouter();
 
-  const methods = useForm<BvnFormValue>({
-    resolver: zodResolver(bvnScheme),
+  const methods = useForm<NinFormValue>({
+    resolver: zodResolver(NinScheme),
     mode: "onChange",
   });
 
@@ -39,7 +39,7 @@ export const NINForm = () => {
     setOpenSuccessModal(true);
   };
 
-  const kycVerification = useCreateKycTenant({
+  const kycVerification = useCreateNin({
     onSuccess,
     // onError,
   });
@@ -48,9 +48,13 @@ export const NINForm = () => {
     const userInfo = localStorage.getItem("tenant_user");
     const userData = userInfo && JSON.parse(userInfo);
 
+    const name = userData.name as string;
+    const nameArr = name.split(" ");
+
     const payload = {
-      bvn: data.bvn,
-      email: userData.email || "creyton.whitten@fileexp.com",
+      nin: data.nin,
+      firstName: nameArr[0] as string,
+      lastName: nameArr[1] as string,
     };
 
     kycVerification.mutate(payload);
@@ -72,7 +76,7 @@ export const NINForm = () => {
                 placeholder="Enter NIN Number"
                 containerClassName="mb-3"
                 className=" w-full p-4 rounded-lg  h-[4.8rem] placeholder:text-[14px]  text-[16px]"
-                {...register("bvn")}
+                {...register("nin")}
               />
             </div>
           </div>
@@ -108,13 +112,13 @@ export const NINForm = () => {
         )}
         {kycVerification.isSuccess && (
           <Loader
-            redirectUrl="/auth/tenant"
+            redirectUrl="/auth/tenant/kyc/photo"
             loading={kycVerification.isSuccess}
             Message={() => (
               <SuccessDisplay
                 closeModal={() => {
                   setOpenSuccessModal(false);
-                  router.push("/auth/login");
+                  router.push("/auth/tenant/kyc/photo");
                 }}
               />
             )}
