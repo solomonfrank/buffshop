@@ -200,7 +200,7 @@ const SuccessDisplay = ({ closeModal }: { closeModal?: () => void }) => {
         </svg>
 
         <p className="text-center text-white text-[1.6rem] leading-[2.4rem]">
-          Password reset successfully.
+          Nin verified successfully.
         </p>
       </div>
     </div>
