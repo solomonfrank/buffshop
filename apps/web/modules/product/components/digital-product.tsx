@@ -41,7 +41,7 @@ export const DigitalProduct = ({ type = "physical" }: { type: string }) => {
                     <figure className="w-full h-[25.9rem] overflow-hidden">
                       {item.images.length ? (
                         <img
-                          src={item?.images[0]!.image}
+                          src={item?.images[0]!.url}
                           className="w-full object-cover h-full"
                         />
                       ) : (

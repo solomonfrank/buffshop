@@ -11,7 +11,7 @@ export const Login = () => {
           <br />
           Sign in your Account.
         </h2>
-        <LoginForm showRememberMe={false} />
+        <LoginForm showRememberMe={false} role="admin,superadmin" />
         {/* <Link
           href="/auth/forgot-password"
           className=" text-black underline hover:text-gray-700 font-normal text-[1.4rem] leading-[16.8px] font-lato"

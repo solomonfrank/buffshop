@@ -12,6 +12,7 @@ import { ErrorMessageProps, ROLES } from "_types";
 import classNames from "classnames";
 import Link from "next/link";
 
+import { useSetStep } from "@lib/hooks/useStep";
 import { jwtDecode } from "jwt-decode";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -41,7 +42,12 @@ export const LoginForm = ({
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [authorize, setAuthorize] = useState(false);
   const redirectTo = searchParams?.get("redirectTo");
+
+  const error = searchParams.get("error");
+
+  const step = useSetStep("error");
   const updateUserDetail = useProfileStore((state) => state.updateUserDetail);
 
   const methods = useForm<FormValue>({
@@ -74,11 +80,7 @@ export const LoginForm = ({
 
     const { exp } = jwtDecode(token);
 
-    if (
-      userData?.role === ROLES.SUPERADMIN ||
-      userData?.role === ROLES.ADMIN ||
-      ROLES.TENANT
-    ) {
+    if (role?.includes(userData?.role)) {
       localStorage.setItem("accessToken", token);
       router.push(
         redirectTo
@@ -87,16 +89,16 @@ export const LoginForm = ({
       );
 
       return;
+    } else {
+      setAuthorize(true);
+
+      return;
     }
 
     document.cookie = `role=${userData.role};path=/;max-age=${exp};SameSite=Lax;`;
     document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
 
     router.replace(`/app/dashboard`);
-  };
-
-  const onError = (error: unknown) => {
-    console.log("est=>", error);
   };
 
   const login = useLogin({
@@ -164,6 +166,13 @@ export const LoginForm = ({
             </div>
           )}
         </div>
+        {authorize && (
+          <ErrorMessage
+            message="Unauthorized!"
+            key={`${Math.random()}`}
+            handler={() => setAuthorize(false)}
+          />
+        )}
 
         {login.isError && <ErrorMessage {...JSON.parse(login.error.message)} />}
 
@@ -191,7 +200,7 @@ export const LoginForm = ({
   );
 };
 
-export const ErrorMessage = ({ message, code }: ErrorMessageProps) => {
+export const ErrorMessage = ({ message, code, handler }: ErrorMessageProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const timerId = useRef<NodeJS.Timeout>();
 
@@ -200,6 +209,9 @@ export const ErrorMessage = ({ message, code }: ErrorMessageProps) => {
       timerId.current = setTimeout(() => {
         if (ref.current) {
           ref.current.style.display = "none";
+          if (handler) {
+            handler();
+          }
         }
       }, 9000);
     }

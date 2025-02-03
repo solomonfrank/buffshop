@@ -31,7 +31,7 @@ import {
 import { ProductProps } from "../api/get-product";
 import { useUpdateProduct } from "../api/update-product";
 import { SUBSCRIPTION_TYPE } from "../product-details";
-import CustomFileUpload, { FileWithPreview } from "./file-upload";
+import CustomFileUpload, { FileWithPreviewType } from "./file-upload";
 
 export const CreateDigitalForm = ({
   defaultValue,
@@ -39,6 +39,8 @@ export const CreateDigitalForm = ({
   defaultValue?: ProductProps;
 }) => {
   const router = useRouter();
+
+  console.log("defaultValue=>,", defaultValue);
 
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
@@ -132,6 +134,7 @@ export const CreateDigitalForm = ({
       product.mutate(payload);
     }
   };
+
   return (
     <FormProvider {...methods}>
       <form
@@ -576,31 +579,39 @@ export const ConfirmModal = ({
 export const ProductFileUpload = ({
   defaultFiles,
 }: {
-  defaultFiles?: FileWithPreview[];
+  defaultFiles?: FileWithPreviewType[];
 }) => {
   const methods = useFormContext();
 
   const { formState } = methods;
 
-  const [copyfile, setCopyFile] = useState<FileWithPreview[]>(
-    () => defaultFiles ?? []
+  const [copyfile, setCopyFile] = useState<FileWithPreviewType[]>(
+    defaultFiles?.map((item) => ({
+      url: item.url || "",
+      file: null,
+    })) || []
   );
 
   useEffect(() => {
     methods.setValue("files", copyfile, {
-      // shouldValidate: true,
+      shouldValidate: true,
       shouldDirty: true,
       shouldTouch: true,
     });
-  }, [copyfile.length]);
+  }, [copyfile?.length]);
 
   useEffect(() => {
     if (defaultFiles) {
-      methods.reset({
-        files: defaultFiles,
-      });
+      // methods.reset({
+      //   files: defaultFiles.map((item) => ({
+      //     ...item,
+      //     file: new File([], "updated"),
+      //   })),
+      // });
     }
   }, [defaultFiles]);
+
+  console.log("formState", formState.errors);
 
   return (
     <div>

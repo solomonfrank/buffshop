@@ -23,7 +23,6 @@ export const CreateProduct = ({
     enabled: Boolean(id),
   });
 
-  console.log("products", products.data);
   const product = products.data?.[0];
 
   const items: TabsNavigationItem = [

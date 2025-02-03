@@ -15,30 +15,30 @@ export interface FileWithPreview extends File {
   image?: string;
 }
 
+const MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB in bytes
+
+const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
+
+const fileWithPreviewSchema = z.object({
+  image: z.string().optional(),
+  file: z.instanceof(File).nullable(),
+  // .refine((file) => file === null || ALLOWED_FILE_TYPES.includes(file.type), {
+  //   message: "Invalid file type. Only JPG, PNG, and GIF are allowed.",
+  // })
+  // .refine((file) => file === null || file.size <= MAX_FILE_SIZE, {
+  //   message: "File size must be less than 25MB.",
+  // }),
+});
+
 export const ProductInputSchema = z.object({
   name: z.string().min(3, "Product name is required"),
   price: z.string().min(1, "Price is required"),
   discount: z.number().min(0, "Discount required"),
   description: z.string().min(1, "Description is required"),
   files: z
-    .array(z.instanceof(File))
+    .array(fileWithPreviewSchema)
     .min(1, "At least one image is required")
-    .max(3, "Maximum 3 images allowed")
-    .refine(
-      (files) =>
-        files.every((file) =>
-          ["image/jpeg", "image/png", "image/gif"].includes(file.type)
-        ),
-      "All files must be JPG, PNG or GIF"
-    )
-    .refine(
-      (files) => files.every((file) => file.size <= 25 * 1024 * 1024),
-      "Each file must be less than 25MB"
-    )
-    .refine((files) => {
-      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-      return totalSize <= 50 * 1024 * 1024;
-    }, "Total size must not exceed 50MB"),
+    .max(3, "Maximum 3 images allowed"),
   drmProtection: z.boolean(),
   subscription_type: z.object({
     label: z.string(),
@@ -55,24 +55,9 @@ export const ProductPhysicalInputSchema = z.object({
   number_of_products: z.string().min(1, "Number of product is required"),
   pickup_location: z.string().min(1, "Pickup location is required"),
   files: z
-    .array(z.instanceof(File))
+    .array(fileWithPreviewSchema)
     .min(1, "At least one image is required")
-    .max(3, "Maximum 3 images allowed")
-    .refine(
-      (files) =>
-        files.every((file) =>
-          ["image/jpeg", "image/png", "image/gif"].includes(file.type)
-        ),
-      "All files must be JPG, PNG or GIF"
-    )
-    .refine(
-      (files) => files.every((file) => file.size <= 25 * 1024 * 1024),
-      "Each file must be less than 25MB"
-    )
-    .refine((files) => {
-      const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-      return totalSize <= 50 * 1024 * 1024;
-    }, "Total size must not exceed 50MB"),
+    .max(3, "Maximum 3 images allowed"),
 });
 
 export const UpdateProductInputSchema = z.object({
@@ -112,7 +97,7 @@ export const createProductFn = (
   Object.entries(payload).forEach(([key, bvalue]) => {
     if (Array.isArray(bvalue)) {
       bvalue.forEach((document, index) => {
-        formData.append(`${key}`, document);
+        formData.append(`${key}`, document.file as File);
       });
     } else {
       if (typeof bvalue === "object") {

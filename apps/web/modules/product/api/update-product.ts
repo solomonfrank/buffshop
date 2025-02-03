@@ -1,5 +1,9 @@
 import { fetchJson, getCookie } from "@buff/lib";
-import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+import {
+  UseMutationOptions,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 
 import { API_BASE_URL } from "@config/constant";
 import { ServerResponseType } from "~/auth/api/reset-password";
@@ -40,8 +44,13 @@ export const useUpdateProduct = (
     "mutationFn"
   >
 ) => {
+  const queryClient = useQueryClient();
   return useMutation({
     ...options,
     mutationFn: updateProductFn,
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      options?.onSuccess?.(...args);
+    },
   });
 };

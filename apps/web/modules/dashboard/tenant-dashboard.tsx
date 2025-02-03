@@ -6,13 +6,15 @@ import AreaGraph from "./components/graph";
 
 export const TenantDashboardPage = () => {
   const userProfile = useProfileStore((state) => state.userDetails);
+
+  const name = userProfile?.name?.split(" ") ?? [];
   return (
     <div className="w-full">
       <div className="flex lg:flex-row flex-col gap-[2.3rem] ">
         <div className=" w-full lg:w-[65%]">
           <div className="w-full flex flex-col gap-[2rem] mb-[3.2rem]">
             <h3 className="font-bold text-[2.7rem] leading-[3.2rem]">
-              Good Afternoon, {userProfile?.name.split(" ")[0]} 👋
+              Good Afternoon, {name.length && name[0]} 👋
             </h3>
             <div className="flex gap-[1.6rem]  items-start">
               <span>

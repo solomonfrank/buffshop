@@ -37,16 +37,15 @@ export const EditProfileForm = () => {
 
   const onSuccess = (response: ServerResponse<LoginResponse>) => {
     if (response.data) {
+      showToast("Profile updated successfully", "success");
       updateUserDetail({
         ...userProfile,
-        firstName: response.data.name.split(" ")[0] || "",
-        lastName: response.data.name.split(" ")[1] || "",
+        firstName: response.data.name?.split(" ")[0] || "",
+        lastName: response.data.name?.split(" ")[1] || "",
         name: response.data.name as string,
         email: response.data.email as string,
         role: response.data.role as ROLES,
       });
-
-      showToast("Profile updated successfully", "success");
     }
   };
 
@@ -210,7 +209,7 @@ export const EditProfileForm = () => {
             updateProfile.isPending && "opacity-60"
           )}
         >
-          Edit Details
+          Save
         </Button>
       </form>
     </FormProvider>

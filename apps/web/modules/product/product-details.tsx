@@ -221,7 +221,7 @@ const ProductDetailsPage: React.FC = () => {
                       <div className="mb-[12px]">
                         <figure className="h-[228px]">
                           <img
-                            src={productDetails.images[0].image}
+                            src={productDetails.images[0].url}
                             className="w-full object-cover h-full rounded-[8px]"
                             loading="lazy"
                           />
@@ -233,7 +233,7 @@ const ProductDetailsPage: React.FC = () => {
                       {productDetails.images.slice(1).map((item) => (
                         <figure className="h-[117px] w-1/2">
                           <img
-                            src={item.image}
+                            src={item.url}
                             className="w-full object-cover h-full rounded-[8px]"
                             loading="lazy"
                           />
@@ -468,7 +468,7 @@ const ProductDetailsPage: React.FC = () => {
             <button
               onClick={() =>
                 router.push(
-                  `/app/product-management/${productDetails.name}/edit`
+                  `/app/product-management/${productDetails.name.trim()}/edit`
                 )
               }
               className="bg-[#FFBE0A] text-[#171717] py-[12px] px-[37px] rounded-[8px] flex items-center space-x-2"

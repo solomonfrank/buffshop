@@ -485,7 +485,7 @@ const Sidebar = ({ navigation }: { navigation: NavigationItemType[] }) => {
                 className="cursor-pointer"
               >
                 <h3 className="text-[#FFFFFF] text-[1.6rem] leading-[2rem]">
-                  {`${userProfile?.name}`}
+                  {`${userProfile?.name ?? ""}`}
                 </h3>
                 <p className="text-[1.3rem] leading-[2rem]">
                   {userProfile?.email}

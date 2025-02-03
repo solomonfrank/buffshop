@@ -29,8 +29,6 @@ export const TenantAuthTab = () => {
     firstName: string;
   } | null>(null);
 
-  const userDetails = localStorage.getItem("tenant_user");
-
   const [steps, setSteps] = useState<StepProps[]>([
     {
       icon: MdCheck,

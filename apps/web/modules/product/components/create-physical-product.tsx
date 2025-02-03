@@ -111,7 +111,7 @@ export const CreatePhysicalForm = ({
       } = defaultValue;
       methods.setValue("name", name);
       methods.setValue("price", `${price}`);
-      methods.setValue("number_of_products", number_of_products);
+      methods.setValue("number_of_products", `${number_of_products}`);
       methods.setValue("pickup_location", pickup_location);
       methods.setValue("description", description);
       methods.setValue("discount", Number(discount || 0));

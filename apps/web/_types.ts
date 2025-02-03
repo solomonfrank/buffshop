@@ -14,6 +14,7 @@ export type PageProps = {
 export type ErrorMessageProps = {
   message: string;
   code?: string;
+  handler?: () => void;
 };
 
 export type PagedResponse<T> = {
