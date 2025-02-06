@@ -157,6 +157,7 @@ const ADMIN_NAVIGATION: NavigationItemType[] = [
     name: "Settings",
     href: "/app/settings",
     icon: SettingTwoIcon,
+    isEnabled: true,
 
     isCurrent: ({ pathname }) => {
       return pathname?.includes("/settings") ?? false;
@@ -753,6 +754,67 @@ export const MenuItem: React.FC<{
           className={classNames(
             "hidden w-full justify-between truncate text-ellipsis lg:flex text-[#B8B8B8] ",
             current && "text-default"
+          )}
+          data-testid={`${item.name}-test`}
+        >
+          {item.name}
+        </span>
+      </Link>
+    </Fragment>
+  );
+};
+
+export const SettingsMenuItem: React.FC<{
+  index?: number;
+  item: NavigationItemType;
+  isChild?: boolean;
+}> = (props) => {
+  const { item, isChild } = props;
+  const query = useSearchParams();
+  const pathname = usePathname();
+  const currentMenuItem = query.get("tab") || item?.defaultKey || "";
+
+  const isCurrent: NavigationItemType["isCurrent"] =
+    item.isCurrent || defaultIsCurrent;
+  const current = isCurrent({
+    isChild: !!isChild,
+    item,
+    pathname: currentMenuItem,
+  });
+
+  return (
+    <Fragment>
+      <Link
+        data-test-id={item.name}
+        href={item.href}
+        aria-label={item.name}
+        target={item.target}
+        onClick={(e) => {
+          if (!item.isEnabled) {
+            showToast("Not yet available.", "warning");
+            e.preventDefault();
+          }
+        }}
+        className={classNames(
+          "text-[#848484]   group leading-[1.4rem] flex items-center  text-[1.4rem] h-[7.2rem] font-medium transition [&[aria-current='page']]:bg-[#282828]"
+        )}
+        aria-current={current ? "page" : undefined}
+      >
+        {item.icon && (
+          <item.icon
+            className={classNames(
+              `ml-[1.6rem] mr-[10px] lg:ml-[1.8rem] h-[2.4rem] w-[2.4rem] transition flex-shrink-0 `,
+              "[&[aria-current='page']]:text-default "
+            )}
+            aria-hidden="true"
+            aria-current={current ? "page" : undefined}
+          />
+        )}
+
+        <span
+          className={classNames(
+            "hidden w-full justify-between truncate text-ellipsis lg:flex text-[#848484] ",
+            current && "text-white"
           )}
           data-testid={`${item.name}-test`}
         >

@@ -1,3 +1,4 @@
+import { showToast } from "@buff/ui";
 import { File } from "buffer";
 import React, { useCallback, useState } from "react";
 
@@ -20,7 +21,7 @@ interface FileUploadProps {
 }
 
 export const DEFAULT_MAX_FILES = 3;
-export const DEFAULT_MAX_FILE_SIZE = 25 * 1024 * 1024; // 25MB
+export const DEFAULT_MAX_FILE_SIZE = 1 * 1024 * 1024; // 25MB
 export const DEFAULT_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/gif"];
 
 const CustomFileUpload: React.FC<FileUploadProps> = ({
@@ -35,13 +36,25 @@ const CustomFileUpload: React.FC<FileUploadProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   const validateFile = (file: File): boolean => {
+    console.log("validateFile", file);
     if (!allowedFileTypes.includes(file.type)) {
       setError("File type not supported");
       return false;
     }
 
+    console.log(
+      "file.size =>",
+      file.size,
+      maxFileSize,
+      file.size > maxFileSize
+    );
+
     if (file.size > maxFileSize) {
       setError(`File size should not exceed ${maxFileSize / (1024 * 1024)}MB`);
+      showToast(
+        `File size should not exceed ${maxFileSize / (1024 * 1024)}MB`,
+        "error"
+      );
       return false;
     }
 

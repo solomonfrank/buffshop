@@ -40,8 +40,6 @@ export const CreateDigitalForm = ({
 }) => {
   const router = useRouter();
 
-  console.log("defaultValue=>,", defaultValue);
-
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const methods = useForm<ProductCreationInput>({
@@ -623,7 +621,7 @@ export const ProductFileUpload = ({
             <>
               <CustomFileUpload
                 maxFiles={3}
-                maxFileSize={25 * 1024 * 1024} // 25MB
+                maxFileSize={1 * 1024 * 1024} // 25MB
                 allowedFileTypes={["image/jpeg", "image/png", "image/gif"]}
                 files={value}
                 onFilesChange={(files, isDelete) => {

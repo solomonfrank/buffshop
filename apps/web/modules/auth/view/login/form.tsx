@@ -76,6 +76,9 @@ export const LoginForm = ({
       name: userData.name,
       role: userData.role as ROLES,
       image: userData?.image ?? "",
+      two_factor: Boolean(userData?.two_factor),
+      session_timeout: Boolean(userData?.session_timeout),
+      email_alert: Boolean(userData?.email_alert),
     });
 
     const { exp } = jwtDecode(token);

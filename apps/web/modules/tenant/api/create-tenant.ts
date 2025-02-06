@@ -65,6 +65,9 @@ export type LoginResponse = {
   role: string;
   name: string;
   image?: string;
+  two_factor?: boolean;
+  email_alert: boolean;
+  session_timeout?: boolean;
 };
 
 export const useCreateTenant = (

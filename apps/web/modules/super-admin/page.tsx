@@ -269,13 +269,13 @@ export const SuperAdminPage = () => {
                   if (entry.status === "inactive") {
                     return (
                       <button className="outline-none bg-[#171717] px-[1rem] text-[1.2rem] leading-[1.8rem] border rounded-[6px] text-[#D1D5DB] border-[#D1D5DB] capitalize">
-                        Active
+                        Inactive
                       </button>
                     );
                   }
                   if (entry.status === "deactivated") {
                     return (
-                      <button className="outline-none bg-[#171717] px-[1rem] text-[1.2rem] leading-[1.8rem] border rounded-[6px] text-[#F98080] border-[#F98080] capitalize">
+                      <button className="outline-none  bg-[#171717] px-[1rem] text-[1.2rem] leading-[1.8rem] border rounded-[6px] text-[#F98080] border-[#F98080] capitalize">
                         {entry.status}
                       </button>
                     );
@@ -291,7 +291,7 @@ export const SuperAdminPage = () => {
               { title: "last login", field: "lastlogin" },
 
               {
-                title: "Action",
+                title: "",
                 field: "id",
 
                 Cell: ({ entry }) => <MoreMenu entry={entry} />,

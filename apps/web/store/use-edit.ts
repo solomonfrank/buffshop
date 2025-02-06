@@ -9,6 +9,9 @@ type UserDetails = {
   name: string;
   role: ROLES;
   image?: string;
+  two_factor?: boolean;
+  email_alert?: boolean;
+  session_timeout?: boolean;
 };
 
 interface UserInfo {

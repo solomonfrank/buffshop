@@ -64,7 +64,7 @@ export const Table = <Entry extends { id: string }>({
   totalItems,
   onPageChange,
   onPageSizeChange,
-  showFilter,
+  showFilter = true,
   thClassName,
   tdClassName,
   filterFields = options,
@@ -163,24 +163,28 @@ export const Table = <Entry extends { id: string }>({
         )}
       </div>
 
-      <div className="flex gap-[1.6rem] items-center  py-[1.6rem]">
-        <h3 className="font-medium text-[1.4rem] leading-[21px]">Show only:</h3>
-        <div>
-          <CustomRadio
-            options={filterFields}
-            defaultValue="All"
-            value="all"
-            // value={value}
-            onChange={(e) => {}}
-          />
+      {showFilter && (
+        <div className="flex gap-[1.6rem] items-center  py-[1.6rem]">
+          <h3 className="font-medium text-[1.4rem] leading-[21px]">
+            Show only:
+          </h3>
+          <div>
+            <CustomRadio
+              options={filterFields}
+              defaultValue="All"
+              value="all"
+              // value={value}
+              onChange={(e) => {}}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="flex flex-col">
-        <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div className="overflow-x-auto">
           <div
             className={classNames(
-              "inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8 ",
+              "inline-block min-w-full py-2 align-middle ",
               isLoading && "h-[400px]",
               !isLoading && !data.length && "h-[400px]"
             )}
