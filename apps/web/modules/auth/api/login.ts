@@ -46,9 +46,9 @@ export type LoginResponse = {
   role: string;
   name: string;
   image?: string;
-  two_factor: boolean;
-  session_timeout: boolean;
-  email_alert: boolean;
+  two_factor?: boolean;
+  session_timeout?: boolean;
+  email_alert?: boolean;
 };
 
 export const useLogin = (
