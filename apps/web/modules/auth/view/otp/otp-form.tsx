@@ -44,7 +44,12 @@ export const OtpForm = () => {
       document.cookie = `accessToken=${token};path=/;max-age=${exp};SameSite=Lax;`;
       document.cookie = `role=${role};path=/;max-age=${exp};SameSite=Lax;`;
       localStorage.removeItem("accessToken");
-      router.replace(`/app/dashboard`);
+
+      if (role === "buyer") {
+        router.replace(`/app/overview`);
+      } else {
+        router.replace(`/app/dashboard`);
+      }
     } else {
       router.replace(`/auth/login`);
     }

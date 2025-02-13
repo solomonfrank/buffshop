@@ -552,7 +552,7 @@ const adminBottonNavigation: NavigationItemType[] = [
   },
 ];
 
-const Header = () => {
+export const Header = () => {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const userProfile = useProfileStore((state) => state.userDetails);
   const onSuccess = (response: unknown) => {

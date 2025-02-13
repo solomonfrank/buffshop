@@ -56,9 +56,11 @@ export default async function middleware(req: NextRequest) {
     if (path.startsWith("/auth/login")) {
       if (token) {
         const redirectTo =
-          role?.value === ROLES.SUPERADMIN || role?.value === ROLES.ADMIN
+          role?.value === ROLES.SUPERADMIN ||
+          role?.value === ROLES.ADMIN ||
+          role?.value === ROLES.TENANT
             ? "/app/dashboard"
-            : "/app/dashboard";
+            : "/app/overview";
         return NextResponse.redirect(new URL(redirectTo, req.url));
       }
     }

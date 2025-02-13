@@ -10,16 +10,20 @@ import {
   UserIcon,
 } from "@components/icons";
 import { MenuItem, NavigationItemType } from "@components/shell";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React from "react";
 import { useProfileStore } from "store/use-edit";
 import { ProfileSection } from "./components/profile";
+import { StoreFrontSection } from "./components/store-front";
 
 const ProfileDetails: React.FC = () => {
   const userProfile = useProfileStore((state) => state.userDetails);
 
   const { id } = useParams()!;
   const router = useRouter();
+  const query = useSearchParams();
+
+  const tabName = query.get("tab") || "information";
 
   const TENANT_NAVIGATION: NavigationItemType[] = [
     {
@@ -37,7 +41,7 @@ const ProfileDetails: React.FC = () => {
       name: "Storefront Customization",
       href: "/app/profile?tab=storefront",
       icon: StoreIcon,
-
+      isEnabled: true,
       isCurrent: ({ pathname }) => {
         return pathname?.includes("storefront") ?? false;
       },
@@ -133,7 +137,8 @@ const ProfileDetails: React.FC = () => {
             </div>
           </div>
           <div className="flex w-0 flex-col flex-1">
-            <ProfileSection />
+            {tabName === "information" && <ProfileSection />}
+            {tabName === "storefront" && <StoreFrontSection />}
           </div>
         </div>
       </div>

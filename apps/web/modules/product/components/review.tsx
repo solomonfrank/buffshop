@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import { Star, StarHalf } from "lucide-react";
 
 const ReviewsComponent = () => {
@@ -27,31 +28,6 @@ const ReviewsComponent = () => {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus.",
     },
   ];
-
-  const RatingStars = ({ rating }: { rating: number }) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    return (
-      <div className="flex">
-        {[...Array(fullStars)].map((_, i) => (
-          <Star
-            key={i}
-            className="w-[2.4rem] h-[2.4rem] fill-[#FFBE0A] text-yellow-400"
-          />
-        ))}
-        {hasHalfStar && (
-          <StarHalf className="w-[2.4rem] h-[2.4rem] fill-[#FFBE0A] text-yellow-400" />
-        )}
-        {[...Array(5 - Math.ceil(rating))].map((_, i) => (
-          <Star
-            key={i + fullStars}
-            className="w-[2.4rem] h-[2.4rem] text-yellow-400"
-          />
-        ))}
-      </div>
-    );
-  };
 
   return (
     <div className="text-white border-t border-[#848484] pt-[8rem]">
@@ -157,4 +133,45 @@ const ReviewsComponent = () => {
   );
 };
 
+export const RatingStars = ({
+  rating,
+  className,
+}: {
+  rating: number;
+  className?: string;
+}) => {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 !== 0;
+
+  return (
+    <div className="flex">
+      {[...Array(fullStars)].map((_, i) => (
+        <Star
+          key={i}
+          className={classNames(
+            "w-[2.4rem] h-[2.4rem] fill-[#FFBE0A] text-yellow-400",
+            className
+          )}
+        />
+      ))}
+      {hasHalfStar && (
+        <StarHalf
+          className={classNames(
+            "w-[2.4rem] h-[2.4rem] fill-[#FFBE0A] text-yellow-400",
+            className
+          )}
+        />
+      )}
+      {[...Array(5 - Math.ceil(rating))].map((_, i) => (
+        <Star
+          key={i + fullStars}
+          className={classNames(
+            "w-[2.4rem] h-[2.4rem] fill-[#FFBE0A] text-yellow-400",
+            className
+          )}
+        />
+      ))}
+    </div>
+  );
+};
 export default ReviewsComponent;

@@ -36,6 +36,7 @@ export enum ROLES {
   SUPERADMIN = "superadmin",
   TENANT = "tenant",
   ADMIN = "admin",
+  BUYER = "buyer",
 }
 
 export type Response = {
@@ -45,4 +46,24 @@ export type Response = {
 export type LayoutProps = {
   params: Promise<Params>;
   children: React.ReactElement;
+};
+
+export type AuthServerResponse = {
+  data: {
+    token: string;
+    user: LoginResponse;
+  };
+};
+
+export type LoginResponse = {
+  data: string;
+  firstName: string;
+  lastName: string;
+  accessToken: string;
+  email: string;
+  id: string;
+  userName: string;
+  otp?: string;
+  role: string;
+  name: string;
 };

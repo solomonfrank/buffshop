@@ -7,7 +7,9 @@ const Dashboard = async () => {
   const cookieStore = await cookies();
   const role = cookieStore.get("role");
 
-  console.log("role", role);
+  if (role?.value === ROLES.BUYER) {
+    return <div>Welcome to buyer home</div>;
+  }
 
   if (role?.value === ROLES.TENANT) {
     return <TenantDashboardPage />;
